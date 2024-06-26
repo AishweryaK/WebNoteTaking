@@ -1,5 +1,8 @@
-import { RouteObject } from "react-router-dom";
+import { DataRouteObject, RouteObject } from "react-router-dom";
 
 export type CustomRouter =  RouteObject & {
     title: string;
+    children?: CustomRouter[];
 }
+
+  

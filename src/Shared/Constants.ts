@@ -6,6 +6,7 @@ const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   ABOUT: '/about-us',
+  SIGNUP : '/sign-up'
 };
 
 const WILDCARD_ROUTES = {
@@ -16,11 +17,15 @@ const WILDCARD_ROUTES = {
 const ROUTES_CONFIG = {
   HOMEPAGE: {
     path: ROUTES.HOMEPAGE,
-    title: 'Master Plan',
+    title: 'Note Taking',
   },
   LOGIN: {
     path: ROUTES.LOGIN,
     title: 'Login',
+  },
+  SIGNUP: {
+    path: ROUTES.SIGNUP,
+    title: 'Signup',
   },
   REGISTER: {
     path: ROUTES.REGISTER,

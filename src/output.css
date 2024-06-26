@@ -576,6 +576,23 @@ video {
   text-decoration-line: underline;
 }
 
+.background-color {
+  background-color: white;
+  margin: 7rem 25rem 7rem 25rem;
+  border-radius: 30px;
+  box-shadow: 0 10px 15px rgba(255, 255, 255, 0.3);
+  flex-direction: row;
+  display: flex;
+  /* text-align: center; */
+  justify-content: space-around;
+  /* align-items: center; */
+}
+
+.layout {
+  width: 50%;
+  border-right: 2px solid red;
+}
+
 :root {
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
