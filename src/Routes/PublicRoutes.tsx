@@ -25,14 +25,14 @@ import Layout from '../Components/Layouts/Public/Layout/Layout';
 //   },
 // ];
 
-export const PUBLIC_ROUTES: CustomRouter[] = [
+const PUBLIC_ROUTES: CustomRouter[] = [
   {
     path: ROUTES_CONFIG.HOMEPAGE.path,
     element: <Layout />,
     title: ROUTES_CONFIG.HOMEPAGE.title,
-    children : [
+    children: [
       {
-        index :true,
+        index: true,
         path: `${ROUTES_CONFIG.LOGIN.path}`,
         title: ROUTES_CONFIG.LOGIN.title,
         element: <Login />,
@@ -49,5 +49,6 @@ export const PUBLIC_ROUTES: CustomRouter[] = [
       },
     ] as CustomRouter[],
   },
-  
 ];
+
+export default PUBLIC_ROUTES;

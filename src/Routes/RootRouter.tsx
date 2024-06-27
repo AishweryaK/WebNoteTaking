@@ -9,7 +9,7 @@ function RootRouter() {
   const guest = useRoutes(guestRoutes);
   const authenticated = useRoutes(authenticatedRoutes);
   const token = useSelector((state: RootState) => state?.common?.token);
-  const isAuthenticated = !!token;     // to convert value to boolean
+  const isAuthenticated = !!token; // to convert value to boolean
   return (
     <>
       <DocumentTitle isAuthenticated={isAuthenticated} />

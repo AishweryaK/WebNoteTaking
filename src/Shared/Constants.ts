@@ -6,7 +6,7 @@ const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   ABOUT: '/about-us',
-  SIGNUP : '/sign-up'
+  SIGNUP: '/sign-up',
 };
 
 const WILDCARD_ROUTES = {
