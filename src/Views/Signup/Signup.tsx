@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { CONSTANTS, SIGN_UP } from '../../Shared/Constants';
 import { Field, Form, Formik, FormikProps } from 'formik';
+import { CONSTANTS, SIGN_UP } from '../../Shared/Constants';
 import { FormValues } from './sign-up';
 import useAuthentication from '../../Hooks/userHook';
 
@@ -54,7 +54,7 @@ export const SignupSchema = Yup.object().shape({
 });
 
 export default function Signup() {
-  const {signUpCall} = useAuthentication();
+  const { signUpCall } = useAuthentication();
 
   const handleSignUp = async (values: FormValues) => {
     await signUpCall({
@@ -68,7 +68,7 @@ export default function Signup() {
   };
 
   return (
-    <div className='text-center justify-center items-center center-content'>
+    <div className="text-center justify-center items-center center-content">
       <h1 className="text-3xl font-bold underline text-center text-red-500">
         {/* <Link to={ROUTES.LOGIN}>Signup </Link> */}
         SignUp
@@ -85,7 +85,9 @@ export default function Signup() {
         onSubmit={(values) => handleSignUp(values)}
       >
         {({ errors, touched }: FormikProps<FormValues>) => (
-          <Form style={{display:'flex', flexDirection:'column', width:'100%'}}>
+          <Form
+            style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+          >
             <label htmlFor={CONSTANTS.FIRST_NAME}>First Name</label>
             <Field
               id={CONSTANTS.FIRST_NAME}
@@ -134,7 +136,7 @@ export default function Signup() {
               <div>{errors.confirmPassword}</div>
             ) : null}
 
-            <button style={{ backgroundColor: 'blue' }} type={'submit'}>
+            <button style={{ backgroundColor: 'blue' }} type="submit">
               {SIGN_UP.SUMBIT}
             </button>
           </Form>

@@ -12,11 +12,11 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import api from '../Services/Api/api';
 import common from './Common';
 import loader from './Loader';
 import user from './User';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootPersistConfig = {
   key: 'root',

@@ -65,7 +65,6 @@ const DEFAULT_NOTE = {
   DESCRIPTION: 'This is where you write your description...',
 };
 
-
 const SIGN_UP = {
   NAME_REGEX: /^[A-Za-z]+$/gi,
   EMAIL_REGEX: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
