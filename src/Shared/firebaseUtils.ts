@@ -1,10 +1,17 @@
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
 import { COLLECTION, DEFAULT_NOTE } from './Constants';
 import { CollectionItem } from './shared';
-// import { collection, doc } from 'firebase/firestore';
-// import { db } from "../utils";
+import { db } from '../utils';
 
 export const userDocRef = (uid: string) => {
-  return firestore().collection(COLLECTION.USERS).doc(uid);
+  // return firestore().collection(COLLECTION.USERS).doc(uid);
+  return doc(db, COLLECTION.USERS, uid);
 };
 
 export async function addDocumentsForUser(userUid: string) {
@@ -21,7 +28,7 @@ export async function addDocumentsForUser(userUid: string) {
 
   await Promise.all(addDocumentPromises);
 
-  await userDocRef(userUid).set({
+  await setDoc(userDocRef(userUid), {
     collections: data,
   });
 }
@@ -36,11 +43,10 @@ async function addDocumentToCollection(
   userUid: string,
   collectionName: string
 ) {
-  await userDocRef(userUid)
-    .collection(collectionName)
-    .add({
-      title: `Welcome to your ${collectionName} collection!`,
-      desc: DEFAULT_NOTE.DESCRIPTION,
-      createdAt: firestore.FieldValue.serverTimestamp(),
-    });
+  const collectionRef = collection(userDocRef(userUid), collectionName);
+  await addDoc(collectionRef, {
+    title: `Welcome to your ${collectionName} collection!`,
+    desc: DEFAULT_NOTE.DESCRIPTION,
+    createdAt: serverTimestamp(),
+  });
 }

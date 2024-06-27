@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import {
+  GoogleAuthProvider,
+  UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth';
 import { useReduxDispatch, useReduxSelector } from '../Store';
@@ -10,7 +13,7 @@ import { PROVIDER, TITLE } from '../Shared/Constants';
 import { handleAuthError, handleSignUpError } from '../Shared/authError';
 import { SignInProps, SignUpProps } from './user-hook';
 import { addDocumentsForUser } from '../Shared/firebaseUtils';
-import { auth } from '../utils';
+import { auth, provider } from '../utils';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
@@ -135,6 +138,22 @@ export default function useAuthentication() {
     }
   };
 
+  const googleSignInCall = async () => {
+    signInWithPopup(auth, provider)
+      .then((result: UserCredential) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const { user } = result;
+        console.log(user, 'USERr');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const { email } = error.customData;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
+  };
+
   return {
     isLoading,
     signInCall,
@@ -142,5 +161,6 @@ export default function useAuthentication() {
     signOutCall,
     //   uploadImageToFirebase,
     //   deletePhoto,
+    googleSignInCall,
   };
 }
