@@ -577,20 +577,31 @@ video {
 }
 
 .background-color {
+  flex:1;
   background-color: white;
-  margin: 7rem 25rem 7rem 25rem;
+  /* margin: 7rem 25rem 7rem 25rem; */
+  width: 60vw;
+  margin-top: 6rem;
+  margin-bottom: 6rem;
   border-radius: 30px;
   box-shadow: 0 10px 15px rgba(255, 255, 255, 0.3);
   flex-direction: row;
   display: flex;
-  /* text-align: center; */
-  justify-content: space-around;
-  /* align-items: center; */
+  justify-content: space-evenly;
+  /* justify-content: center; */
 }
 
 .layout {
-  width: 50%;
+  /* flex:0.5; */
+  width:50% ;
   border-right: 2px solid red;
+  /* justify-content: center; */
+}
+
+.center-content {
+  /* flex:0.5; */
+  width: 50%;
+  justify-content: center;
 }
 
 :root {

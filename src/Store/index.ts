@@ -15,15 +15,18 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import api from '../Services/Api/api';
 import common from './Common';
 import loader from './Loader';
+import user from './User';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['common'],
+  whitelist: ['common', 'userInfo'],
 };
 const reducers = combineReducers({
   common,
   loader,
+  user,
   [api.reducerPath]: api.reducer,
 });
 
@@ -46,5 +49,7 @@ setupListeners(store.dispatch);
 // types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export const useReduxDispatch = (): AppDispatch => useDispatch<AppDispatch>();
+export const useReduxSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export { store, persistor };
