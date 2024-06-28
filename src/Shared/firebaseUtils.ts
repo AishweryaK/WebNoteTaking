@@ -22,6 +22,25 @@ export async function addDocumentsForUser(userUid: string) {
     COLLECTION.OTHERS,
   ];
 
+  const data: CollectionItem[] = [
+    { text: COLLECTION.PERSONAL, number: 1 },
+    { text: COLLECTION.ACADEMIC, number: 1 },
+    { text: COLLECTION.WORK, number: 1 },
+    { text: COLLECTION.OTHERS, number: 1 },
+  ];
+
+  async function addDocumentToCollection(
+    userUid: string,
+    collectionName: string
+  ) {
+    const collectionRef = collection(userDocRef(userUid), collectionName);
+    await addDoc(collectionRef, {
+      title: `Welcome to your ${collectionName} collection!`,
+      desc: DEFAULT_NOTE.DESCRIPTION,
+      createdAt: serverTimestamp(),
+    });
+  }
+
   const addDocumentPromises = collections.map((collectionName) =>
     addDocumentToCollection(userUid, collectionName)
   );
@@ -30,23 +49,5 @@ export async function addDocumentsForUser(userUid: string) {
 
   await setDoc(userDocRef(userUid), {
     collections: data,
-  });
-}
-const data: CollectionItem[] = [
-  { text: COLLECTION.PERSONAL, number: 1 },
-  { text: COLLECTION.ACADEMIC, number: 1 },
-  { text: COLLECTION.WORK, number: 1 },
-  { text: COLLECTION.OTHERS, number: 1 },
-];
-
-async function addDocumentToCollection(
-  userUid: string,
-  collectionName: string
-) {
-  const collectionRef = collection(userDocRef(userUid), collectionName);
-  await addDoc(collectionRef, {
-    title: `Welcome to your ${collectionName} collection!`,
-    desc: DEFAULT_NOTE.DESCRIPTION,
-    createdAt: serverTimestamp(),
   });
 }

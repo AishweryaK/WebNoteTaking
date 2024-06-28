@@ -7,6 +7,7 @@ const ROUTES = {
   REGISTER: '/register',
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
+  FORGOT_PASSWORD: '/forgotp',
 };
 
 const WILDCARD_ROUTES = {
@@ -35,6 +36,10 @@ const ROUTES_CONFIG = {
     path: ROUTES.ABOUT,
     title: 'About us',
   },
+  FORGOT_PASSWORD: {
+    path: ROUTES.FORGOT_PASSWORD,
+    title: 'Forgot Password',
+  },
 };
 
 const PROVIDER = {
@@ -51,6 +56,7 @@ const CONSTANTS = {
   YES: 'Yes',
   NO: 'No',
   CANCEL: 'Cancel',
+  VERIFY: 'Verify',
 };
 
 const COLLECTION = {
@@ -97,7 +103,7 @@ const SIGN_UP = {
   DOB: 'Date of Birth',
   SETPASSWORD: 'Password',
   CONFIRMPASSWORD: 'Confirm Password',
-  SUMBIT: 'Submit',
+  SUMBIT: 'Sign up',
 };
 
 const TITLE = {

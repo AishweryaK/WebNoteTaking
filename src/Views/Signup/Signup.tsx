@@ -64,7 +64,6 @@ export default function Signup() {
       lastName: values.lastName.trim(),
       // imageUri: imageUri,
     });
-    console.log(values, 'RFREGV');
   };
 
   return (

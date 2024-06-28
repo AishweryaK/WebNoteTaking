@@ -21,7 +21,7 @@ import user from './User';
 const rootPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['common', 'userInfo'],
+  whitelist: ['common', 'user'],
 };
 const reducers = combineReducers({
   common,

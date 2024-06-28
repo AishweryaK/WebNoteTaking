@@ -5,6 +5,7 @@ import { CustomRouter } from './RootRoutes';
 import Login from '../Views/Login/Login';
 import Signup from '../Views/Signup/Signup';
 import Layout from '../Components/Layouts/Public/Layout/Layout';
+import ForgotPwd from '../Views/ForgotP/ForgotPwd';
 
 // eslint-disable-next-line import/prefer-default-export
 // export const PUBLIC_ROUTES: Array<CustomRouter> = [
@@ -33,7 +34,7 @@ const PUBLIC_ROUTES: CustomRouter[] = [
     children: [
       {
         index: true,
-        path: `${ROUTES_CONFIG.LOGIN.path}`,
+        // path: `${ROUTES_CONFIG.LOGIN.path}`,
         title: ROUTES_CONFIG.LOGIN.title,
         element: <Login />,
       },
@@ -41,6 +42,11 @@ const PUBLIC_ROUTES: CustomRouter[] = [
         path: `${ROUTES_CONFIG.SIGNUP.path}`,
         title: ROUTES_CONFIG.SIGNUP.title,
         element: <Signup />,
+      },
+      {
+        path: `${ROUTES_CONFIG.FORGOT_PASSWORD.path}`,
+        title: ROUTES_CONFIG.FORGOT_PASSWORD.title,
+        element: <ForgotPwd />,
       },
       {
         path: '*',

@@ -558,6 +558,10 @@ video {
   text-align: center;
 }
 
+.background {
+  background-color:#F9F8FD;
+}
+
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -576,10 +580,9 @@ video {
   text-decoration-line: underline;
 }
 
-.background-color {
+/* .background-color {
   flex:1;
   background-color: white;
-  /* margin: 7rem 25rem 7rem 25rem; */
   width: 60vw;
   margin-top: 6rem;
   margin-bottom: 6rem;
@@ -588,12 +591,11 @@ video {
   flex-direction: row;
   display: flex;
   justify-content: space-evenly;
-  /* justify-content: center; */
-}
+} */
 
 .layout {
   /* flex:0.5; */
-  width:50% ;
+  /* width:50% ; */
   border-right: 2px solid red;
   /* justify-content: center; */
 }
@@ -602,6 +604,10 @@ video {
   /* flex:0.5; */
   width: 50%;
   justify-content: center;
+}
+
+.height {
+  height: 80%;
 }
 
 :root {

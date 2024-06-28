@@ -81,7 +81,7 @@ export default function useAuthentication() {
         );
 
       await addDocumentsForUser(user.uid);
-    } catch (err: any) {
+    } catch (err) {
       handleSignUpError(err);
     } finally {
       setIsLoading(false);
@@ -132,7 +132,7 @@ export default function useAuthentication() {
       }
       dispatch(clearUserData());
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -144,13 +144,14 @@ export default function useAuthentication() {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         const { user } = result;
-        console.log(user, 'USERr');
+        console.log(user, token, 'USERr');
       })
       .catch((error) => {
-        const errorCode = error.code;
+        // const errorCode = error.code;
         const errorMessage = error.message;
-        const { email } = error.customData;
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        // const { email } = error.customData;
+        // const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorMessage);
       });
   };
 
