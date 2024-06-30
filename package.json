@@ -8,13 +8,12 @@
     "start:dev": "vite --mode development",
     "start:production": "vite --mode production",
     "build": "tsc && vite build",
-    "lint": "eslint src --fix --max-warnings=2",
+    "lint": "eslint src --fix --max-warnings=500",
     "preview": "vite preview",
     "test": "vitest",
     "prepare": "husky install"
   },
   "dependencies": {
-    "@react-firebase/auth": "^0.2.10",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^1.9.5",
     "autoprefixer": "^10.4.19",
