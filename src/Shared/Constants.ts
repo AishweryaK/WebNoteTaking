@@ -2,8 +2,9 @@ const STRING: string = 'Test';
 export { STRING };
 
 const ROUTES = {
-  HOMEPAGE: '/',
-  LOGIN: '/login',
+  LOGIN: '/',
+  HOME:'/home',
+  NOTES:'/home/notes',
   REGISTER: '/register',
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
@@ -11,22 +12,26 @@ const ROUTES = {
 };
 
 const WILDCARD_ROUTES = {
-  PUBLIC: ROUTES.HOMEPAGE,
-  PRIVATE: ROUTES.LOGIN,
+  PUBLIC: ROUTES.LOGIN,
+  PRIVATE: ROUTES.HOME,
 };
 
 const ROUTES_CONFIG = {
-  HOMEPAGE: {
-    path: ROUTES.HOMEPAGE,
-    title: 'Note Taking',
-  },
   LOGIN: {
     path: ROUTES.LOGIN,
-    title: 'Login',
+    title: 'Note Taking',
   },
   SIGNUP: {
     path: ROUTES.SIGNUP,
     title: 'Signup',
+  },
+  HOME: {
+    path: ROUTES.HOME,
+    title: 'Note Taking App',
+  },
+  NOTES:{
+    path: ROUTES.NOTES,
+    title: 'Note Taking App',
   },
   REGISTER: {
     path: ROUTES.REGISTER,
@@ -53,6 +58,7 @@ const CONSTANTS = {
   PASSWORD: 'password',
   CONFIRM_PASSWORD: 'confirmPassword',
   EMAIL: 'email',
+  TEXT: 'text',
   YES: 'Yes',
   NO: 'No',
   CANCEL: 'Cancel',
@@ -99,8 +105,6 @@ const SIGN_UP = {
   FIRSTNAME: 'First Name',
   LASTNAME: 'Last Name',
   EMAIL: 'Email',
-  PHONENUM: 'Phone Number',
-  DOB: 'Date of Birth',
   SETPASSWORD: 'Password',
   CONFIRMPASSWORD: 'Confirm Password',
   SUMBIT: 'Sign up',
@@ -112,6 +116,7 @@ const TITLE = {
   USERACCOUNT: 'User Account',
   BACK: 'BACK',
   LOGIN: 'Log in',
+  SIGNIN: 'Sign in',
   SIGNUP: 'Sign up',
   FORGOT: 'Forgot Password',
   SOMETHING: 'Something',

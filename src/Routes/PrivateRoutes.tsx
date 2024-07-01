@@ -1,14 +1,22 @@
 import { Navigate } from 'react-router-dom';
 import { ROUTES_CONFIG, WILDCARD_ROUTES } from '../Shared/Constants';
-import Login from '../Views/Login/Login';
 import { CustomRouter } from './RootRoutes';
+import Home from '../Views/Home';
+import Notes from '../Views/Notes/Notes';
 
 // eslint-disable-next-line import/prefer-default-export
-export const PRIVATE_ROUTES: Array<CustomRouter> = [
+export const PRIVATE_ROUTES: CustomRouter[] = [
   {
-    path: ROUTES_CONFIG.ABOUT.path,
-    element: <Login />,
-    title: ROUTES_CONFIG.ABOUT.title,
+    path: ROUTES_CONFIG.HOME.path,
+    element: <Home />,
+    title: ROUTES_CONFIG.HOME.title,
+    children:[
+      {
+    index:true,
+    element: <Notes />,
+    title: ROUTES_CONFIG.LOGIN.title,
+      }
+    ]
   },
   {
     path: '/wishlist',

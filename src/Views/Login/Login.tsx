@@ -1,7 +1,4 @@
-import * as Yup from 'yup';
 import { Form, Formik, FormikProps } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import { SignupSchema } from '../Signup/Signup';
 import { FormValues } from './log-in';
 import {
   CONSTANTS,
@@ -12,15 +9,11 @@ import {
 import useAuthentication from '../../Hooks/userHook';
 import FormField from '../../Components/Field/FormField';
 import CustomButton from '../../Components/Button';
-
-const LoginSchema = Yup.object().shape({
-  email: SignupSchema.fields.email,
-  password: SignupSchema.fields.password,
-});
+import { ICONS } from '../../Shared/icons';
+import { LoginSchema } from '../../Shared/validationSchema';
 
 export default function Login() {
   const { googleSignInCall, signInCall } = useAuthentication();
-  const navigate = useNavigate();
 
   const handleLogin = async (values: FormValues) => {
     await signInCall({ email: values.email, password: values.password });
@@ -31,72 +24,92 @@ export default function Login() {
   };
 
   return (
-    <div className="text-center justify-center items-center overflow-clip">
-      <h1 className="text-3xl font-bold text-center justify-center text-black center-content pt-10">
-        Login
-      </h1>
-      <div className="flex-1 flex flex-col">
-        <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          validationSchema={LoginSchema}
-          onSubmit={(values) => handleLogin(values)}
-        >
-          {({ errors, touched, isValid }: FormikProps<FormValues>) => (
-            <div className="flex flex-col">
-              <Form
-                className="flex-col"
-                // style={{
-                //   display: 'flex',
-                //   flexDirection: 'column',
-                // }}
-              >
-                <FormField
-                  label="Email"
-                  name={CONSTANTS.EMAIL}
-                  placeholder={SIGN_UP.EMAIL}
-                />
-                {errors.email && touched.email ? (
-                  <p className="text-red-700">{errors.email}</p>
-                ) : null}
-                <FormField
-                  label="Password"
-                  name={CONSTANTS.PASSWORD}
-                  placeholder={SIGN_UP.SETPASSWORD}
-                />
-                {errors.password && touched.password ? (
-                  <p className="text-red-700">{errors.password}</p>
-                ) : null}
-                <div className="text-right">
-                  <button
-                    type="button"
-                    className="text-red-700 text-right text-base cursor-pointer"
-                    onClick={() => navigate(ROUTES_CONFIG.FORGOT_PASSWORD.path)}
-                  >
-                    Forgot Password?
-                  </button>
-                </div>
-                {/* <button className='bg-my-blue p-2 rounded-md'
-              type="submit">
-                {TITLE.LOGIN}
-              </button> */}
-                <CustomButton text={TITLE.LOGIN} disabled={!isValid} />
-              </Form>
-            </div>
-          )}
-        </Formik>
-        <div>
-          <button
-            type="button"
-            className="text-my-blue"
-            onClick={logGoogleUser}
-          >
-            Sign In With Google
-          </button>
+    <div className="flex flex-col justify-center">
+      <div className="mb-6 flex justify-center">
+        <div className="h-16 w-16 rounded-full shadow-sm bg-gradient-to-b from-my-background to-my-background-200 flex items-center justify-center">
+          <img src={ICONS.Logo} alt="Logo" className="h-12 w-12" />
         </div>
       </div>
+      <h2 className="text-2xl font-bold text-center text-gray-700 mb-2">
+        Welcome back
+      </h2>
+      <p className="text-center text-gray-600 mb-2">
+        Welcome back! Please enter your details.
+      </p>
+      <Formik
+        initialValues={{
+          email: '',
+          password: '',
+        }}
+        validationSchema={LoginSchema}
+        onSubmit={(values) => handleLogin(values)}
+      >
+        {({ errors, touched, isValid }: FormikProps<FormValues>) => (
+          <Form>
+            <FormField
+              label="Email"
+              name={CONSTANTS.EMAIL}
+              placeholder={SIGN_UP.EMAIL}
+              inputType={CONSTANTS.EMAIL}
+            />
+            {errors.email && touched.email ? (
+              <p className="text-red-700 text-xs mb-4 text-left">
+                {errors.email}
+              </p>
+            ) : null}
+
+            <FormField
+              label="Password"
+              name={CONSTANTS.PASSWORD}
+              placeholder={SIGN_UP.SETPASSWORD}
+              inputType={CONSTANTS.PASSWORD}
+            />
+            {errors.password && touched.password ? (
+              <p className="text-red-700 text-xs mb-4 text-left">
+                {errors.password}
+              </p>
+            ) : null}
+
+            <div className="mb-6 flex items-center justify-between">
+              <div></div>
+              <a
+                href={ROUTES_CONFIG.FORGOT_PASSWORD.path}
+                className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 cursor-pointer"
+              >
+                Forgot password?
+              </a>
+            </div>
+
+            <div className="mb-4">
+              <CustomButton text={TITLE.SIGNIN} disabled={!isValid} />
+            </div>
+            <div className="mb-4">
+              <button
+                className="w-full bg-my-background hover:bg-my-background-100 text-gray-700 font-bold py-2 px-2 rounded-full border border-my-blue-0 focus:outline-none focus:shadow-outline"
+                type="button"
+                onClick={logGoogleUser}
+              >
+                <img
+                  src={ICONS.Google}
+                  alt="Google"
+                  className="inline-block mr-2 w-6"
+                />
+                Sign in with Google
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
+
+      <p className="text-center text-gray-600">
+        Don't have an account?{' '}
+        <a
+          href={ROUTES_CONFIG.SIGNUP.path}
+          className="text-my-blue-500D hover:text-my-blue-800"
+        >
+          Sign up
+        </a>
+      </p>
     </div>
   );
 }
