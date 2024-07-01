@@ -10,13 +10,13 @@ export const PRIVATE_ROUTES: CustomRouter[] = [
     path: ROUTES_CONFIG.HOME.path,
     element: <Home />,
     title: ROUTES_CONFIG.HOME.title,
-    children:[
+    children: [
       {
-    index:true,
-    element: <Notes />,
-    title: ROUTES_CONFIG.LOGIN.title,
-      }
-    ]
+        index: true,
+        element: <Notes />,
+        title: ROUTES_CONFIG.LOGIN.title,
+      },
+    ],
   },
   {
     path: '/wishlist',

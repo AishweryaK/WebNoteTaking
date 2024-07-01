@@ -1,8 +1,8 @@
 import { Field } from 'formik';
+import { useState } from 'react';
 import { FormFieldProps } from '.';
 import { CONSTANTS } from '../../Shared/Constants';
 import { ICONS } from '../../Shared/icons';
-import { useState } from 'react';
 
 function FormField({ label, name, placeholder, inputType }: FormFieldProps) {
   const [icon, setIcon] = useState(ICONS.EyeOff);
@@ -26,13 +26,13 @@ function FormField({ label, name, placeholder, inputType }: FormFieldProps) {
         {label}
       </label>
       <Field
-        name={name} //used as the key for form state in Formik
+        name={name} // used as the key for form state in Formik
         type={
           name === CONSTANTS.PASSWORD || name === CONSTANTS.CONFIRM_PASSWORD
             ? type
             : inputType
-        } //type of the input field ("text", "password", "email", "radio")
-        id={name} //link the input with a <label>
+        } // type of the input field ("text", "password", "email", "radio")
+        id={name} // link the input with a <label>
         className="shadow appearance-none border rounded-md w-full py-2 pl-3 pr-9 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-my-background"
         placeholder={placeholder}
       />

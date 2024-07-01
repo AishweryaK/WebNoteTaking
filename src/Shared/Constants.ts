@@ -3,8 +3,8 @@ export { STRING };
 
 const ROUTES = {
   LOGIN: '/',
-  HOME:'/home',
-  NOTES:'/home/notes',
+  HOME: '/home',
+  NOTES: '/home/notes',
   REGISTER: '/register',
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
@@ -29,7 +29,7 @@ const ROUTES_CONFIG = {
     path: ROUTES.HOME,
     title: 'Note Taking App',
   },
-  NOTES:{
+  NOTES: {
     path: ROUTES.NOTES,
     title: 'Note Taking App',
   },

@@ -71,7 +71,7 @@ export default function Login() {
             ) : null}
 
             <div className="mb-6 flex items-center justify-between">
-              <div></div>
+              <div />
               <a
                 href={ROUTES_CONFIG.FORGOT_PASSWORD.path}
                 className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 cursor-pointer"

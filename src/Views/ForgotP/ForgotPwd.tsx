@@ -1,5 +1,6 @@
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { Form, Formik, FormikProps } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../utils';
 import { showAlert } from '../../Shared/alert';
 import { handleAuthError } from '../../Shared/authError';
@@ -16,7 +17,6 @@ import { FormValues } from '.';
 import CustomButton from '../../Components/Button';
 import { ForgotPSchema } from '../../Shared/validationSchema';
 import { ICONS } from '../../Shared/icons';
-import { useNavigate } from 'react-router-dom';
 
 function ForgotPwd() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ function ForgotPwd() {
     sendPasswordResetEmail(auth, values.email)
       .then(() => {
         showAlert(ERR_TITLE.EMAIL_SENT, ERR_MSG.SET_PASSWORD);
-        navigate(ROUTES_CONFIG.LOGIN.path)
+        navigate(ROUTES_CONFIG.LOGIN.path);
       })
       .catch((error) => {
         const context = TITLE.FORGOT;
