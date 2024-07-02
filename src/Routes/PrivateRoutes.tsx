@@ -14,7 +14,7 @@ export const PRIVATE_ROUTES: CustomRouter[] = [
       {
         index: true,
         element: <Notes />,
-        title: ROUTES_CONFIG.LOGIN.title,
+        title: ROUTES_CONFIG.NOTES.title,
       },
     ],
   },

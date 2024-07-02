@@ -18,6 +18,7 @@ export default {
         'my-background-100': '#e8e4f7',
         'my-background-200': '#d7d0f2',
         'my-background-300': '#c6bdec',
+        'my-hover': '#E1E2E3',
       },
       height: {
         98: '40rem',
