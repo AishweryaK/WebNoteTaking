@@ -153,13 +153,12 @@ export default function useAuthentication() {
     //     // const credential = GoogleAuthProvider.credentialFromError(error);
     //     console.log(errorMessage);
     //   });
-      try {
-        await signInWithPopup(auth, provider);
-        console.log('google');
-      } catch (error) {
-        console.log(error);
-      }
-    
+    try {
+      await signInWithPopup(auth, provider);
+      console.log('google');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return {

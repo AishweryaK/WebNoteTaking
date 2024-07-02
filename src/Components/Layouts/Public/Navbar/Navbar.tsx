@@ -1,10 +1,10 @@
 import './navbar.scss';
-import { ICONS } from '../../../../Shared/icons';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ICONS } from '../../../../Shared/icons';
 import useAuthentication from '../../../../Hooks/userHook';
 
-export function Navbar() {
-  const {signOutCall} = useAuthentication();
+export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
+  const { signOutCall } = useAuthentication();
   const [searchText, setSearchText] = useState<string>('');
   const [open, setOpen] = useState<boolean>(true);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -15,14 +15,17 @@ export function Navbar() {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setDropdownOpen(false);
     }
   };
 
-  const handleLogout = async() =>{
+  const handleLogout = async () => {
     await signOutCall();
-  }
+  };
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -36,28 +39,33 @@ export function Navbar() {
     };
   }, [dropdownOpen]);
 
-  const DropdownMenu = () => (
-    <div ref={dropdownRef} className="absolute top-9 right-9 mt-2 w-32 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5">
-      <a
-        href="#"
-        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+  function DropdownMenu() {
+    return (
+      <div
+        ref={dropdownRef}
+        className="absolute top-9 right-9 mt-2 w-32 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5"
       >
-        Profile
-      </a>
-      <a
-        href="#"
-        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-      >
-        Settings
-      </a>
-      <button
-        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
-    </div>
-  );
+        <a
+          href="#"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+          Profile
+        </a>
+        <a
+          href="#"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+          Settings
+        </a>
+        <button
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -68,7 +76,7 @@ export function Navbar() {
               className="cursor-pointer w-10 hover:bg-my-hover p-2 rounded-full"
               src={ICONS.Menu}
               alt="Menu"
-              onClick={() => setOpen(!open)}
+              onClick={toggleSidebar}
             />
             <div className="flex items-center space-x-1">
               <img src={ICONS.Logo} alt="Logo" className="h-14 w-14" />
