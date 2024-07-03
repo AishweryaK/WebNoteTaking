@@ -6,7 +6,6 @@ import useAuthentication from '../../../../Hooks/userHook';
 export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   const { signOutCall } = useAuthentication();
   const [searchText, setSearchText] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(true);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

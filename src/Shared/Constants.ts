@@ -4,7 +4,7 @@ export { STRING };
 const ROUTES = {
   LOGIN: '/',
   HOME: '/home',
-  NOTES: '/home/notes',
+  NOTES: '/notes',
   REGISTER: '/register',
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
