@@ -2,10 +2,11 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   serverTimestamp,
   setDoc,
 } from 'firebase/firestore';
-import { COLLECTION, DEFAULT_NOTE } from './Constants';
+import { COLLECTION, CONSTANTS, DEFAULT_NOTE } from './Constants';
 import { CollectionItem } from './shared';
 import { db } from '../utils';
 
@@ -13,6 +14,8 @@ export const userDocRef = (uid: string) => {
   // return firestore().collection(COLLECTION.USERS).doc(uid);
   return doc(db, COLLECTION.USERS, uid);
 };
+
+//customHook
 
 export async function addDocumentsForUser(userUid: string) {
   const collections = [
@@ -51,3 +54,76 @@ export async function addDocumentsForUser(userUid: string) {
     collections: data,
   });
 }
+
+//Add Note
+
+// export const updateNote = async (
+//   uid: string,
+//   label: string,
+//   itemID: string,
+//   title: string,
+//   desc: string,
+// ) => {
+//   try {
+//     const noteRef = collection(userDocRef(uid), label);
+//     const docRef = doc(noteRef, itemID);
+//     await userDocRef(uid).collection(label).doc(itemID).update({
+//       title,
+//       desc,
+//       createdAt: serverTimestamp(),
+//     });
+//   } catch (error) {
+//     console.error('error', error);
+//   }
+// };
+
+export const saveNoteLabel = async (
+  uid: string,
+  label: string,
+  title: string,
+  desc: string
+) => {
+  try {
+    const noteRef = collection(userDocRef(uid), label);
+    await addDoc(noteRef, {
+      title,
+      desc,
+      createdAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error('error', error);
+  }
+};
+
+export const updateCollectionCount = async (
+  uid: string,
+  itemText: string,
+  action: string
+) => {
+  try {
+    const doc = await getDoc(userDocRef(uid));
+    const userData = doc.data();
+    const updatedCollections = userData?.collections.map(
+      (collection: { text: string; number: number }) => {
+        if (collection.text === itemText) {
+          const updatedNumber =
+            action === CONSTANTS.INCREMENT
+              ? collection.number + 1
+              : collection.number - 1;
+          return {
+            ...collection,
+            number: updatedNumber,
+          };
+        }
+        return collection;
+      }
+    );
+    await setDoc(
+      userDocRef(uid),
+      { collections: updatedCollections },
+      { merge: true }
+    );
+  } catch (error) {
+    throw error;
+  }
+};

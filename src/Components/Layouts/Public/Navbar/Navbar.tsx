@@ -68,7 +68,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
 
   return (
     <>
-      <nav className="bg-white shadow-lg px-4 py-1 flex justify-between items-center">
+      <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-4">
             <img
@@ -125,11 +125,6 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
           />
         </div>
       </nav>
-      {/* <div
-        className={`${open ? 'w-72' : 'w-20'} h-screen bg-gray-500 ease-in-out duration-200`}
-      >
-        dhdjh
-      </div> */}
     </>
   );
 }

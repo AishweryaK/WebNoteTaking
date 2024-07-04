@@ -21,13 +21,13 @@ function PrivateLayout({ children }: AppLayoutProps): JSX.Element {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const selectedLabel = () => {};
+  // const selectedLabel = () => {};
 
-  const handleClick = () => {
-    setIsSidebarOpen(true);
-    // setButtonClick("hello");
-    console.log('hello');
-  };
+  // const handleClick = () => {
+  //   setIsSidebarOpen(true);
+  //   // setButtonClick("hello");
+  //   console.log('hello');
+  // };
 
   return (
     <>

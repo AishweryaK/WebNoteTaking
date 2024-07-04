@@ -74,7 +74,7 @@ export default function Login() {
               <div />
               <a
                 href={ROUTES_CONFIG.FORGOT_PASSWORD.path}
-                className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 cursor-pointer"
+                className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 hover:underline cursor-pointer"
               >
                 Forgot password?
               </a>
@@ -105,7 +105,7 @@ export default function Login() {
         Don't have an account?{' '}
         <a
           href={ROUTES_CONFIG.SIGNUP.path}
-          className="text-my-blue-500D hover:text-my-blue-800"
+          className="text-my-blue-500D hover:text-my-blue-800 hover:underline"
         >
           Sign up
         </a>

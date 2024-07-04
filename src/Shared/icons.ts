@@ -13,6 +13,7 @@ import Reminder from '../assets/Svgs/reminder.svg';
 import Trash from '../assets/Svgs/trash.svg';
 import Search from '../assets/Svgs/search.svg';
 import Close from '../assets/Svgs/close.svg';
+import LabelFilled from '../assets/Svgs/label-filled.svg';
 
 export const ICONS = {
   Google,
@@ -30,4 +31,5 @@ export const ICONS = {
   Trash,
   Search,
   Close,
+  LabelFilled,
 };

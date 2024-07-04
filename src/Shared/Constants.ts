@@ -61,6 +61,8 @@ const CONSTANTS = {
   TEXT: 'text',
   YES: 'Yes',
   NO: 'No',
+  INCREMENT: 'increment',
+  DECREMENT: 'decrement',
   CANCEL: 'Cancel',
   VERIFY: 'Verify',
 };
