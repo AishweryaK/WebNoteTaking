@@ -59,8 +59,8 @@ function PrivateLayout({ children }: AppLayoutProps): JSX.Element {
           labelData={handleDataFromChild}
         />
 
-        {/* {children} */}
-        <Notes label={label} />
+        {children}
+        {/* <Notes /> */}
       </div>
     </>
   );

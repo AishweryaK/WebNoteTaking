@@ -15,7 +15,7 @@ export const userDocRef = (uid: string) => {
   return doc(db, COLLECTION.USERS, uid);
 };
 
-//customHook
+// customHook
 
 export async function addDocumentsForUser(userUid: string) {
   const collections = [
@@ -55,7 +55,7 @@ export async function addDocumentsForUser(userUid: string) {
   });
 }
 
-//Add Note
+// Add Note
 
 // export const updateNote = async (
 //   uid: string,

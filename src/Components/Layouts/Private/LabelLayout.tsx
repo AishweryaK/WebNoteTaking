@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 import { userDocRef } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
 import { COLLECTION } from '../../../Shared/Constants';
+import { showAlert } from '../../../Shared/alert';
 
 interface CollectionItem {
   text: string;
@@ -26,6 +28,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
   const [newLabel, setNewLabel] = useState<string>('');
   const [emptyLabel, setEmptyLabel] = useState<boolean>(false);
   const [editLabel, setEditLabel] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef(uid), (snapshot) => {
@@ -41,8 +44,11 @@ const LabelsList: React.FC<LabelsListProps> = ({
   }, [uid]);
 
   const handleClick = (data: string) => {
+    // alert(data);
+    const path = `/notes/${data}`;
     setSelectedLabel(data);
     labelData(data);
+    navigate(path);
   };
 
   // const handleEdit=() => {
@@ -69,18 +75,18 @@ const LabelsList: React.FC<LabelsListProps> = ({
       setShowModal(false);
       setNewLabel('');
       return;
-    } else {
-      const updatedLabels = [...labels, { text: trimmedNewLabel, number: 0 }];
-      console.log(updatedLabels, 'UPDATEDLABELS');
-      await setDoc(
-        userDocRef(uid),
-        {
-          collections: updatedLabels,
-        },
-        { merge: true }
-      );
-      setLabels(updatedLabels);
     }
+    const updatedLabels = [...labels, { text: trimmedNewLabel, number: 0 }];
+    console.log(updatedLabels, 'UPDATEDLABELS');
+    await setDoc(
+      userDocRef(uid),
+      {
+        collections: updatedLabels,
+      },
+      { merge: true }
+    );
+    setLabels(updatedLabels);
+
     setNewLabel('');
     setShowModal(false);
   };
