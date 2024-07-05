@@ -2,6 +2,8 @@ import './navbar.scss';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { ICONS } from '../../../../Shared/icons';
 import useAuthentication from '../../../../Hooks/userHook';
+import { Link } from 'react-router-dom';
+import { ROUTES_CONFIG } from '../../../../Shared/Constants';
 
 export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   const { signOutCall } = useAuthentication();
@@ -28,7 +30,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
 
   useEffect(() => {
     if (dropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside, {passive:true});
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
@@ -44,18 +46,18 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
         ref={dropdownRef}
         className="absolute top-9 right-9 mt-2 w-32 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5"
       >
-        <a
-          href="#"
+        <Link
+          to="#"
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Profile
-        </a>
-        <a
-          href="#"
+        </Link>
+        <Link
+          to="#"
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Settings
-        </a>
+        </Link>
         <button
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
           onClick={handleLogout}
@@ -68,7 +70,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
 
   return (
     <>
-      <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center">
+      <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center z-50">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-4">
             <img
@@ -118,11 +120,14 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
             onClick={() => setDropdownOpen(!dropdownOpen)}
           />
           {dropdownOpen && <DropdownMenu />}
-          <img
-            className="w-8 h-8 rounded-full"
-            src={ICONS.Books}
-            alt="Account"
-          />
+
+          <Link to={ROUTES_CONFIG.ACCOUNT.path}>
+            <img
+              className="w-8 h-8 rounded-full shadow-md"
+              src={ICONS.Books}
+              alt="Account"
+            />
+          </Link>
         </div>
       </nav>
     </>

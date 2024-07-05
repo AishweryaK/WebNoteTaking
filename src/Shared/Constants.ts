@@ -9,6 +9,7 @@ const ROUTES = {
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
   FORGOT_PASSWORD: '/forgotp',
+  ACCOUNT:'/account',
 };
 
 const WILDCARD_ROUTES = {
@@ -32,6 +33,10 @@ const ROUTES_CONFIG = {
   NOTES: {
     path: ROUTES.NOTES,
     title: 'Note Taking App',
+  },
+  ACCOUNT: {
+    path: ROUTES.ACCOUNT,
+    title: 'User Account',
   },
   REGISTER: {
     path: ROUTES.REGISTER,

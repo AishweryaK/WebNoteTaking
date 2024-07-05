@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { ROUTES_CONFIG, WILDCARD_ROUTES } from '../Shared/Constants';
 import { CustomRouter } from './RootRoutes';
 import Home from '../Views/Home';
-import Notes from '../Views/Notes/Notes';
+import Account from '../Views/Account/Account';
 
 // eslint-disable-next-line import/prefer-default-export
 export const PRIVATE_ROUTES: CustomRouter[] = [
@@ -23,6 +23,11 @@ export const PRIVATE_ROUTES: CustomRouter[] = [
   //   element: <Notes label/>,
   //   title: ROUTES_CONFIG.NOTES.title,
   // },
+  {
+    path: ROUTES_CONFIG.ACCOUNT.path,
+    element: <Account />,
+    title: ROUTES_CONFIG.ACCOUNT.title,
+  },
   {
     path: '/wishlist',
     element: 'Your wishlist here',

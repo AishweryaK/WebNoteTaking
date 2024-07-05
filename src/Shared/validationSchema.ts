@@ -55,6 +55,11 @@ export const LoginSchema = Yup.object().shape({
   password: SignupSchema.fields.password,
 });
 
+export const AccountSchema = Yup.object().shape({
+  firstName: SignupSchema.fields.firstName,
+  lastName: SignupSchema.fields.lastName,
+});
+
 export const ForgotPSchema = Yup.object().shape({
   email: SignupSchema.fields.email,
 });

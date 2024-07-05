@@ -11,6 +11,7 @@ import FormField from '../../Components/Field/FormField';
 import CustomButton from '../../Components/Button';
 import { ICONS } from '../../Shared/icons';
 import { LoginSchema } from '../../Shared/validationSchema';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const { googleSignInCall, signInCall } = useAuthentication();
@@ -72,12 +73,12 @@ export default function Login() {
 
             <div className="mb-6 flex items-center justify-between">
               <div />
-              <a
-                href={ROUTES_CONFIG.FORGOT_PASSWORD.path}
+              <Link
+                to={ROUTES_CONFIG.FORGOT_PASSWORD.path}
                 className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 hover:underline cursor-pointer"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <div className="mb-4">
@@ -103,12 +104,12 @@ export default function Login() {
 
       <p className="text-center text-gray-600">
         Don't have an account?{' '}
-        <a
-          href={ROUTES_CONFIG.SIGNUP.path}
+        <Link
+          to={ROUTES_CONFIG.SIGNUP.path}
           className="text-my-blue-500D hover:text-my-blue-800 hover:underline"
         >
           Sign up
-        </a>
+        </Link>
       </p>
     </div>
   );

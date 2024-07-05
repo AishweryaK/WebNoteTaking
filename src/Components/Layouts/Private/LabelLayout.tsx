@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
-import { userDocRef } from '../../../Shared/firebaseUtils';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { onSnapshot, setDoc } from 'firebase/firestore';
+import { handleEdit, userDocRef } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
 import { COLLECTION } from '../../../Shared/Constants';
@@ -25,7 +25,10 @@ const LabelsList: React.FC<LabelsListProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [newLabel, setNewLabel] = useState<string>('');
   const [emptyLabel, setEmptyLabel] = useState<boolean>(false);
-  const [editLabel, setEditLabel] = useState<string>('');
+  const [editedLabel, setEditedLabel] = useState<string>('');
+  const [editedLabelIndex, setEditedLabelIndex] = useState<number | null>(null);
+  const [beforeEdit, setBeforeEdit] = useState('');
+  const [existingErr, setExistingErr] = useState<boolean>(false);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef(uid), (snapshot) => {
@@ -45,13 +48,41 @@ const LabelsList: React.FC<LabelsListProps> = ({
     labelData(data);
   };
 
-  // const handleEdit=() => {
-  //   if()
-  // }
+  const editedWrapper = (
+    e: ChangeEvent<HTMLInputElement>,
+    text: string,
+    index: number
+  ): void => {
+    const newEditedLabel = e.target.value;
+    setEditedLabelIndex(index);
+    setBeforeEdit(text);
+    setEditedLabel(newEditedLabel);
+  };
+
+  const editLabel = async () => {
+    if (editedLabel.trim() === '') {
+      setEmptyLabel(true);
+      return;
+    }
+    await handleEdit(
+      editedLabel,
+      beforeEdit,
+      labels,
+      uid,
+      setEmptyLabel,
+      setExistingErr,
+      setLabels,
+      closeModal
+    );
+  };
 
   const closeModal = () => {
     setNewLabel('');
     setShowModal(false);
+    setEmptyLabel(false);
+    setExistingErr(false);
+    setEditedLabel('');
+    setEditedLabelIndex(null);
   };
 
   const addLabel = async () => {
@@ -71,7 +102,6 @@ const LabelsList: React.FC<LabelsListProps> = ({
       return;
     } else {
       const updatedLabels = [...labels, { text: trimmedNewLabel, number: 0 }];
-      console.log(updatedLabels, 'UPDATEDLABELS');
       await setDoc(
         userDocRef(uid),
         {
@@ -88,9 +118,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
   return (
     <div>
       <div
-        className={`${
-          isSidebarOpen ? 'min-w-72' : 'min-w-20'
-        } h-screen ease-in-out duration-200 mt-2`}
+        className={`${isSidebarOpen ? 'min-w-72' : 'min-w-20'} h-screen ease-in-out duration-200 mt-2`}
       >
         <div className="flex flex-col">
           {labels.map((label, index) => (
@@ -136,13 +164,11 @@ const LabelsList: React.FC<LabelsListProps> = ({
                   onClick={closeModal}
                 >
                   <img alt="" src={ICONS.Close} />
-                  <span className="sr-only">Close modal</span>
                 </button>
               </div>
               <div className="p-4 md:px-5">
                 <div className="space-y-2">
                   <div>
-                    {/* <h4 className="text-lg font-semibold text-gray-900">Labels</h4> */}
                     <ul className="space-y-2">
                       {labels.map((label, index) => (
                         <li
@@ -154,19 +180,38 @@ const LabelsList: React.FC<LabelsListProps> = ({
                             src={ICONS.LabelFilled}
                             alt=""
                           />
-                          {/* <span className="flex-1">{label.text}</span> */}
                           <input
                             maxLength={20}
-                            value={label.text}
+                            defaultValue={label.text}
+                            onChange={(e) =>
+                              editedWrapper(e, label.text, index)
+                            }
                             className="flex-1 bg-white mr-5"
                           />
-                          <button className="text-gray-500 hover:bg-my-hover h-6 w-6 pl-1 rounded-full">
-                            <img
-                              className="w-4 h-4 justify-center"
-                              src={ICONS.Edit}
-                              alt="Edit"
-                            />
-                          </button>
+                          {editedLabelIndex === index &&
+                          beforeEdit !== editedLabel ? (
+                            <button
+                              className="text-gray-500 hover:bg-my-hover h-6 w-6 pl-1 rounded-full"
+                              onClick={editLabel}
+                            >
+                              <img
+                                className="w-4 h-4 justify-center"
+                                src={ICONS.Tick}
+                                alt="Done"
+                              />
+                            </button>
+                          ) : (
+                            <button
+                              className="text-gray-500 hover:bg-my-hover h-6 w-6 pl-1 rounded-full"
+                              title="Rename Label"
+                            >
+                              <img
+                                className="w-4 h-4 justify-center"
+                                src={ICONS.Edit}
+                                alt="Edit"
+                              />
+                            </button>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -189,8 +234,8 @@ const LabelsList: React.FC<LabelsListProps> = ({
                       required
                     />
                     {emptyLabel && newLabel === '' && (
-                      <span className="text-red-500 text-sm">
-                        Please enter a label.
+                      <span className="text-red-500 text-xs">
+                        * Please enter a label.
                       </span>
                     )}
                   </div>
