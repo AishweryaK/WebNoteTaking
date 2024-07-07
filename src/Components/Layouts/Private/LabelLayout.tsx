@@ -100,17 +100,17 @@ const LabelsList: React.FC<LabelsListProps> = ({
       setShowModal(false);
       setNewLabel('');
       return;
-    } else {
-      const updatedLabels = [...labels, { text: trimmedNewLabel, number: 0 }];
-      await setDoc(
-        userDocRef(uid),
-        {
-          collections: updatedLabels,
-        },
-        { merge: true }
-      );
-      setLabels(updatedLabels);
     }
+    const updatedLabels = [...labels, { text: trimmedNewLabel, number: 0 }];
+    await setDoc(
+      userDocRef(uid),
+      {
+        collections: updatedLabels,
+      },
+      { merge: true }
+    );
+    setLabels(updatedLabels);
+
     setNewLabel('');
     setShowModal(false);
   };

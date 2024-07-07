@@ -1,8 +1,8 @@
 import './navbar.scss';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ICONS } from '../../../../Shared/icons';
 import useAuthentication from '../../../../Hooks/userHook';
-import { Link } from 'react-router-dom';
 import { ROUTES_CONFIG } from '../../../../Shared/Constants';
 
 export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
@@ -30,7 +30,9 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
 
   useEffect(() => {
     if (dropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside, {passive:true});
+      document.addEventListener('mousedown', handleClickOutside, {
+        passive: true,
+      });
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
@@ -69,68 +71,66 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   }
 
   return (
-    <>
-      <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center z-50">
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-4">
-            <img
-              className="cursor-pointer w-10 hover:bg-my-hover p-2 rounded-full"
-              src={ICONS.Menu}
-              alt="Menu"
-              onClick={toggleSidebar}
-            />
-            <div className="flex items-center space-x-1">
-              <img src={ICONS.Logo} alt="Logo" className="h-14 w-14" />
-              <span className="font-semibold text-gray-700">Name</span>
-            </div>
-          </div>
-        </div>
-
-        <form className="flex items-center bg-my-background px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96">
-          <button
-            className="hover:bg-my-hover p-2 mr-2 rounded-full"
-            type="button"
-          >
-            <img src={ICONS.Search} alt="Search" />
-          </button>
-          <input
-            value={searchText}
-            type="text"
-            autoComplete="off"
-            placeholder="Search"
-            onChange={handleSearchText}
-            className="bg-transparent border-none outline-none w-full text-gray-700 placeholder-gray-500"
-          />
-          {searchText && (
-            <button
-              className="hover:bg-my-hover p-2 rounded-full"
-              type="button"
-              onClick={() => setSearchText('')}
-            >
-              <img src={ICONS.Close} alt="Close" />
-            </button>
-          )}
-        </form>
-
-        <div className="flex items-center space-x-6 relative">
+    <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center z-50">
+      <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
           <img
             className="cursor-pointer w-10 hover:bg-my-hover p-2 rounded-full"
-            src={ICONS.Settings}
-            alt="Settings"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+            src={ICONS.Menu}
+            alt="Menu"
+            onClick={toggleSidebar}
           />
-          {dropdownOpen && <DropdownMenu />}
-
-          <Link to={ROUTES_CONFIG.ACCOUNT.path}>
-            <img
-              className="w-8 h-8 rounded-full shadow-md"
-              src={ICONS.Books}
-              alt="Account"
-            />
-          </Link>
+          <div className="flex items-center space-x-1">
+            <img src={ICONS.Logo} alt="Logo" className="h-14 w-14" />
+            <span className="font-semibold text-gray-700">Note Taking App</span>
+          </div>
         </div>
-      </nav>
-    </>
+      </div>
+
+      <form className="flex items-center bg-my-background px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96">
+        <button
+          className="hover:bg-my-hover p-2 mr-2 rounded-full"
+          type="button"
+        >
+          <img src={ICONS.Search} alt="Search" />
+        </button>
+        <input
+          value={searchText}
+          type="text"
+          autoComplete="off"
+          placeholder="Search"
+          onChange={handleSearchText}
+          className="bg-transparent border-none outline-none w-full text-gray-700 placeholder-gray-500"
+        />
+        {searchText && (
+          <button
+            className="hover:bg-my-hover p-2 rounded-full"
+            type="button"
+            onClick={() => setSearchText('')}
+          >
+            <img src={ICONS.Close} alt="Close" />
+          </button>
+        )}
+      </form>
+
+      <div className="flex items-center space-x-6 relative">
+        <img
+          className="cursor-pointer w-10 hover:bg-my-hover p-2 rounded-full"
+          src={ICONS.Settings}
+          alt="Settings"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        />
+        {dropdownOpen && <DropdownMenu />}
+
+        <Link to={ROUTES_CONFIG.ACCOUNT.path}>
+          <img
+            className="w-8 h-8 rounded-full shadow-md"
+            src={ICONS.Books}
+            alt="Account"
+          />
+        </Link>
+      </div>
+    </nav>
   );
 }
 

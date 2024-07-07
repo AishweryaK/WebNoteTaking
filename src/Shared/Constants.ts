@@ -9,7 +9,7 @@ const ROUTES = {
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
   FORGOT_PASSWORD: '/forgotp',
-  ACCOUNT:'/account',
+  ACCOUNT: '/account',
 };
 
 const WILDCARD_ROUTES = {

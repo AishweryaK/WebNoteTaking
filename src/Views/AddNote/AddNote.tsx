@@ -11,9 +11,9 @@ import { showAlert } from '../../Shared/alert';
 
 interface AddNoteProps {
   label: string;
-  itemID? : string;
-  itemTitle?:string;
-  itemDesc?:string;
+  itemID?: string;
+  itemTitle?: string;
+  itemDesc?: string;
 }
 
 function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
@@ -59,12 +59,11 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
     () => ({
       readonly: false,
       placeholder: 'Start typing here...',
-      //   defaultActionOnPaste: 'insert_as_html',
       defaultLineHeight: 1.5,
-      // theme: 'default',
-      //   enter: 'div',
-      theme:'light',
-      maxHeight:600,
+      theme: 'light', // or 'default' depending on your preference
+      // Add 'color' option to set default text color
+      color: '#000000', // Black color
+      maxHeight: 600,
       buttons: options,
       buttonsMD: options,
       buttonsSM: options,
@@ -77,6 +76,7 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
       sizeMD: 700,
       sizeSM: 400,
       toolbarAdaptive: false,
+      editorClassName: 'initial-text-color',
     }),
     []
   );
@@ -89,10 +89,9 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
     try {
       const defaultLabel = 'Others';
       const effectiveLabel = label || defaultLabel;
-      if (itemID && label)  {
+      if (itemID && label) {
         updateNote(uid, label, itemID, title, desc);
-      }
-      else if(label) {
+      } else if (label) {
         saveNoteLabel(uid, effectiveLabel, title, desc);
         updateCollectionCount(uid, effectiveLabel, CONSTANTS.INCREMENT);
       }
@@ -111,17 +110,20 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
         type="text"
         autoComplete="off"
         placeholder="Title"
+        maxLength={40}
         onChange={(e) => setTitle(e.target.value)}
         className="bg-white w-full text-gray-700 placeholder-gray-500 border border-b-0 border-solid border-my-hover p-2"
       />
-      <JoditEditor
-        ref={editorRef}
-        value={desc}
-        config={config}
-        onChange={(newContent) => setDesc(newContent)}
-      />
+      <div className="text-left">
+        <JoditEditor
+          ref={editorRef}
+          value={desc}
+          config={config}
+          onChange={(newContent) => setDesc(newContent)}
+        />
+      </div>
       <button
-        className="bg-my-blue-500D p-2 rounded-lg"
+        className="bg-my-blue-500D p-2 rounded-lg mt-2"
         type="button"
         onClick={saveNote}
       >

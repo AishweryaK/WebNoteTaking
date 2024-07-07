@@ -19,7 +19,7 @@ export const userDocRef = (uid: string) => {
   return doc(db, COLLECTION.USERS, uid);
 };
 
-//customHook
+// customHook
 
 export async function addDocumentsForUser(userUid: string) {
   const collections = [
@@ -59,16 +59,16 @@ export async function addDocumentsForUser(userUid: string) {
   });
 }
 
-//Notes
+// Notes
 
 export const deleteNote = async (
   uid: string,
   itemText: string,
-  itemUid: string,
+  itemUid: string
 ) => {
   try {
-    const collRef = collection(userDocRef(uid), itemText)
-    const docRef = doc(collRef, itemUid)
+    const collRef = collection(userDocRef(uid), itemText);
+    const docRef = doc(collRef, itemUid);
     await deleteDoc(docRef);
   } catch (error) {
     console.error('error', error);
@@ -76,19 +76,19 @@ export const deleteNote = async (
   }
 };
 
-//Add Note
+// Add Note
 
 export const updateNote = async (
   uid: string,
   label: string,
   itemID: string,
   title: string,
-  desc: string,
+  desc: string
 ) => {
   try {
     const noteRef = collection(userDocRef(uid), label);
     const docRef = doc(noteRef, itemID);
-    await updateDoc(docRef,{
+    await updateDoc(docRef, {
       title,
       desc,
       createdAt: serverTimestamp(),
@@ -149,9 +149,12 @@ export const updateCollectionCount = async (
   }
 };
 
-//Label Layout- Edit collection
+// Label Layout- Edit collection
 
-export const updateCollections = async (uid: string, updatedCollections: CollectionItem[]) => {
+export const updateCollections = async (
+  uid: string,
+  updatedCollections: CollectionItem[]
+) => {
   try {
     await updateDoc(userDocRef(uid), { collections: updatedCollections });
   } catch (error) {
@@ -159,7 +162,7 @@ export const updateCollections = async (uid: string, updatedCollections: Collect
   }
 };
 
-export const commitBatch = async (batch:WriteBatch) => {
+export const commitBatch = async (batch: WriteBatch) => {
   try {
     await batch.commit();
   } catch (error) {
@@ -199,19 +202,21 @@ export const handleEdit = async (
   }
 
   try {
-    const collectionIndex = allCollections.findIndex((coll) => coll.text === label);
+    const collectionIndex = allCollections.findIndex(
+      (coll) => coll.text === label
+    );
     if (collectionIndex !== -1) {
       const updatedCollections = [...allCollections];
       updatedCollections[collectionIndex].text = trimmedColl;
 
       await updateCollections(uid, updatedCollections);
 
-      const oldCollectionRef = collection(userDocRef(uid), label); 
-      
+      const oldCollectionRef = collection(userDocRef(uid), label);
+
       const newCollectionRef = collection(userDocRef(uid), trimmedColl);
 
       const snapshot = await getDocs(oldCollectionRef);
-      const batch = writeBatch(db); 
+      const batch = writeBatch(db);
 
       snapshot.forEach((docs) => {
         const newDocRef = doc(newCollectionRef, docs.id);
@@ -236,4 +241,3 @@ export const handleEdit = async (
     console.error('Error updating collection:', error);
   }
 };
-
