@@ -1,9 +1,9 @@
 import { useRoutes } from 'react-router-dom';
+import { useEffect } from 'react';
 import DocumentTitle from './DocumentTitle';
 import { authenticatedRoutes, guestRoutes } from './config';
 import AppLayout from '../Components/Layouts/AppLayout';
 import { useReduxSelector } from '../Store';
-import { useEffect } from 'react';
 
 function RootRouter() {
   const guest = useRoutes(guestRoutes);

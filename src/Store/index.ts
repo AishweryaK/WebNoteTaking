@@ -17,7 +17,7 @@ import api from '../Services/Api/api';
 import common from './Common';
 import loader from './Loader';
 import user from './User';
-import ui from './Theme'
+import ui from './Theme';
 
 const rootPersistConfig = {
   key: 'root',

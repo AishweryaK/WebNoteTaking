@@ -14,7 +14,7 @@ export interface PasswordProps {
   onClose: () => void;
 }
 
-const NameChange = ({ onClose }: PasswordProps) => {
+function NameChange({ onClose }: PasswordProps) {
   const { handleNameChange } = useAuthentication();
 
   const handleCancel = () => {
@@ -32,7 +32,7 @@ const NameChange = ({ onClose }: PasswordProps) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg p-6 w-11/12 md:w-2/5 xl:w-1/5">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                {'Edit Username'}
+                Edit Username
               </h2>
 
               <FormField
@@ -67,7 +67,7 @@ const NameChange = ({ onClose }: PasswordProps) => {
                   {CHANGE_PASSWORD.CANCEL}
                 </button>
                 <div className="mb-4">
-                  <CustomButton text={'Change Name'} disabled={!isValid} />
+                  <CustomButton text="Change Name" disabled={!isValid} />
                 </div>
               </div>
             </div>
@@ -76,6 +76,6 @@ const NameChange = ({ onClose }: PasswordProps) => {
       )}
     </Formik>
   );
-};
+}
 
 export default NameChange;

@@ -67,7 +67,8 @@ function AddNote({
   const text = (): string | null => {
     if (itemDesc) {
       return '';
-    } else return 'Start typing here...';
+    }
+    return 'Start typing here...';
   };
 
   const config = useMemo(

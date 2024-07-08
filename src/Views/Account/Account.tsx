@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { useReduxSelector } from '../../Store';
 import { ICONS } from '../../Shared/icons';
 import NameChange from './NameChange';
-import { useState } from 'react';
 
 function Account() {
   const { displayName, email } = useReduxSelector((state) => state.user);
@@ -32,13 +32,18 @@ function Account() {
               Welcome to your Profile!
             </h5>
             <p className="text-left text-gray-600 mt-8 pl-4">User Name</p>
-            <div className='flex flex-row justify-between'>
-            <p className="text-left text-gray-600 mb-2 mt-2.5 font-bold mx-4 focus-visible:outline-none bg-white">
-              {displayName}
-            </p>
-            {/* <div className='hover:bg-my-hover rounded-full items-center justify-center'> */}
-            <img src={ICONS.Edit} alt="" className='hover:bg-my-hover rounded-full h-8 w-8 p-1' onClick={changeName}/>
-            {/* </div> */}
+            <div className="flex flex-row justify-between">
+              <p className="text-left text-gray-600 mb-2 mt-2.5 font-bold mx-4 focus-visible:outline-none bg-white">
+                {displayName}
+              </p>
+              {/* <div className='hover:bg-my-hover rounded-full items-center justify-center'> */}
+              <img
+                src={ICONS.Edit}
+                alt=""
+                className="hover:bg-my-hover rounded-full h-8 w-8 p-1"
+                onClick={changeName}
+              />
+              {/* </div> */}
             </div>
 
             <p className="text-left text-gray-600 mt-4 pl-4">Email</p>
@@ -48,11 +53,7 @@ function Account() {
           </div>
         </div>
       </div>
-      {modalVisible && (
-        <NameChange
-          onClose={() => setModalVisible(false)}
-        />
-      )}
+      {modalVisible && <NameChange onClose={() => setModalVisible(false)} />}
     </div>
   );
 }

@@ -11,7 +11,7 @@ interface CollectionItem {
 }
 
 interface LabelsListProps {
-  openSidebar:(value:boolean)=>void;
+  openSidebar: (value: boolean) => void;
   isSidebarOpen: boolean;
   labelData: (data: string) => void;
 }
@@ -54,9 +54,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
     const handleResize = () => {
       if (window.innerWidth <= 768) {
         openSidebar(false);
-      }
-      else
-      openSidebar(true)
+      } else openSidebar(true);
     };
 
     window.addEventListener('resize', handleResize);

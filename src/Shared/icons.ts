@@ -15,7 +15,7 @@ import Search from '../assets/Svgs/search.svg';
 import Close from '../assets/Svgs/close.svg';
 import LabelFilled from '../assets/Svgs/label-filled.svg';
 import Tick from '../assets/Svgs/tick.svg';
-import Dots from '../assets/Svgs/ellipsis-vertical.svg'
+import Dots from '../assets/Svgs/ellipsis-vertical.svg';
 
 export const ICONS = {
   Google,

@@ -15,7 +15,7 @@ export default function Home() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const openSidebar = (value:boolean) => {
+  const openSidebar = (value: boolean) => {
     setIsSidebarOpen(value);
   };
 

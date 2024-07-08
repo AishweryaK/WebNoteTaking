@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import { Formik, FormikProps, Form } from 'formik';
+import {
+  EmailAuthProvider,
+  User,
+  reauthenticateWithCredential,
+  updatePassword,
+} from 'firebase/auth';
 import { showAlert } from '../../Shared/alert';
 import {
   CHANGE_PASSWORD,
@@ -12,12 +18,6 @@ import { ChangePSchema } from '../../Shared/validationSchema';
 import FormField from '../../Components/Field/FormField';
 import CustomButton from '../../Components/Button';
 import { auth } from '../../utils';
-import {
-  EmailAuthProvider,
-  User,
-  reauthenticateWithCredential,
-  updatePassword,
-} from 'firebase/auth';
 import { ICONS } from '../../Shared/icons';
 
 interface FormValues {
@@ -29,7 +29,7 @@ export interface PasswordProps {
   onClose: () => void;
 }
 
-const ChangePasswordModal = ({ onClose }: PasswordProps) => {
+function ChangePasswordModal({ onClose }: PasswordProps) {
   const [currentPassword, setCurrentPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [icon, setIcon] = useState(ICONS.EyeOff);
@@ -109,7 +109,7 @@ const ChangePasswordModal = ({ onClose }: PasswordProps) => {
                 {' '}
                 <label
                   className="block text-gray-700 text-sm font-bold mt-4 mb-2 text-left"
-                  htmlFor={'currentPassword'}
+                  htmlFor="currentPassword"
                 >
                   Current Password
                 </label>
@@ -161,7 +161,7 @@ const ChangePasswordModal = ({ onClose }: PasswordProps) => {
                   {CHANGE_PASSWORD.CANCEL}
                 </button>
                 <div className="mb-4">
-                  <CustomButton text={'Change Password'} disabled={!isValid} />
+                  <CustomButton text="Change Password" disabled={!isValid} />
                 </div>
               </div>
             </div>
@@ -170,6 +170,6 @@ const ChangePasswordModal = ({ onClose }: PasswordProps) => {
       )}
     </Formik>
   );
-};
+}
 
 export default ChangePasswordModal;

@@ -22,9 +22,7 @@ import { FormValues } from '../Views/Account/NameChange';
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
   const myProvider = useReduxSelector((state) => state.user.provider);
-  const {displayName} = useReduxSelector(
-    state => state.user,
-  );
+  const { displayName } = useReduxSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const signInCall = async ({ email, password }: SignInProps) => {
@@ -141,14 +139,12 @@ export default function useAuthentication() {
     }
   };
 
-  const handleNameChange = async (
-    values: FormValues,
-    onClose: () => void
-  ) => {
+  const handleNameChange = async (values: FormValues, onClose: () => void) => {
     if (values.firstName.trim() === '' || values.lastName.trim() === '') {
       showAlert(ERR_TITLE.ERROR, ERR_MSG.FILL_ALL_FIELDS);
       return;
-    } else if (
+    }
+    if (
       `${values.firstName.trim()} ${values.lastName.trim()}` === displayName
     ) {
       showAlert(ERR_TITLE.ERROR, ERR_MSG.SAME_USERNAME);

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import useAuthentication from '../../../../Hooks/userHook';
 import { forwardRef, useState } from 'react';
+import useAuthentication from '../../../../Hooks/userHook';
 import ChangePasswordModal from '../../../../Views/ChangePwd/ChangePwd';
 import { useReduxDispatch, useReduxSelector } from '../../../../Store';
 import { toggleMode } from '../../../../Store/Theme';
@@ -13,7 +13,7 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
   ({ closeMenu }, dropdownRef) => {
     const { signOutCall } = useAuthentication();
     const dispatch = useReduxDispatch();
-    const isDarkMode = useReduxSelector(state=>state.ui.isDarkMode)
+    const isDarkMode = useReduxSelector((state) => state.ui.isDarkMode);
     const [modalVisible, setModalVisible] = useState(false);
 
     const handleLogout = async () => {
@@ -48,14 +48,14 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           Change Password
         </button>
         <button
-        type='button'
-        onClick={toggleModeHandler}
+          type="button"
+          onClick={toggleModeHandler}
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
-          {isDarkMode ? "Disable Dark Theme" : "Enable Dark Theme"}
+          {isDarkMode ? 'Disable Dark Theme' : 'Enable Dark Theme'}
         </button>
         <button
-        type='button'
+          type="button"
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left border-t border-t-gray-100"
           onClick={handleLogout}
         >

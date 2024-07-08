@@ -87,13 +87,18 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
         /> */}
         {/* {dropdownOpen && <DropdownMenu />} */}
 
-          <img
-            className="w-8 h-8 rounded-full shadow-md ml-4 mr-2"
-            src={ICONS.Books}
-            alt="Account"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+        <img
+          className="w-8 h-8 rounded-full shadow-md ml-4 mr-2"
+          src={ICONS.Books}
+          alt="Account"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        />
+        {dropdownOpen && (
+          <DropdownMenu
+            ref={dropdownRef}
+            closeMenu={() => setDropdownOpen(false)}
           />
-        {dropdownOpen && <DropdownMenu ref={dropdownRef} closeMenu={() => setDropdownOpen(false)}/>}
+        )}
       </div>
     </nav>
   );
