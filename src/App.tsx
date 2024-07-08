@@ -9,7 +9,6 @@ import './App.css';
 const baseName = import.meta.env.VITE_BASE_NAME;
 
 function App() {
-  // const [count, setCount] = useState<number>(0);
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>

@@ -1,12 +1,9 @@
 import './navbar.scss';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { ICONS } from '../../../../Shared/icons';
-import useAuthentication from '../../../../Hooks/userHook';
-import { ROUTES_CONFIG } from '../../../../Shared/Constants';
+import DropdownMenu from './Dropdown';
 
 export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
-  const { signOutCall } = useAuthentication();
   const [searchText, setSearchText] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -24,10 +21,6 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
     }
   };
 
-  const handleLogout = async () => {
-    await signOutCall();
-  };
-
   useEffect(() => {
     if (dropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside, {
@@ -41,34 +34,6 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [dropdownOpen]);
-
-  function DropdownMenu() {
-    return (
-      <div
-        ref={dropdownRef}
-        className="absolute top-9 right-9 mt-2 w-32 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5"
-      >
-        <Link
-          to="#"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >
-          Profile
-        </Link>
-        <Link
-          to="#"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >
-          Settings
-        </Link>
-        <button
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
-    );
-  }
 
   return (
     <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center z-50">
@@ -87,7 +52,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
         </div>
       </div>
 
-      <form className="flex items-center bg-my-background px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96">
+      <form className="flex items-center bg-my-background px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96 ml-4">
         <button
           className="hover:bg-my-hover p-2 mr-2 rounded-full"
           type="button"
@@ -113,22 +78,22 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
         )}
       </form>
 
-      <div className="flex items-center space-x-6 relative">
-        <img
+      <div className="flex items-center space-x-8 relative">
+        {/* <img
           className="cursor-pointer w-10 hover:bg-my-hover p-2 rounded-full"
           src={ICONS.Settings}
           alt="Settings"
           onClick={() => setDropdownOpen(!dropdownOpen)}
-        />
-        {dropdownOpen && <DropdownMenu />}
+        /> */}
+        {/* {dropdownOpen && <DropdownMenu />} */}
 
-        <Link to={ROUTES_CONFIG.ACCOUNT.path}>
           <img
-            className="w-8 h-8 rounded-full shadow-md"
+            className="w-8 h-8 rounded-full shadow-md ml-4 mr-2"
             src={ICONS.Books}
             alt="Account"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
           />
-        </Link>
+        {dropdownOpen && <DropdownMenu ref={dropdownRef} closeMenu={() => setDropdownOpen(false)}/>}
       </div>
     </nav>
   );

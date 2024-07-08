@@ -17,16 +17,18 @@ import api from '../Services/Api/api';
 import common from './Common';
 import loader from './Loader';
 import user from './User';
+import ui from './Theme'
 
 const rootPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['common', 'user'],
+  whitelist: ['common', 'user', 'ui'],
 };
 const reducers = combineReducers({
   common,
   loader,
   user,
+  ui,
   [api.reducerPath]: api.reducer,
 });
 

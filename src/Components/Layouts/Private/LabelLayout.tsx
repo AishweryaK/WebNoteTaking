@@ -11,11 +11,13 @@ interface CollectionItem {
 }
 
 interface LabelsListProps {
+  openSidebar:(value:boolean)=>void;
   isSidebarOpen: boolean;
   labelData: (data: string) => void;
 }
 
 const LabelsList: React.FC<LabelsListProps> = ({
+  openSidebar,
   isSidebarOpen,
   labelData,
 }) => {
@@ -47,6 +49,23 @@ const LabelsList: React.FC<LabelsListProps> = ({
     setSelectedLabel(data);
     labelData(data);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        openSidebar(false);
+      }
+      else
+      openSidebar(true)
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const editedWrapper = (
     e: ChangeEvent<HTMLInputElement>,
@@ -118,7 +137,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
   return (
     <div>
       <div
-        className={`${isSidebarOpen ? 'min-w-72' : 'min-w-20'} h-screen ease-in-out duration-200 mt-2`}
+        className={`${isSidebarOpen ? 'min-w-72' : 'min-w-20'} h-screen max-h-screen overflow-auto ease-in-out duration-200 mt-2`}
       >
         <div className="flex flex-col">
           {labels.map((label, index) => (
@@ -186,7 +205,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
                             onChange={(e) =>
                               editedWrapper(e, label.text, index)
                             }
-                            className="flex-1 bg-white mr-5"
+                            className="flex-1 bg-white mr-5 focus-visible:outline-none focus:border-b border-b-my-hover no-underline"
                           />
                           {editedLabelIndex === index &&
                           beforeEdit !== editedLabel ? (
@@ -227,7 +246,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
                       type="text"
                       name="new-label"
                       id="new-label"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-my-blue-500D focus:border-my-blue-500D block w-full p-2.5 focus-visible:outline-none"
                       placeholder="Enter new label"
                       value={newLabel}
                       onChange={(e) => setNewLabel(e.target.value)}

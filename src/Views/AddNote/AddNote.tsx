@@ -13,21 +13,30 @@ interface AddNoteProps {
   label: string;
   itemID?: string;
   itemTitle?: string;
-  itemDesc?: string;
+  itemDesc?: string | null;
+  setItemTitle?: React.Dispatch<React.SetStateAction<string>>;
+  setItemDesc?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
+function AddNote({
+  label,
+  itemID,
+  itemTitle,
+  itemDesc = '',
+  setItemTitle = () => {},
+  setItemDesc = () => {},
+}: AddNoteProps) {
   const { uid } = useReduxSelector((state) => state.user);
   const editorRef = useRef(null);
-  const [title, setTitle] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
+  // const [title, setItemTitle] = useState<string>('');
+  // const [desc, setItemDesc] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (itemTitle || itemDesc) {
-      setTitle(itemTitle as string);
-      setDesc(itemDesc as string);
-    }
-  }, [itemTitle, itemDesc]);
+  // useEffect(() => {
+  //   if (itemTitle || itemDesc) {
+  //     setItemTitle(itemTitle as string);
+  //     setItemDesc(itemDesc as string);
+  //   }
+  // }, [itemTitle, itemDesc]);
 
   const options = [
     'bold',
@@ -55,14 +64,18 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
     'redo',
   ];
 
+  const text = (): string | null => {
+    if (itemDesc) {
+      return '';
+    } else return 'Start typing here...';
+  };
+
   const config = useMemo(
     () => ({
       readonly: false,
-      placeholder: 'Start typing here...',
+      placeholder: text(),
       defaultLineHeight: 1.5,
-      theme: 'light', // or 'default' depending on your preference
-      // Add 'color' option to set default text color
-      color: '#000000', // Black color
+      theme: 'light',
       maxHeight: 600,
       buttons: options,
       buttonsMD: options,
@@ -82,7 +95,7 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
   );
 
   const saveNote = () => {
-    if (title === '' && desc === '') {
+    if (itemTitle === '' && itemDesc === '') {
       showAlert(ERR_TITLE.EMPTY_NOTE, ERR_MSG.NOTE_DISCARDED);
       return;
     }
@@ -90,14 +103,19 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
       const defaultLabel = 'Others';
       const effectiveLabel = label || defaultLabel;
       if (itemID && label) {
-        updateNote(uid, label, itemID, title, desc);
-      } else if (label) {
-        saveNoteLabel(uid, effectiveLabel, title, desc);
+        updateNote(uid, label, itemID, itemTitle as string, itemDesc as string);
+      } else if (effectiveLabel) {
+        saveNoteLabel(
+          uid,
+          effectiveLabel,
+          itemTitle as string,
+          itemDesc as string
+        );
         updateCollectionCount(uid, effectiveLabel, CONSTANTS.INCREMENT);
       }
 
-      setTitle('');
-      setDesc('');
+      setItemTitle('');
+      setItemDesc('');
     } catch (error) {
       console.log('Error', error);
     }
@@ -106,20 +124,20 @@ function AddNote({ label, itemID, itemTitle, itemDesc }: AddNoteProps) {
   return (
     <div className="justify-center align-middle text-center">
       <input
-        value={title}
+        value={itemTitle}
         type="text"
         autoComplete="off"
         placeholder="Title"
         maxLength={40}
-        onChange={(e) => setTitle(e.target.value)}
-        className="bg-white w-full text-gray-700 placeholder-gray-500 border border-b-0 border-solid border-my-hover p-2"
+        onChange={(e) => setItemTitle(e.target.value)}
+        className="bg-white w-full text-gray-700 placeholder-gray-500 border border-b-0 border-solid border-my-hover p-2 focus-visible:outline-none"
       />
       <div className="text-left">
         <JoditEditor
           ref={editorRef}
-          value={desc}
+          value={itemDesc || ''}
           config={config}
-          onChange={(newContent) => setDesc(newContent)}
+          onChange={(newContent) => setItemDesc(newContent)}
         />
       </div>
       <button

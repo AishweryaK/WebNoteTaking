@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  User,
   // GoogleAuthProvider,
   // UserCredential,
   createUserWithEmailAndPassword,
@@ -9,19 +10,21 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { useReduxDispatch, useReduxSelector } from '../Store';
-import { clearUserData, saveUser } from '../Store/User';
-import { PROVIDER, TITLE } from '../Shared/Constants';
+import { clearUserData, saveName, saveUser } from '../Store/User';
+import { ERR_MSG, ERR_TITLE, PROVIDER, TITLE } from '../Shared/Constants';
 import { handleAuthError, handleSignUpError } from '../Shared/authError';
 import { SignInProps, SignUpProps } from './user-hook';
 import { addDocumentsForUser } from '../Shared/firebaseUtils';
 import { auth, provider } from '../utils';
+import { showAlert } from '../Shared/alert';
+import { FormValues } from '../Views/Account/NameChange';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
   const myProvider = useReduxSelector((state) => state.user.provider);
-  // const {displayName, uid, email} = useReduxSelector(
-  //   state => state.user,
-  // );
+  const {displayName} = useReduxSelector(
+    state => state.user,
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const signInCall = async ({ email, password }: SignInProps) => {
@@ -138,6 +141,41 @@ export default function useAuthentication() {
     }
   };
 
+  const handleNameChange = async (
+    values: FormValues,
+    onClose: () => void
+  ) => {
+    if (values.firstName.trim() === '' || values.lastName.trim() === '') {
+      showAlert(ERR_TITLE.ERROR, ERR_MSG.FILL_ALL_FIELDS);
+      return;
+    } else if (
+      `${values.firstName.trim()} ${values.lastName.trim()}` === displayName
+    ) {
+      showAlert(ERR_TITLE.ERROR, ERR_MSG.SAME_USERNAME);
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const user = auth.currentUser;
+      await updateProfile(user as User, {
+        displayName: `${values.firstName.trim()} ${values.lastName.trim()}`,
+      });
+
+      dispatch(
+        saveName({
+          displayName: `${values.firstName.trim()} ${values.lastName.trim()}`,
+        })
+      );
+      onClose();
+      showAlert(ERR_TITLE.SUCCESS, ERR_MSG.USERNAME_CHANGED);
+    } catch (error: any) {
+      console.error('Error', error);
+      showAlert(ERR_TITLE.ERROR, error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const googleSignInCall = async () => {
     // signInWithPopup(auth, provider)
     //   .then((result: UserCredential) => {
@@ -169,5 +207,6 @@ export default function useAuthentication() {
     //   uploadImageToFirebase,
     //   deletePhoto,
     googleSignInCall,
+    handleNameChange,
   };
 }

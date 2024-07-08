@@ -180,6 +180,14 @@ const ERR_MSG = {
   INVALID_EMAIL: 'Please check your email address',
 };
 
+const CHANGE_PASSWORD = {
+  CHANGE: 'Change Password',
+  CURRENT: 'Current Password',
+  NEW: 'New Password',
+  CONFIRM_NEW: 'Confirm New Password',
+  CANCEL: 'Cancel',
+};
+
 export {
   ROUTES,
   WILDCARD_ROUTES,
@@ -193,4 +201,5 @@ export {
   ERR_CODE,
   ERR_TITLE,
   ERR_MSG,
+  CHANGE_PASSWORD,
 };

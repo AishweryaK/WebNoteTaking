@@ -15,6 +15,10 @@ export default function Home() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const openSidebar = (value:boolean) => {
+    setIsSidebarOpen(value);
+  };
+
   // useEffect(()=>{
   //   localStorage.clear();
   // })
@@ -24,6 +28,7 @@ export default function Home() {
       <Navbar toggleSidebar={toggleSidebar} />
       <div className="flex flex-row">
         <LabelsList
+          openSidebar={openSidebar}
           isSidebarOpen={isSidebarOpen}
           labelData={handleDataFromChild}
         />

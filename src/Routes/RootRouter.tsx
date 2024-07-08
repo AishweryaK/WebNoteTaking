@@ -3,6 +3,7 @@ import DocumentTitle from './DocumentTitle';
 import { authenticatedRoutes, guestRoutes } from './config';
 import AppLayout from '../Components/Layouts/AppLayout';
 import { useReduxSelector } from '../Store';
+import { useEffect } from 'react';
 
 function RootRouter() {
   const guest = useRoutes(guestRoutes);
@@ -10,6 +11,15 @@ function RootRouter() {
   // const token = useReduxSelector((state: RootState) => state?.common?.token);
   const { uid } = useReduxSelector((state) => state?.user);
   const isAuthenticated = !!uid; // to convert value to boolean
+  const isDarkMode = useReduxSelector((state) => state.ui.isDarkMode);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.querySelector('html')?.classList.add('dark');
+    } else {
+      document.querySelector('html')?.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   return (
     <>
       <DocumentTitle isAuthenticated={isAuthenticated} />
