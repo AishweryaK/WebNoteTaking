@@ -20,6 +20,7 @@ function RootRouter() {
       document.querySelector('html')?.classList.remove('dark');
     }
   }, [isDarkMode]);
+
   return (
     <>
       <DocumentTitle isAuthenticated={isAuthenticated} />

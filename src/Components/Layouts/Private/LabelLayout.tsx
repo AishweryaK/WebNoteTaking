@@ -142,10 +142,10 @@ const LabelsList: React.FC<LabelsListProps> = ({
             <button
               onClick={() => handleClick(label.text)}
               key={index}
-              className={`space-x-4 pl-4 min-w-full h-14 flex flex-row rounded-e-full items-center text-gray-900 ${
+              className={`space-x-4 pl-4 min-w-full h-14 flex flex-row rounded-e-full items-center text-gray-900 dark:text-white ${
                 selectedLabel === label.text
                   ? 'bg-my-blue-500D text-white font-semibold'
-                  : 'hover:bg-my-hover'
+                  : 'hover:bg-my-hover hover:dark:bg-my-hover-dark'
               }`}
             >
               <img className="w-10 p-2" src={ICONS.Label} alt="" />
@@ -155,10 +155,12 @@ const LabelsList: React.FC<LabelsListProps> = ({
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="space-x-4 pl-4 w-full h-14 flex flex-row hover:bg-my-hover rounded-e-full items-center hover:text-white"
+          className="space-x-4 pl-4 w-full h-14 flex flex-row hover:bg-my-hover hover:dark:bg-my-hover-dark rounded-e-full items-center hover:text-white"
         >
           <img className="w-10 p-2" src={ICONS.Edit} alt="" />
-          {isSidebarOpen && <div className="text-gray-900">Edit</div>}
+          {isSidebarOpen && (
+            <div className="text-gray-900 dark:text-white">Edit</div>
+          )}
         </button>
       </div>
 

@@ -36,25 +36,27 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   }, [dropdownOpen]);
 
   return (
-    <nav className="sticky top-0 bg-white shadow-lg px-4 py-1 flex justify-between items-center z-50">
+    <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 flex justify-between items-center z-50">
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-4">
           <img
-            className="cursor-pointer w-10 hover:bg-my-hover p-2 rounded-full"
+            className="cursor-pointer w-10 hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full"
             src={ICONS.Menu}
             alt="Menu"
             onClick={toggleSidebar}
           />
           <div className="flex items-center space-x-1">
             <img src={ICONS.Logo} alt="Logo" className="h-14 w-14" />
-            <span className="font-semibold text-gray-700">Note Taking App</span>
+            <span className="font-semibold text-gray-700 dark:text-white">
+              Note Taking App
+            </span>
           </div>
         </div>
       </div>
 
-      <form className="flex items-center bg-my-background px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96 ml-4">
+      <form className="flex items-center bg-my-background dark:bg-my-bg-dark dark:border-my-icon-dark dark:border px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96 ml-4">
         <button
-          className="hover:bg-my-hover p-2 mr-2 rounded-full"
+          className="hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 mr-2 rounded-full"
           type="button"
         >
           <img src={ICONS.Search} alt="Search" />
@@ -69,7 +71,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
         />
         {searchText && (
           <button
-            className="hover:bg-my-hover p-2 rounded-full"
+            className="hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full"
             type="button"
             onClick={() => setSearchText('')}
           >

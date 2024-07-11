@@ -19,7 +19,10 @@ export default {
         'my-background-100': '#e8e4f7',
         'my-background-200': '#d7d0f2',
         'my-background-300': '#c6bdec',
+        'my-bg-dark': '#292B30',
+        'my-icon-dark': '#808080',
         'my-hover': '#E1E2E3',
+        'my-hover-dark': '#535559',
       },
       height: {
         98: '40rem',

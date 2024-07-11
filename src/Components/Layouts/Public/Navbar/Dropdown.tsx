@@ -32,31 +32,31 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
     return (
       <div
         ref={dropdownRef}
-        className="absolute top-8 right-1 mt-2 w-40 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5"
+        className="absolute top-8 right-1 mt-2 w-40 bg-white dark:bg-my-hover-dark rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5"
       >
         <Link
           to="/account"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm hover:dark:bg-my-bg-dark text-gray-700 dark:text-white hover:bg-gray-100"
         >
           Account
         </Link>
         <button
           type="button"
           onClick={changePassword}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm w-full text-left hover:dark:bg-my-bg-dark text-gray-700 dark:text-white hover:bg-gray-100"
         >
           Change Password
         </button>
         <button
           type="button"
           onClick={toggleModeHandler}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm w-full text-left hover:dark:bg-my-bg-dark text-gray-700 dark:text-white hover:bg-gray-100"
         >
           {isDarkMode ? 'Disable Dark Theme' : 'Enable Dark Theme'}
         </button>
         <button
           type="button"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left border-t border-t-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:dark:bg-my-bg-dark dark:text-white hover:bg-gray-100 w-full text-left border-t border-t-gray-100 dark:border-t-my-hover-dark"
           onClick={handleLogout}
         >
           Logout

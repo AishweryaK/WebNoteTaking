@@ -110,7 +110,7 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
         {notes.map((note) => (
           <div
             key={note.id}
-            className="p-4 shadow-md rounded-lg relative cursor-pointer overflow-hidden 2xl:min-w-56 dark:bg-black"
+            className="p-4 shadow-md rounded-lg relative cursor-pointer overflow-hidden 2xl:min-w-56 dark:bg-my-hover-dark"
             onClick={() => handleNote(note)}
           >
             <button
@@ -119,10 +119,10 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
             >
               <img className="w-4 h-4" src={ICONS.Dots} alt="Delete" />
             </button>
-            <h2 className="text-xl font-semibold text-gray-700 mb-2 break-words mr-5">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2 break-words mr-5">
               {note.title}
             </h2>
-            <p className="text-gray-700 line-clamp-5 break-words">
+            <p className="text-gray-700 dark:text-white line-clamp-5 break-words">
               {htmlFrom(note.desc)}
             </p>
           </div>

@@ -14,7 +14,12 @@ function App() {
       <PersistGate persistor={persistor}>
         <HelmetProvider>
           <BrowserRouter basename={baseName}>
-            <RootRouter />
+            <div
+              // id="root"
+              className="max-w-screen-xl mx-auto bg-my-background dark:bg-my-bg-dark min-h-screen min-w-full bg-cover bg-center flex flex-col"
+            >
+              <RootRouter />
+            </div>
           </BrowserRouter>
         </HelmetProvider>
       </PersistGate>
