@@ -31,10 +31,10 @@ export default function Login() {
           <img src={ICONS.Logo} alt="Logo" className="h-12 w-12" />
         </div>
       </div>
-      <h2 className="text-2xl font-bold text-center text-gray-700 mb-2">
+      <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-my-background mb-2">
         Welcome back
       </h2>
-      <p className="text-center text-gray-600 mb-2">
+      <p className="text-center text-gray-600 dark:text-my-background mb-2">
         Welcome back! Please enter your details.
       </p>
       <Formik
@@ -54,7 +54,7 @@ export default function Login() {
               inputType={CONSTANTS.EMAIL}
             />
             {errors.email && touched.email ? (
-              <p className="text-red-700 text-xs mb-4 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 text-left">
                 {errors.email}
               </p>
             ) : null}
@@ -66,7 +66,7 @@ export default function Login() {
               inputType={CONSTANTS.PASSWORD}
             />
             {errors.password && touched.password ? (
-              <p className="text-red-700 text-xs mb-4 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 text-left">
                 {errors.password}
               </p>
             ) : null}
@@ -75,7 +75,7 @@ export default function Login() {
               <div />
               <Link
                 to={ROUTES_CONFIG.FORGOT_PASSWORD.path}
-                className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 hover:underline cursor-pointer"
+                className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline cursor-pointer"
               >
                 Forgot password?
               </Link>
@@ -86,7 +86,7 @@ export default function Login() {
             </div>
             <div className="mb-4">
               <button
-                className="w-full bg-my-background hover:bg-my-background-100 text-gray-700 font-bold py-2 px-2 rounded-full border border-my-blue-0 focus:outline-none focus:shadow-outline"
+                className="w-full bg-my-background dark:bg-my-icon-dark hover:bg-my-background-100 hover:dark:bg-my-bg-dark duration-50 text-gray-700 dark:text-white font-bold py-2 px-2 rounded-full border border-my-blue-0 dark:border-none focus:outline-none focus:shadow-outline"
                 type="button"
                 onClick={logGoogleUser}
               >
@@ -102,11 +102,11 @@ export default function Login() {
         )}
       </Formik>
 
-      <p className="text-center text-gray-600">
+      <p className="text-center text-gray-600 dark:text-my-background">
         Don't have an account?{' '}
         <Link
           to={ROUTES_CONFIG.SIGNUP.path}
-          className="text-my-blue-500D hover:text-my-blue-800 hover:underline"
+          className="text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline"
         >
           Sign up
         </Link>

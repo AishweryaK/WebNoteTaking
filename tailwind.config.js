@@ -23,6 +23,7 @@ export default {
         'my-icon-dark': '#808080',
         'my-hover': '#E1E2E3',
         'my-hover-dark': '#535559',
+        'jodit-dark':'#575757'
       },
       height: {
         98: '40rem',

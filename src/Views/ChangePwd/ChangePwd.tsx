@@ -100,22 +100,21 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
     >
       {({ errors, touched, isValid }: FormikProps<FormValues>) => (
         <Form>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg p-6 w-11/12 md:w-2/5 xl:w-1/5">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+            <div className="bg-white dark:bg-my-bg-dark rounded-lg p-6 w-11/12 md:w-2/5 xl:w-1/5">
+              <h2 className="text-2xl font-semibold text-gray-800 dark:text-my-background mb-4">
                 {CHANGE_PASSWORD.CHANGE}
               </h2>
               <div className="relative">
-                {' '}
                 <label
-                  className="block text-gray-700 text-sm font-bold mt-4 mb-2 text-left"
+                  className="block text-gray-700 dark:text-my-icon-dark text-sm font-bold mt-4 mb-2 text-left"
                   htmlFor="currentPassword"
                 >
                   Current Password
                 </label>
                 <input
                   name="password"
-                  className="shadow appearance-none border rounded-md w-full py-2 pl-3 pr-9 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-my-background"
+                  className="bg-my-background dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
                   type={type}
                   placeholder={CHANGE_PASSWORD.CURRENT}
                   value={currentPassword}
@@ -136,7 +135,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                 inputType={CONSTANTS.PASSWORD}
               />
               {errors.password && touched.password ? (
-                <p className="text-red-700 text-xs mb-4 text-left">
+                <p className="text-red-500 font-medium text-xs mb-4 text-left">
                   {errors.password}
                 </p>
               ) : null}
@@ -148,7 +147,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                 inputType={CONSTANTS.PASSWORD}
               />
               {errors.confirmPassword && touched.confirmPassword ? (
-                <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+                <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                   {errors.confirmPassword}
                 </p>
               ) : null}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import JoditEditor from 'jodit-react';
 import {
   saveNoteLabel,
@@ -8,7 +8,6 @@ import {
 import { useReduxSelector } from '../../Store';
 import { CONSTANTS, ERR_MSG, ERR_TITLE } from '../../Shared/Constants';
 import { showAlert } from '../../Shared/alert';
-
 interface AddNoteProps {
   label: string;
   itemID?: string;
@@ -16,6 +15,7 @@ interface AddNoteProps {
   itemDesc?: string | null;
   setItemTitle?: React.Dispatch<React.SetStateAction<string>>;
   setItemDesc?: React.Dispatch<React.SetStateAction<string | null>>;
+  closeModal?:React.Dispatch<React.SetStateAction<string | null>>
 }
 
 function AddNote({
@@ -25,8 +25,10 @@ function AddNote({
   itemDesc = '',
   setItemTitle = () => {},
   setItemDesc = () => {},
+  closeModal = () => {},
 }: AddNoteProps) {
   const { uid } = useReduxSelector((state) => state.user);
+  const theme = useReduxSelector((state) => state.ui.isDarkMode);
   const editorRef = useRef(null);
   // const [title, setItemTitle] = useState<string>('');
   // const [desc, setItemDesc] = useState<string | null>(null);
@@ -76,7 +78,7 @@ function AddNote({
       readonly: false,
       placeholder: text(),
       defaultLineHeight: 1.5,
-      theme: 'light',
+      theme: theme ? 'dark' : 'light',
       maxHeight: 600,
       buttons: options,
       buttonsMD: options,
@@ -91,8 +93,9 @@ function AddNote({
       sizeSM: 400,
       toolbarAdaptive: false,
       editorClassName: 'initial-text-color',
+      // className: 'initial-text-color',
     }),
-    []
+    [theme]
   );
 
   const saveNote = () => {
@@ -117,6 +120,7 @@ function AddNote({
 
       setItemTitle('');
       setItemDesc('');
+      closeModal('');
     } catch (error) {
       console.log('Error', error);
     }
@@ -131,9 +135,9 @@ function AddNote({
         placeholder="Title"
         maxLength={40}
         onChange={(e) => setItemTitle(e.target.value)}
-        className="bg-white w-full text-gray-700 placeholder-gray-500 border border-b-0 border-solid border-my-hover p-2 focus-visible:outline-none"
+        className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
       />
-      <div className="text-left">
+      <div id='myjoditEditor' className="text-left">
         <JoditEditor
           ref={editorRef}
           value={itemDesc || ''}
@@ -142,7 +146,7 @@ function AddNote({
         />
       </div>
       <button
-        className="bg-my-blue-500D p-2 rounded-lg mt-2"
+        className="bg-my-blue-500D p-2 rounded-lg mt-2 font-semibold"
         type="button"
         onClick={saveNote}
       >

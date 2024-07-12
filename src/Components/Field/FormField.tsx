@@ -20,7 +20,7 @@ function FormField({ label, name, placeholder, inputType }: FormFieldProps) {
   return (
     <div className="relative">
       <label
-        className="block text-gray-700 text-sm font-bold mt-4 mb-2 text-left"
+        className="block text-gray-700 dark:text-my-icon-dark text-sm font-bold mt-4 mb-2 text-left"
         htmlFor={name}
       >
         {label}
@@ -33,12 +33,12 @@ function FormField({ label, name, placeholder, inputType }: FormFieldProps) {
             : inputType
         } // type of the input field ("text", "password", "email", "radio")
         id={name} // link the input with a <label>
-        className="shadow appearance-none border rounded-md w-full py-2 pl-3 pr-9 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-my-background"
+        className="dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 mb-1 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline bg-my-background"
         placeholder={placeholder}
       />
       {(name === CONSTANTS.PASSWORD || name === CONSTANTS.CONFIRM_PASSWORD) && (
         <div
-          className="absolute inset-y-0 right-0 flex items-end mb-2 pr-3"
+          className="absolute inset-y-0 right-0 flex items-end mb-3 pr-3"
           onClick={handleToggle}
         >
           <img src={icon} alt="password" className="w-5" />

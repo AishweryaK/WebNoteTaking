@@ -29,9 +29,9 @@ function NameChange({ onClose }: PasswordProps) {
     >
       {({ errors, touched, isValid }: FormikProps<FormValues>) => (
         <Form>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg p-6 w-11/12 md:w-2/5 xl:w-1/5">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+            <div className="bg-white dark:bg-my-hover-dark rounded-lg p-6 w-11/12 md:w-2/5 xl:w-1/5">
+              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
                 Edit Username
               </h2>
 
@@ -42,7 +42,7 @@ function NameChange({ onClose }: PasswordProps) {
                 inputType={CONSTANTS.TEXT}
               />
               {errors.firstName && touched.firstName ? (
-                <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+                <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                   {errors.firstName}
                 </p>
               ) : null}
@@ -54,7 +54,7 @@ function NameChange({ onClose }: PasswordProps) {
                 inputType={CONSTANTS.TEXT}
               />
               {errors.lastName && touched.lastName ? (
-                <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+                <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                   {errors.lastName}
                 </p>
               ) : null}

@@ -1,6 +1,7 @@
 import {
   WriteBatch,
   addDoc,
+  arrayRemove,
   collection,
   deleteDoc,
   doc,
@@ -11,9 +12,10 @@ import {
   updateDoc,
   writeBatch,
 } from 'firebase/firestore';
-import { COLLECTION, CONSTANTS, DEFAULT_NOTE } from './Constants';
+import { COLLECTION, CONSTANTS, DEFAULT_NOTE, ERR_MSG, ERR_TITLE } from './Constants';
 import { CollectionItem } from './shared';
 import { db } from '../utils';
+import { showAlert } from './alert';
 
 export const userDocRef = (uid: string) => {
   return doc(db, COLLECTION.USERS, uid);
@@ -187,6 +189,7 @@ export const handleEdit = async (
   setAllCollections: React.Dispatch<React.SetStateAction<CollectionItem[]>>,
   handleClose: () => void
 ) => {
+  console.log(collectionName, label, allCollections, uid, 'GTGTTBRGTFV');
   const trimmedColl = collectionName.trim();
   if (trimmedColl === '') {
     setEmptyColl(true);
@@ -238,5 +241,55 @@ export const handleEdit = async (
     }
   } catch (error) {
     console.error('Error updating collection:', error);
+  }
+};
+
+//Label layout - delete collection
+
+export const removeCollectionFromFirestore = async (
+  uid: string,
+  collections: CollectionItem[],
+  collName: string
+) => {
+  const collectionItem = collections.find(
+    (collection) => collection.text === collName
+  );
+  const number = collectionItem ? collectionItem.number : 1;
+
+  await updateDoc(userDocRef(uid), {
+    collections: arrayRemove({
+      text: collName,
+      number: number,
+    }),
+  });
+};
+
+export const handleDeleteCollection = async (
+  uid: string,
+  collections: CollectionItem[],
+  collName: string,
+  setCollections: React.Dispatch<React.SetStateAction<CollectionItem[]>>,
+) => {
+  if (
+    collName === COLLECTION.PERSONAL ||
+    collName === COLLECTION.ACADEMIC ||
+    collName === COLLECTION.WORK ||
+    collName === COLLECTION.OTHERS
+  ) {
+    showAlert(ERR_TITLE.ACTION_NOT_ALLOWED, ERR_MSG.CANNOT_DELETE);
+    return;
+  }
+  try {
+    const collectionRef = collection(userDocRef(uid), collName);
+    const snapshot = await getDocs(collectionRef);
+    const deletePromises = snapshot.docs.map((doc) => deleteDoc(doc.ref));
+    await Promise.all(deletePromises);
+    removeCollectionFromFirestore(uid, collections, collName);
+    setCollections((prevCollections) =>
+      prevCollections.filter((collection) => collection.text !== collName)
+    );
+
+  } catch (error) {
+    console.error('error', error);
   }
 };

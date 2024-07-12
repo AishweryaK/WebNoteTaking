@@ -27,10 +27,10 @@ export default function Signup() {
           <img src={ICONS.Logo} alt="Logo" className="h-12 w-12" />
         </div>
       </div>
-      <h2 className="text-2xl font-bold text-center text-gray-700 mb-2">
+      <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-2">
         Sign up
       </h2>
-      <p className="text-center text-gray-600 mb-2">
+      <p className="text-center text-gray-600 dark:text-white mb-2">
         Welcome! Please enter your details.
       </p>
       <Formik
@@ -53,7 +53,7 @@ export default function Signup() {
               inputType={CONSTANTS.TEXT}
             />
             {errors.firstName && touched.firstName ? (
-              <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                 {errors.firstName}
               </p>
             ) : null}
@@ -65,7 +65,7 @@ export default function Signup() {
               inputType={CONSTANTS.TEXT}
             />
             {errors.lastName && touched.lastName ? (
-              <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                 {errors.lastName}
               </p>
             ) : null}
@@ -77,7 +77,7 @@ export default function Signup() {
               inputType={CONSTANTS.EMAIL}
             />
             {errors.email && touched.email ? (
-              <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                 {errors.email}
               </p>
             ) : null}
@@ -89,7 +89,7 @@ export default function Signup() {
               inputType={CONSTANTS.PASSWORD}
             />
             {errors.password && touched.password ? (
-              <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                 {errors.password}
               </p>
             ) : null}
@@ -101,7 +101,7 @@ export default function Signup() {
               inputType={CONSTANTS.PASSWORD}
             />
             {errors.confirmPassword && touched.confirmPassword ? (
-              <p className="text-red-700 text-xs mb-4 mt-1 text-left">
+              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                 {errors.confirmPassword}
               </p>
             ) : null}

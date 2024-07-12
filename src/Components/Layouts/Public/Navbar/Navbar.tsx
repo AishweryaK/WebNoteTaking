@@ -67,7 +67,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
           autoComplete="off"
           placeholder="Search"
           onChange={handleSearchText}
-          className="bg-transparent border-none outline-none w-full text-gray-700 placeholder-gray-500"
+          className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />
         {searchText && (
           <button

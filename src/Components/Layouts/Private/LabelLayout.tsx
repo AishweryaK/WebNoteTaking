@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { onSnapshot, setDoc } from 'firebase/firestore';
-import { handleEdit, userDocRef } from '../../../Shared/firebaseUtils';
+import { handleDeleteCollection, handleEdit, userDocRef } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
 import { COLLECTION } from '../../../Shared/Constants';
@@ -65,6 +65,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
     };
   }, []);
 
+
   const editedWrapper = (
     e: ChangeEvent<HTMLInputElement>,
     text: string,
@@ -91,6 +92,15 @@ const LabelsList: React.FC<LabelsListProps> = ({
       setLabels,
       closeModal
     );
+  };
+
+  const deleteWrapper = (
+    uid:string,
+    labels:CollectionItem[],
+    label: { text: string; number: number },
+    setLabels: React.Dispatch<React.SetStateAction<CollectionItem[]>>,
+  ) => {
+    handleDeleteCollection(uid,labels, label.text, setLabels)
   };
 
   const closeModal = () => {
@@ -135,7 +145,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
   return (
     <div>
       <div
-        className={`${isSidebarOpen ? 'min-w-72' : 'min-w-20'} h-screen max-h-screen overflow-auto ease-in-out duration-200 mt-2`}
+        className={`${isSidebarOpen ? 'min-w-72' : 'min-w-20'} h-full overflow-hidden ease-in-out duration-200 mt-2`}
       >
         <div className="flex flex-col">
           {labels.map((label, index) => (
@@ -169,17 +179,17 @@ const LabelsList: React.FC<LabelsListProps> = ({
           id="authentication-modal"
           tabIndex={-1}
           aria-hidden="true"
-          className="fixed inset-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-black bg-opacity-60"
+          className="fixed inset-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-black bg-opacity-70"
         >
           <div className="relative p-4 w-full max-w-80 md:max-w-sm">
-            <div className="relative bg-white rounded-lg shadow">
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                <h3 className="text-xl font-semibold text-gray-900">
+            <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow">
+              <div className="flex items-center justify-between p-4 md:p-5 border-b dark:border-my-icon-dark rounded-t">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Edit Labels
                 </h3>
                 <button
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:dark:bg-my-hover-dark hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center"
                   onClick={closeModal}
                 >
                   <img alt="" src={ICONS.Close} />
@@ -194,23 +204,36 @@ const LabelsList: React.FC<LabelsListProps> = ({
                           key={index}
                           className="flex items-center text-gray-900"
                         >
-                          <img
-                            className="w-6 h-6 mr-4"
-                            src={ICONS.LabelFilled}
-                            alt=""
-                          />
+                          <button className="mr-4">
+                            {' '}
+                            <img
+                              className="w-6 h-6"
+                              src={ICONS.LabelFilled}
+                              alt=""
+                            />
+                          </button>
+
                           <input
                             maxLength={20}
                             defaultValue={label.text}
                             onChange={(e) =>
                               editedWrapper(e, label.text, index)
                             }
-                            className="flex-1 bg-white mr-5 focus-visible:outline-none focus:border-b border-b-my-hover no-underline"
+                            className="flex-1 bg-white dark:bg-my-bg-dark dark:text-white mr-5 focus-visible:outline-none focus:border-b dark:border-b-my-hover-dark border-b-my-hover no-underline"
                           />
+                          <button
+                            className="mr-4 p-1 rounded-full hover:bg-my-hover hover:dark:bg-my-hover-dark"
+                            type="button"
+                            onClick={() => {
+                              deleteWrapper(uid, labels, label, setLabels);
+                            }}
+                          >
+                            <img className="w-5 h-5" src={ICONS.Trash} alt="" />
+                          </button>
                           {editedLabelIndex === index &&
                           beforeEdit !== editedLabel ? (
                             <button
-                              className="text-gray-500 hover:bg-my-hover h-6 w-6 pl-1 rounded-full"
+                              className="text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark justify-center items-center h-6 w-6 rounded-full"
                               onClick={editLabel}
                             >
                               <img
@@ -221,11 +244,11 @@ const LabelsList: React.FC<LabelsListProps> = ({
                             </button>
                           ) : (
                             <button
-                              className="text-gray-500 hover:bg-my-hover h-6 w-6 pl-1 rounded-full"
+                              className="text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark h-6 w-6 rounded-full"
                               title="Rename Label"
                             >
                               <img
-                                className="w-4 h-4 justify-center"
+                                className="h-4 w-4 justify-center"
                                 src={ICONS.Edit}
                                 alt="Edit"
                               />
@@ -238,7 +261,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
                   <div>
                     <label
                       htmlFor="new-label"
-                      className="block mb-2 text-sm font-medium text-gray-900"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-my-icon-dark"
                     >
                       New Label
                     </label>
@@ -246,15 +269,15 @@ const LabelsList: React.FC<LabelsListProps> = ({
                       type="text"
                       name="new-label"
                       id="new-label"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-my-blue-500D focus:border-my-blue-500D block w-full p-2.5 focus-visible:outline-none"
+                      className="bg-my-background dark:bg-my-hover-dark border border-gray-300 dark:border-my-icon-dark text-gray-900 dark:text-white text-sm rounded-lg focus:ring-my-blue-500D focus:border-my-blue-500D block w-full p-2.5 focus-visible:outline-none"
                       placeholder="Enter new label"
                       value={newLabel}
                       onChange={(e) => setNewLabel(e.target.value)}
                       required
                     />
                     {emptyLabel && newLabel === '' && (
-                      <span className="text-red-500 text-xs">
-                        * Please enter a label.
+                      <span className="text-red-500 font-medium text-xs">
+                        * Please enter a label
                       </span>
                     )}
                   </div>

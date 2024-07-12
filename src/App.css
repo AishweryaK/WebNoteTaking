@@ -15,7 +15,36 @@
 } 
 
 .initial-text-color {
-  color: #000000; 
+  color: #000000;
+  /* background-color: #417505;  */
+}
+
+.jodit_theme_summer {
+  --jd-color-background-default: #417505;
+  --jd-color-border: #474025;
+  --jd-color-panel: #5fd3a2;
+  --jd-color-icon: #8b572a;
+}
+
+#myjoditEditor
+{
+    
+    .jodit-wysiwyg {
+        padding-left: 10px;
+    }
+
+    ul {
+        list-style: inside;
+    }
+   
+    ol {
+        list-style: inside;
+        list-style-type: number;
+    }
+   
+    td {
+        border: solid 1px;
+    }
 }
 
 /*.logo {

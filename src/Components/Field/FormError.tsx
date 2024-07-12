@@ -4,7 +4,7 @@ export interface FormErrorProps {
 
 // function FormError(errors : FormErrorProps) {
 //   return (
-//     <p className="text-red-700">{errors.email}</p>
+//     <p className="text-red-500 font-medium">{errors.email}</p>
 //   )
 // }
 
