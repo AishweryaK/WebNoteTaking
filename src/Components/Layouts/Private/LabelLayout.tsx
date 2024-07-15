@@ -50,6 +50,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
     return () => unsubscribe();
   }, [uid]);
 
+
   const handleClick = (data: string) => {
     setSelectedLabel(data);
     labelData(data);
@@ -104,6 +105,12 @@ const LabelsList: React.FC<LabelsListProps> = ({
     label: { text: string; number: number },
     setLabels: React.Dispatch<React.SetStateAction<CollectionItem[]>>
   ) => {
+    // if(label.text===selectedLabel)
+    // {
+    //   console.log(label.text, selectedLabel,"!!!!!!!")
+    //   setSelectedLabel(COLLECTION.OTHERS);
+    //   labelData(COLLECTION.OTHERS);
+    // }
     handleDeleteCollection(uid, labels, label.text, setLabels);
   };
 

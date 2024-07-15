@@ -23,7 +23,7 @@ import { ICONS } from '../../Shared/icons';
 import { CONSTANTS } from '../../Shared/Constants';
 import NotesDropdown from './NotesDropdown';
 
-interface Note {
+export interface Note {
   id: string;
   title: string;
   desc: string;
