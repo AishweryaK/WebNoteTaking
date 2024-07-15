@@ -154,7 +154,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
 
               <div className="flex justify-between mt-8">
                 <button
-                  className="bg-red-500 text-white px-4 mb-4 rounded-full font-semibold"
+                  className="bg-red-500 text-white px-4 mb-4 rounded-md font-semibold"
                   onClick={() => handleCancel()}
                 >
                   {CHANGE_PASSWORD.CANCEL}

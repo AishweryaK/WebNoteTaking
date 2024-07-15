@@ -84,8 +84,8 @@ export const updateNote = async (
   uid: string,
   label: string,
   itemID: string,
-  title: string,
-  desc: string
+  title: string | undefined,
+  desc: string | null,
 ) => {
   try {
     const noteRef = collection(userDocRef(uid), label);
@@ -103,8 +103,8 @@ export const updateNote = async (
 export const saveNoteLabel = async (
   uid: string,
   label: string,
-  title: string,
-  desc: string
+  title: string | undefined,
+  desc: string | null,
 ) => {
   try {
     const noteRef = collection(userDocRef(uid), label);

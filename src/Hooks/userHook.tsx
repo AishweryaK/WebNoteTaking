@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {
+  GoogleAuthProvider,
   User,
+  UserCredential,
   // GoogleAuthProvider,
   // UserCredential,
   createUserWithEmailAndPassword,
@@ -173,26 +175,26 @@ export default function useAuthentication() {
   };
 
   const googleSignInCall = async () => {
-    // signInWithPopup(auth, provider)
-    //   .then((result: UserCredential) => {
-    //     const credential = GoogleAuthProvider.credentialFromResult(result);
-    //     const token = credential?.accessToken;
-    //     const { user } = result;
-    //     console.log(user, token, 'USERr');
-    //   })
-    //   .catch((error) => {
-    //     // const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // const { email } = error.customData;
-    //     // const credential = GoogleAuthProvider.credentialFromError(error);
-    //     console.log(errorMessage);
-    //   });
-    try {
-      await signInWithPopup(auth, provider);
-      console.log('google');
-    } catch (error) {
-      console.log(error);
-    }
+    signInWithPopup(auth, provider)
+      .then((result: UserCredential) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const { user } = result;
+        console.log(user, token, 'USERr');
+      })
+      .catch((error) => {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        // const { email } = error.customData;
+        // const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorMessage);
+      });
+    // try {
+    //   await signInWithPopup(auth, provider);
+    //   console.log('google');
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return {

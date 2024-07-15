@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { forwardRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import useAuthentication from '../../../../Hooks/userHook';
 import ChangePasswordModal from '../../../../Views/ChangePwd/ChangePwd';
 import { useReduxDispatch, useReduxSelector } from '../../../../Store';
@@ -15,10 +15,16 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
     const dispatch = useReduxDispatch();
     const isDarkMode = useReduxSelector((state) => state.ui.isDarkMode);
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     const handleLogout = async () => {
       await signOutCall();
       closeMenu();
+    };
+
+    const handleLogoutModal = () => {
+      setModalOpen(true);
+      setModalVisible(false);
     };
 
     const changePassword = () => {
@@ -27,6 +33,15 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
 
     const toggleModeHandler = () => {
       dispatch(toggleMode());
+    };
+
+    const closeModal = () => {
+      setModalOpen(false);
+    };
+
+    const confirmLogout = () => {
+      handleLogout();
+      setModalOpen(false);
     };
 
     return (
@@ -57,13 +72,40 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
         <button
           type="button"
           className="block px-4 py-2 text-sm text-gray-700 hover:dark:bg-my-bg-dark dark:text-white hover:bg-gray-100 w-full text-left border-t border-t-gray-100 dark:border-t-my-hover-dark"
-          onClick={handleLogout}
+          onClick={handleLogoutModal}
         >
           Logout
         </button>
 
         {modalVisible && (
           <ChangePasswordModal onClose={() => setModalVisible(false)} />
+        )}
+
+        {modalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+            <div className="bg-white dark:bg-my-bg-dark rounded-lg shadow-lg max-w-md w-full p-6">
+              <h2 className="text-lg font-semibold mb-4 text-gray-700 dark:text-white">
+                Confirm Logout
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                Are you sure you want to log out?
+              </p>
+              <div className="flex justify-end space-x-4">
+                <button
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  onClick={confirmLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     );

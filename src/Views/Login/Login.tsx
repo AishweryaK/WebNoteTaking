@@ -86,7 +86,7 @@ export default function Login() {
             </div>
             <div className="mb-4">
               <button
-                className="w-full bg-my-background dark:bg-my-icon-dark hover:bg-my-background-100 hover:dark:bg-my-bg-dark duration-50 text-gray-700 dark:text-white font-bold py-2 px-2 rounded-full border border-my-blue-0 dark:border-none focus:outline-none focus:shadow-outline"
+                className="w-full bg-my-background dark:bg-my-icon-dark hover:bg-my-background-100 hover:dark:bg-my-bg-dark duration-50 text-gray-700 dark:text-white font-bold py-2 px-2 rounded-md border border-my-blue-0 dark:border-none focus:outline-none focus:shadow-outline"
                 type="button"
                 onClick={logGoogleUser}
               >

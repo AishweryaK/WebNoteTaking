@@ -24,5 +24,8 @@
     ".eslintrc.cjs",
     "src"
   ],
+  "types": [
+    "vite/client",
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

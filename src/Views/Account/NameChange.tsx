@@ -38,7 +38,7 @@ function NameChange({ onClose }: PasswordProps) {
               <FormField
                 label={SIGN_UP.FIRSTNAME}
                 name={CONSTANTS.FIRST_NAME}
-                placeholder="Enter you first name"
+                placeholder="Enter your first name"
                 inputType={CONSTANTS.TEXT}
               />
               {errors.firstName && touched.firstName ? (
@@ -61,7 +61,7 @@ function NameChange({ onClose }: PasswordProps) {
 
               <div className="flex justify-between mt-8">
                 <button
-                  className="bg-red-500 text-white px-4 mb-4 rounded-full font-semibold"
+                  className="bg-red-500 text-white px-4 mb-4 rounded-md font-semibold"
                   onClick={() => handleCancel()}
                 >
                   {CHANGE_PASSWORD.CANCEL}

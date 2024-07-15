@@ -1,9 +1,14 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { onSnapshot, setDoc } from 'firebase/firestore';
-import { handleDeleteCollection, handleEdit, userDocRef } from '../../../Shared/firebaseUtils';
+import {
+  handleDeleteCollection,
+  handleEdit,
+  userDocRef,
+} from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
 import { COLLECTION } from '../../../Shared/Constants';
+import { ToastContainer } from 'react-toastify';
 
 interface CollectionItem {
   text: string;
@@ -65,7 +70,6 @@ const LabelsList: React.FC<LabelsListProps> = ({
     };
   }, []);
 
-
   const editedWrapper = (
     e: ChangeEvent<HTMLInputElement>,
     text: string,
@@ -95,12 +99,12 @@ const LabelsList: React.FC<LabelsListProps> = ({
   };
 
   const deleteWrapper = (
-    uid:string,
-    labels:CollectionItem[],
+    uid: string,
+    labels: CollectionItem[],
     label: { text: string; number: number },
-    setLabels: React.Dispatch<React.SetStateAction<CollectionItem[]>>,
+    setLabels: React.Dispatch<React.SetStateAction<CollectionItem[]>>
   ) => {
-    handleDeleteCollection(uid,labels, label.text, setLabels)
+    handleDeleteCollection(uid, labels, label.text, setLabels);
   };
 
   const closeModal = () => {
@@ -204,16 +208,14 @@ const LabelsList: React.FC<LabelsListProps> = ({
                           key={index}
                           className="flex items-center text-gray-900"
                         >
-                          <button className="mr-4">
-                            {' '}
-                            <img
-                              className="w-6 h-6"
-                              src={ICONS.LabelFilled}
-                              alt=""
-                            />
-                          </button>
+                          <img
+                            className="mr-4 w-6 h-6"
+                            src={ICONS.LabelFilled}
+                            alt=""
+                          />
 
                           <input
+                            disabled={label.text === 'Others' ? true : false}
                             maxLength={20}
                             defaultValue={label.text}
                             onChange={(e) =>
@@ -221,42 +223,55 @@ const LabelsList: React.FC<LabelsListProps> = ({
                             }
                             className="flex-1 bg-white dark:bg-my-bg-dark dark:text-white mr-5 focus-visible:outline-none focus:border-b dark:border-b-my-hover-dark border-b-my-hover no-underline"
                           />
-                          <button
-                            className="mr-4 p-1 rounded-full hover:bg-my-hover hover:dark:bg-my-hover-dark"
-                            type="button"
-                            onClick={() => {
-                              deleteWrapper(uid, labels, label, setLabels);
-                            }}
-                          >
-                            <img className="w-5 h-5" src={ICONS.Trash} alt="" />
-                          </button>
-                          {editedLabelIndex === index &&
-                          beforeEdit !== editedLabel ? (
+
+                          {label.text !== 'Others' && (
                             <button
-                              className="text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark justify-center items-center h-6 w-6 rounded-full"
-                              onClick={editLabel}
+                              className="mr-4 p-1 rounded-full hover:bg-my-hover hover:dark:bg-my-hover-dark"
+                              type="button"
+                              onClick={() => {
+                                deleteWrapper(uid, labels, label, setLabels);
+                              }}
                             >
                               <img
-                                className="w-4 h-4 justify-center"
-                                src={ICONS.Tick}
-                                alt="Done"
-                              />
-                            </button>
-                          ) : (
-                            <button
-                              className="text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark h-6 w-6 rounded-full"
-                              title="Rename Label"
-                            >
-                              <img
-                                className="h-4 w-4 justify-center"
-                                src={ICONS.Edit}
-                                alt="Edit"
+                                className="w-5 h-5"
+                                src={ICONS.Trash}
+                                alt=""
                               />
                             </button>
                           )}
+                          {label.text !== 'Others' &&
+                            (editedLabelIndex === index &&
+                            beforeEdit !== editedLabel ? (
+                              <button
+                                className="text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark justify-center items-center h-6 w-6 rounded-full"
+                                onClick={editLabel}
+                              >
+                                <img
+                                  className="w-4 h-4 justify-center"
+                                  src={ICONS.Tick}
+                                  alt="Done"
+                                />
+                              </button>
+                            ) : (
+                              <button
+                                className="text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark h-6 w-6 rounded-full"
+                                title="Rename Label"
+                              >
+                                <img
+                                  className="h-4 w-4 justify-center"
+                                  src={ICONS.Edit}
+                                  alt="Edit"
+                                />
+                              </button>
+                            ))}
                         </li>
                       ))}
                     </ul>
+                    {existingErr && (
+                      <span className="text-red-500 font-medium text-xs">
+                        Label already Exists
+                      </span>
+                    )}
                   </div>
                   <div>
                     <label
@@ -294,6 +309,7 @@ const LabelsList: React.FC<LabelsListProps> = ({
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };

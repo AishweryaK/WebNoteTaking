@@ -93,7 +93,7 @@ export function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
           className="w-8 h-8 rounded-full shadow-md ml-4 mr-2"
           src={ICONS.Books}
           alt="Account"
-          onClick={() => setDropdownOpen(!dropdownOpen)}
+          onClick={() => setDropdownOpen((dropdownOpen)=>!dropdownOpen)}
         />
         {dropdownOpen && (
           <DropdownMenu

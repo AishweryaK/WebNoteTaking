@@ -15,7 +15,7 @@ interface AddNoteProps {
   itemDesc?: string | null;
   setItemTitle?: React.Dispatch<React.SetStateAction<string>>;
   setItemDesc?: React.Dispatch<React.SetStateAction<string | null>>;
-  closeModal?:React.Dispatch<React.SetStateAction<string | null>>
+  closeModal?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 function AddNote({
@@ -58,7 +58,6 @@ function AddNote({
     '|',
     'brush',
     '|',
-    'table',
     'image',
     'link',
     '|',
@@ -107,14 +106,9 @@ function AddNote({
       const defaultLabel = 'Others';
       const effectiveLabel = label || defaultLabel;
       if (itemID && label) {
-        updateNote(uid, label, itemID, itemTitle as string, itemDesc as string);
+        updateNote(uid, label, itemID, itemTitle, itemDesc);
       } else if (effectiveLabel) {
-        saveNoteLabel(
-          uid,
-          effectiveLabel,
-          itemTitle as string,
-          itemDesc as string
-        );
+        saveNoteLabel(uid, effectiveLabel, itemTitle, itemDesc);
         updateCollectionCount(uid, effectiveLabel, CONSTANTS.INCREMENT);
       }
 
@@ -129,6 +123,7 @@ function AddNote({
   return (
     <div className="justify-center align-middle text-center">
       <input
+        autoFocus={true}
         value={itemTitle}
         type="text"
         autoComplete="off"
@@ -137,7 +132,7 @@ function AddNote({
         onChange={(e) => setItemTitle(e.target.value)}
         className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
       />
-      <div id='myjoditEditor' className="text-left">
+      <div id="myjoditEditor" className="text-left">
         <JoditEditor
           ref={editorRef}
           value={itemDesc || ''}
