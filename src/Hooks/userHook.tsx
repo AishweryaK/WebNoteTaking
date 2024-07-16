@@ -180,14 +180,13 @@ export default function useAuthentication() {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         const { user } = result;
-        console.log(user, token, 'USERr');
       })
       .catch((error) => {
         // const errorCode = error.code;
         const errorMessage = error.message;
         // const { email } = error.customData;
         // const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(errorMessage);
+        console.error(errorMessage);
       });
     // try {
     //   await signInWithPopup(auth, provider);

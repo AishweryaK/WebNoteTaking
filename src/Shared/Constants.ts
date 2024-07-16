@@ -4,7 +4,8 @@ export { STRING };
 const ROUTES = {
   LOGIN: '/',
   HOME: '/home',
-  NOTES: '/notes',
+  NOTES: '/home/:label',
+  // LABEL:'/home/Others',
   REGISTER: '/register',
   ABOUT: '/about-us',
   SIGNUP: '/sign-up',
@@ -34,6 +35,10 @@ const ROUTES_CONFIG = {
     path: ROUTES.NOTES,
     title: 'Note Taking App',
   },
+  // LABEL: {
+  //   path: ROUTES.LABEL,
+  //   title: 'Note Taking App',
+  // },
   ACCOUNT: {
     path: ROUTES.ACCOUNT,
     title: 'User Account',

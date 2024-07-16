@@ -15,13 +15,18 @@ import parse from 'html-react-parser';
 import { useReduxSelector } from '../../Store';
 import {
   deleteNote,
+  saveNoteLabel,
   updateCollectionCount,
+  updateNote,
   userDocRef,
 } from '../../Shared/firebaseUtils';
 import AddNote from '../AddNote/AddNote';
 import { ICONS } from '../../Shared/icons';
-import { CONSTANTS } from '../../Shared/Constants';
+import { CONSTANTS, ERR_MSG } from '../../Shared/Constants';
 import NotesDropdown from './NotesDropdown';
+import { useOutletContext, useParams } from 'react-router-dom';
+import filter from 'lodash.filter';
+import { ContextType } from '../Home/Home';
 
 export interface Note {
   id: string;
@@ -30,13 +35,15 @@ export interface Note {
   createdAt: FieldValue;
 }
 
-interface NotesProps {
-  label: string;
-}
+// interface NotesProps {
+//   label: string;
+// }
 
-const Notes: React.FC<NotesProps> = ({ label }) => {
+// const Notes: React.FC<NotesProps> = ({ label }) => {
+const Notes: React.FC = () => {
   const { uid } = useReduxSelector((state) => state.user);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [fullNotes, setFullNotes] = useState<Note[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [menuModal, setMenuModal] = useState<boolean>(false);
   const [menuModalID, setMenuModalID] = useState<string | null>(null);
@@ -45,11 +52,14 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
   const [itemDesc, setItemDesc] = useState<string | null>('');
   const [addNote, setAddNote] = useState<boolean>(false);
   const addNoteRef = useRef<HTMLDivElement>(null);
+  const { label } = useParams();
+  const finalLabel = label || 'Others';
+  const { searchText } = useOutletContext<ContextType>();
 
   useEffect(() => {
-    const defaultLabel = 'Others';
-    const effectiveLabel = label || defaultLabel;
-    const notesRef = collection(userDocRef(uid), effectiveLabel);
+    // const defaultLabel = 'Others';
+    // const effectiveLabel = label || defaultLabel;
+    const notesRef = collection(userDocRef(uid), finalLabel);
     const q = query(notesRef, orderBy('createdAt', 'desc'));
 
     const unsubscribe = onSnapshot(
@@ -63,6 +73,7 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
           } as Note);
         });
         setNotes(notesData);
+        setFullNotes(notesData);
       },
       (error) => {
         console.error('Error fetching notes:', error);
@@ -70,7 +81,7 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
     );
 
     return () => unsubscribe();
-  }, [label, uid]);
+  }, [finalLabel, uid]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -85,6 +96,7 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
     if (addNote) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
+      saveNote();
       document.removeEventListener('mousedown', handleClickOutside);
     }
 
@@ -92,6 +104,60 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [addNote]);
+
+  const saveNote = () => {
+    if (itemTitle === '' && itemDesc === '') {
+      return;
+    }
+    try {
+      const defaultLabel = 'Others';
+      const effectiveLabel = label || defaultLabel;
+      if (itemID && label) {
+        updateNote(uid, label, itemID, itemTitle, itemDesc);
+      } else if (effectiveLabel) {
+        saveNoteLabel(uid, effectiveLabel, itemTitle, itemDesc);
+        updateCollectionCount(uid, effectiveLabel, CONSTANTS.INCREMENT);
+      }
+
+      setItemTitle('');
+      setItemDesc('');
+      closeModal();
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
+
+  // const handleSearch = () => {
+  //   const formattedQuery = searchText?.toLowerCase();
+  //   const filteredNotes = filter(fullNotes, note => {
+  //     return contains(note, formattedQuery as string);
+  //   });
+  //   setNotes(filteredNotes);
+  // };
+
+  // const contains = ({title, desc}: Note, query: string) => {
+  //   return (
+  //     title.toLowerCase().includes(query) || desc.toLowerCase().includes(query)
+  //   );
+  // };
+
+  useEffect(() => {
+    const formattedQuery = searchText?.toLowerCase();
+    if (formattedQuery) {
+      const filteredNotes = filter(fullNotes, (note) =>
+        contains(note, formattedQuery)
+      );
+      setNotes(filteredNotes);
+    } else {
+      setNotes(fullNotes);
+    }
+  }, [searchText, fullNotes]);
+
+  const contains = ({ title, desc }: Note, query: string) => {
+    return (
+      title.toLowerCase().includes(query) || desc.toLowerCase().includes(query)
+    );
+  };
 
   const handleNote = (note: Note) => {
     setShowModal(true);
@@ -107,11 +173,11 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
   };
 
   const handleDelete = async (noteID: string) => {
-    const defaultLabel = 'Others';
-    const effectiveLabel = label || defaultLabel;
+    // const defaultLabel = 'Others';
+    // const effectiveLabel = label || defaultLabel;
     try {
-      await deleteNote(uid, effectiveLabel, noteID);
-      updateCollectionCount(uid, effectiveLabel, CONSTANTS.DECREMENT);
+      await deleteNote(uid, finalLabel, noteID);
+      updateCollectionCount(uid, finalLabel, CONSTANTS.DECREMENT);
     } catch (error) {
       console.error('error', error);
     }
@@ -137,9 +203,9 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
     <div className="p-4 w-full">
       <div className="flex justify-center w-full mb-4">
         {addNote ? (
-          <div ref={addNoteRef} className='w-full max-w-3xl mx-auto my-4'>
+          <div ref={addNoteRef} className="w-full max-w-3xl mx-auto my-4">
             <AddNote
-              label={label}
+              label={finalLabel}
               itemTitle={itemTitle}
               itemDesc={itemDesc}
               setItemTitle={setItemTitle}
@@ -149,21 +215,25 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
         ) : (
           // <div>
           //   <div className="justify-center align-middle text-center">
-              <div
-                onClick={() => setAddNote(true)}
-                className="w-full max-w-3xl mx-auto my-4 cursor-text bg-white dark:bg-jodit-dark text-gray-500 dark:text-[#AAA7A7] placeholder:font-medium border border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
-              >
-                Add Note...
-              </div>
+          <div
+            onClick={() => setAddNote(true)}
+            className="w-full max-w-3xl mx-auto my-4 cursor-text bg-white dark:bg-jodit-dark text-gray-500 dark:text-[#AAA7A7] placeholder:font-medium border border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
+          >
+            Add Note...
+          </div>
           //   </div>
           // </div>
         )}
       </div>
-      {notes.length === 0 && (
+      {notes.length === 0 && searchText === '' && (
         <p className="text-gray-500 p-8">
           Add a note to start your collection!
         </p>
       )}
+      {notes.length === 0 && searchText !== '' && (
+        <p className="text-gray-500 p-8">No matching notes</p>
+      )}
+
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
         {notes.map((note) => (
           <div
@@ -215,7 +285,7 @@ const Notes: React.FC<NotesProps> = ({ label }) => {
               </div>
               <div className="p-4 md:p-5">
                 <AddNote
-                  label={label}
+                  label={finalLabel}
                   itemID={itemID}
                   itemTitle={itemTitle}
                   itemDesc={itemDesc}

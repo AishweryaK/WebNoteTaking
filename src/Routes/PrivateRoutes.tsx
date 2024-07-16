@@ -3,6 +3,7 @@ import { ROUTES_CONFIG, WILDCARD_ROUTES } from '../Shared/Constants';
 import { CustomRouter } from './RootRoutes';
 import Home from '../Views/Home';
 import Account from '../Views/Account/Account';
+import Notes from '../Views/Notes/Notes';
 
 // eslint-disable-next-line import/prefer-default-export
 export const PRIVATE_ROUTES: CustomRouter[] = [
@@ -10,13 +11,19 @@ export const PRIVATE_ROUTES: CustomRouter[] = [
     path: ROUTES_CONFIG.HOME.path,
     element: <Home />,
     title: ROUTES_CONFIG.HOME.title,
-    // children: [
-    //   {
-    //     index: true,
-    //     element: <Notes />,
-    //     title: ROUTES_CONFIG.NOTES.title,
-    //   },
-    // ],
+    children: [
+      {
+        index: true,
+        // path: 'Others',
+        element: <Notes />,
+        title: ROUTES_CONFIG.NOTES.title,
+      },
+      {
+        path:ROUTES_CONFIG.NOTES.path,
+        element: <Notes />,
+        title: ROUTES_CONFIG.NOTES.title,
+      },
+    ],
   },
   // {
   //   path: ROUTES_CONFIG.NOTES.path,

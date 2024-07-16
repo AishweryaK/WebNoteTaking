@@ -9,7 +9,7 @@ import { useReduxSelector } from '../../Store';
 import { CONSTANTS, ERR_MSG, ERR_TITLE } from '../../Shared/Constants';
 import { showAlert } from '../../Shared/alert';
 interface AddNoteProps {
-  label: string;
+  label: string | undefined;
   itemID?: string;
   itemTitle?: string;
   itemDesc?: string | null;
@@ -116,7 +116,7 @@ function AddNote({
       setItemDesc('');
       closeModal('');
     } catch (error) {
-      console.log('Error', error);
+      console.error('Error', error);
     }
   };
 

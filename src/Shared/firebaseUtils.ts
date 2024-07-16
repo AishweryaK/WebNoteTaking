@@ -189,7 +189,6 @@ export const handleEdit = async (
   setAllCollections: React.Dispatch<React.SetStateAction<CollectionItem[]>>,
   handleClose: () => void
 ) => {
-  console.log(collectionName, label, allCollections, uid, 'GTGTTBRGTFV');
   const trimmedColl = collectionName.trim();
   if (trimmedColl === '') {
     setEmptyColl(true);

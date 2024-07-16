@@ -32,7 +32,7 @@ export default function Login() {
         </div>
       </div>
       <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-my-background mb-2">
-        Welcome back
+        NoteTaking App
       </h2>
       <p className="text-center text-gray-600 dark:text-my-background mb-2">
         Welcome back! Please enter your details.

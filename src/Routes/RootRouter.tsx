@@ -4,6 +4,7 @@ import DocumentTitle from './DocumentTitle';
 import { authenticatedRoutes, guestRoutes } from './config';
 import AppLayout from '../Components/Layouts/AppLayout';
 import { useReduxSelector } from '../Store';
+import { ToastContainer } from 'react-toastify';
 
 function RootRouter() {
   const guest = useRoutes(guestRoutes);
@@ -27,6 +28,7 @@ function RootRouter() {
       <AppLayout isAuthenticated={isAuthenticated}>
         {uid ? authenticated : guest}
       </AppLayout>
+      <ToastContainer />
     </>
   );
 }

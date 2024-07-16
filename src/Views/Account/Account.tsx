@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useReduxSelector } from '../../Store';
 import { ICONS } from '../../Shared/icons';
 import NameChange from './NameChange';
+import { useNavigate } from 'react-router-dom';
 
 function Account() {
   const { displayName, email } = useReduxSelector((state) => state.user);
   const [modalVisible, setModalVisible] = useState(false);
+  const navigate =  useNavigate();
 
   const changeName = () => {
     setModalVisible(true);
@@ -22,6 +24,13 @@ function Account() {
           />
         </div>
         <div className="w-full md:w-2/3 lg:w-1/2 p-8">
+        <img
+                src={ICONS.Back}
+                alt="Go back"
+                title='Go back'
+                className="hover:bg-my-hover hover:dark:bg-my-bg-dark rounded-full h-8 w-8 p-1"
+                onClick={()=>navigate(-1)}
+              />
           <div className="flex flex-col justify-center">
             <div className="mb-6 flex justify-center">
               <div className="h-36 w-36 rounded-full shadow-sm bg-gradient-to-b from-my-background to-my-background-200 flex items-center justify-center">

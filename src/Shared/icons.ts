@@ -16,6 +16,7 @@ import Close from '../assets/Svgs/close.svg';
 import LabelFilled from '../assets/Svgs/label-filled.svg';
 import Tick from '../assets/Svgs/tick.svg';
 import Dots from '../assets/Svgs/ellipsis-vertical.svg';
+import Back from '../assets/Svgs/go-back.svg';
 
 export const ICONS = {
   Google,
@@ -36,4 +37,5 @@ export const ICONS = {
   LabelFilled,
   Tick,
   Dots,
+  Back,
 };

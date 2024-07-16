@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import Navbar from '../../Components/Layouts/Public/Navbar';
 import LabelsList from '../../Components/Layouts/Private/LabelLayout';
-import Notes from '../Notes/Notes';
+import { Outlet } from 'react-router-dom';
+
+export type ContextType = { searchText: string | null };
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [label, setlabel] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   const handleDataFromChild = (childData: string) => {
-    setlabel(childData);
+    setSearchText(childData);
   };
 
   const toggleSidebar = () => {
@@ -25,15 +27,20 @@ export default function Home() {
 
   return (
     <>
-      <Navbar toggleSidebar={toggleSidebar} />
+      <Navbar
+        toggleSidebar={toggleSidebar}
+        setSearchData={handleDataFromChild}
+        searchData={searchText}
+      />
+
       <div className="flex flex-row">
         <LabelsList
           openSidebar={openSidebar}
           isSidebarOpen={isSidebarOpen}
-          labelData={handleDataFromChild}
+          // labelData={handleDataFromChild}
         />
 
-        <Notes label={label} />
+        <Outlet context={{ searchText } satisfies ContextType} />
       </div>
     </>
   );
