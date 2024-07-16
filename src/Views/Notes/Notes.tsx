@@ -22,7 +22,7 @@ import {
 } from '../../Shared/firebaseUtils';
 import AddNote from '../AddNote/AddNote';
 import { ICONS } from '../../Shared/icons';
-import { CONSTANTS, ERR_MSG } from '../../Shared/Constants';
+import { CONSTANTS } from '../../Shared/Constants';
 import NotesDropdown from './NotesDropdown';
 import { useOutletContext, useParams } from 'react-router-dom';
 import filter from 'lodash.filter';
@@ -82,6 +82,8 @@ const Notes: React.FC = () => {
 
     return () => unsubscribe();
   }, [finalLabel, uid]);
+
+  console.log(searchText,"SEARCH")
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -143,9 +145,9 @@ const Notes: React.FC = () => {
 
   useEffect(() => {
     const formattedQuery = searchText?.toLowerCase();
-    if (formattedQuery) {
+    if (searchText) {
       const filteredNotes = filter(fullNotes, (note) =>
-        contains(note, formattedQuery)
+        contains(note, formattedQuery as string)
       );
       setNotes(filteredNotes);
     } else {
@@ -200,7 +202,7 @@ const Notes: React.FC = () => {
   };
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-4 w-full max-h-full overflow-auto">
       <div className="flex justify-center w-full mb-4">
         {addNote ? (
           <div ref={addNoteRef} className="w-full max-w-3xl mx-auto my-4">

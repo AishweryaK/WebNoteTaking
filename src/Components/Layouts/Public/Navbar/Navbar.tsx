@@ -1,5 +1,5 @@
 import './navbar.scss';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ICONS } from '../../../../Shared/icons';
 import DropdownMenu from './Dropdown';
 // import filter from 'lodash.filter';
@@ -7,29 +7,39 @@ import DropdownMenu from './Dropdown';
 import { useParams } from 'react-router-dom';
 
 interface NavbarProps {
-  toggleSidebar: () => void
+  toggleSidebar: () => void;
   setSearchData: (data: string) => void;
-  searchData :string;
+  searchData: string;
 }
 
-export function Navbar({ toggleSidebar, setSearchData, searchData }:NavbarProps) {
-  // const [searchText, setSearchText] = useState<string>('');
+export function Navbar({
+  toggleSidebar,
+  setSearchData,
+  searchData,
+}: NavbarProps) {
+  const [searchText, setSearchText] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const {label} = useParams();
-  const finalLabel = label || "Others";
+  const { label } = useParams();
+  const finalLabel = label || 'Others';
 
-  const handleSearchText = (e: ChangeEvent<HTMLInputElement>): void => {
-    const query = e.target.value;
-    // setSearchText(query);
-    setSearchData(query);
-    // const formattedQuery = query.toLowerCase();
-  };
+  // const handleSearchText = (e: ChangeEvent<HTMLInputElement>): void => {
+  //   const query = e.target.value;
+  //   const formattedQuery = query.toLowerCase();
+  //   setSearchData(formattedQuery);
+  // };
 
   useEffect(()=>{
+    const getSearch= setTimeout((
+    )=>{setSearchData(searchText)},500)
+
+    return () => clearTimeout(getSearch)
+  },[searchText])
+
+  useEffect(() => {
     // setSearchText("");
-    setSearchData("");
-  },[finalLabel])
+    setSearchData('');
+  }, [finalLabel]);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -39,6 +49,11 @@ export function Navbar({ toggleSidebar, setSearchData, searchData }:NavbarProps)
       setDropdownOpen(false);
     }
   };
+
+  const handleClear = () => {
+    setSearchData('')
+    setSearchText('')
+  }
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -81,18 +96,18 @@ export function Navbar({ toggleSidebar, setSearchData, searchData }:NavbarProps)
           <img src={ICONS.Search} alt="Search" />
         </button>
         <input
-          value={searchData}
+          value={searchText}
           type="text"
           autoComplete="off"
           placeholder={`Search within "${finalLabel}"`}
-          onChange={handleSearchText}
+          onChange={(e)=>setSearchText(e.target.value)}
           className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />
         {searchData && (
           <button
             className="hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full"
             type="button"
-            onClick={() => setSearchData('')}
+            onClick={handleClear}
           >
             <img src={ICONS.Close} alt="Close" />
           </button>

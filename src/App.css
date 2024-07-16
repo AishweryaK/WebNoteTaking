@@ -3,16 +3,16 @@
   margin: 0 auto;
   /* padding: 2rem; */
   /* text-align: center; */
-  background-color:#F9F8FD;
+  background-color: #f9f8fd;
   min-height: 100vh;
   min-width: 100vw;
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   /* align-items: center; */
-} 
+}
 
 .initial-text-color {
   color: #000000;
@@ -26,25 +26,23 @@
   --jd-color-icon: #8b572a;
 }
 
-#myjoditEditor
-{
-    
-    .jodit-wysiwyg {
-        padding-left: 10px;
-    }
+#myjoditEditor {
+  .jodit-wysiwyg {
+    padding-left: 10px;
+  }
 
-    ul {
-        list-style: inside;
-    }
-   
-    ol {
-        list-style: inside;
-        list-style-type: number;
-    }
-   
-    td {
-        border: solid 1px;
-    }
+  ul {
+    list-style: inside;
+  }
+
+  ol {
+    list-style: inside;
+    list-style-type: number;
+  }
+
+  td {
+    border: solid 1px;
+  }
 }
 
 /*.logo {
