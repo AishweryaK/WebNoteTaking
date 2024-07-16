@@ -41,6 +41,8 @@ export function Navbar({
     setSearchData('');
   }, [finalLabel]);
 
+  console.log("")
+
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
