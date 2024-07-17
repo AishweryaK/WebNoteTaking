@@ -29,19 +29,18 @@ export function Navbar({
   //   setSearchData(formattedQuery);
   // };
 
-  useEffect(()=>{
-    const getSearch= setTimeout((
-    )=>{setSearchData(searchText)},500)
+  useEffect(() => {
+    const getSearch = setTimeout(() => {
+      setSearchData(searchText);
+    }, 500);
 
-    return () => clearTimeout(getSearch)
-  },[searchText])
+    return () => clearTimeout(getSearch);
+  }, [searchText]);
 
   useEffect(() => {
     // setSearchText("");
     setSearchData('');
   }, [finalLabel]);
-
-  console.log("")
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -53,9 +52,9 @@ export function Navbar({
   };
 
   const handleClear = () => {
-    setSearchData('')
-    setSearchText('')
-  }
+    setSearchData('');
+    setSearchText('');
+  };
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -82,9 +81,9 @@ export function Navbar({
             onClick={toggleSidebar}
           />
           <div className="flex items-center space-x-1">
-            <img src={ICONS.Logo} alt="Logo" className="h-14 w-14" />
-            <span className="font-semibold text-gray-700 dark:text-white">
-              Note Taking App
+            <img src={ICONS.Logo} alt="Logo" className="h-14 w-14 min-w-10" />
+            <span className="hidden md:block font-semibold text-gray-700 dark:text-white">
+              {finalLabel}
             </span>
           </div>
         </div>
@@ -102,7 +101,7 @@ export function Navbar({
           type="text"
           autoComplete="off"
           placeholder={`Search within "${finalLabel}"`}
-          onChange={(e)=>setSearchText(e.target.value)}
+          onChange={(e) => setSearchText(e.target.value)}
           className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />
         {searchData && (

@@ -11,7 +11,10 @@ const NotesDropdown: React.FC<NotesDropdownProps> = ({
   onDelete,
   closeMenu,
 }) => {
-  const handleOptionClick = (e: MouseEvent<HTMLButtonElement>, action: () => void) => {
+  const handleOptionClick = (
+    e: MouseEvent<HTMLButtonElement>,
+    action: () => void
+  ) => {
     e.stopPropagation();
     action();
     closeMenu();
@@ -38,4 +41,3 @@ const NotesDropdown: React.FC<NotesDropdownProps> = ({
 };
 
 export default NotesDropdown;
-

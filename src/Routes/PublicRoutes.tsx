@@ -4,7 +4,7 @@ import { CustomRouter } from './RootRoutes';
 import Login from '../Views/Login/Login';
 import Signup from '../Views/Signup/Signup';
 import Layout from '../Components/Layouts/Public/Layout/Layout';
-import ForgotPwd from '../Views/ForgotP/ForgotPwd';
+import ForgotPwd from '../Views/ForgotPassword/ForgotPwd';
 
 // eslint-disable-next-line import/prefer-default-export
 const PUBLIC_ROUTES: CustomRouter[] = [

@@ -26,6 +26,7 @@ export default function Home() {
   // })
 
   return (
+    // <div className="flex flex-col min-h-screen">
     <>
       <Navbar
         toggleSidebar={toggleSidebar}
@@ -33,6 +34,7 @@ export default function Home() {
         searchData={searchText}
       />
 
+      {/* <div className="flex flex-row flex-grow bg-red-950 pt-2"> */}
       <div className="flex flex-row">
         <LabelsList
           openSidebar={openSidebar}
@@ -42,6 +44,7 @@ export default function Home() {
 
         <Outlet context={{ searchText } satisfies ContextType} />
       </div>
-    </>
+      </>
+    // </div>
   );
 }

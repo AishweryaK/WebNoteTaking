@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthentication from '../../../../Hooks/userHook';
-import ChangePasswordModal from '../../../../Views/ChangePwd/ChangePwd';
+import ChangePasswordModal from '../../../../Views/ChangePassword/ChangePwd';
 import { useReduxDispatch, useReduxSelector } from '../../../../Store';
 import { toggleMode } from '../../../../Store/Theme';
 

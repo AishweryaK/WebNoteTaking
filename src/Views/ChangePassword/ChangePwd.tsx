@@ -101,7 +101,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
       {({ errors, touched, isValid }: FormikProps<FormValues>) => (
         <Form>
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-            <div className="bg-white dark:bg-my-bg-dark rounded-lg p-6 w-11/12 md:w-2/5 xl:w-1/5">
+            <div className="bg-white dark:bg-my-bg-dark rounded-lg p-6 w-11/12 md:w-2/5 2xl:w-1/5">
               <h2 className="text-2xl font-semibold text-gray-800 dark:text-my-background mb-4">
                 {CHANGE_PASSWORD.CHANGE}
               </h2>
