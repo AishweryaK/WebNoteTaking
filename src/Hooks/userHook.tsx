@@ -3,8 +3,6 @@ import {
   GoogleAuthProvider,
   User,
   UserCredential,
-  // GoogleAuthProvider,
-  // UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,

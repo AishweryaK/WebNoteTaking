@@ -3,7 +3,6 @@ export interface UserInfoState {
     uid: string;
     email: string | null;
     photoURL: string | null;
-    // theme: Theme;
     provider: string;
   }
 

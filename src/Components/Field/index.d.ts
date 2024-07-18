@@ -4,3 +4,8 @@ export interface FormFieldProps {
   placeholder: string;
   inputType: string;
 }
+
+export interface FormErrorProps {
+  error?: string;
+  touched?: boolean;
+}

@@ -5,20 +5,20 @@ import { authenticatedRoutes, guestRoutes } from './config';
 import AppLayout from '../Components/Layouts/AppLayout';
 import { useReduxSelector } from '../Store';
 import { ToastContainer } from 'react-toastify';
+import { ROOT_ROUTER } from '../Shared/Constants';
 
 function RootRouter() {
   const guest = useRoutes(guestRoutes);
   const authenticated = useRoutes(authenticatedRoutes);
-  // const token = useReduxSelector((state: RootState) => state?.common?.token);
   const { uid } = useReduxSelector((state) => state?.user);
   const isAuthenticated = !!uid; // to convert value to boolean
   const isDarkMode = useReduxSelector((state) => state.ui.isDarkMode);
 
   useEffect(() => {
     if (isDarkMode) {
-      document.querySelector('html')?.classList.add('dark');
+      document.querySelector(ROOT_ROUTER.HTML)?.classList.add(ROOT_ROUTER.DARK);
     } else {
-      document.querySelector('html')?.classList.remove('dark');
+      document.querySelector(ROOT_ROUTER.HTML)?.classList.remove(ROOT_ROUTER.DARK);
     }
   }, [isDarkMode]);
 

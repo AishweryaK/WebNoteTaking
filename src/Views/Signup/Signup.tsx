@@ -1,11 +1,12 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { CONSTANTS, SIGN_UP, TITLE } from '../../Shared/Constants';
-import { FormValues } from './sign-up';
+import FormField from '../../Components/Field/FormField';
+import CustomButton from '../../Components/Button';
 import useAuthentication from '../../Hooks/userHook';
 import { SignupSchema } from '../../Shared/validationSchema';
 import { ICONS } from '../../Shared/icons';
-import FormField from '../../Components/Field/FormField';
-import CustomButton from '../../Components/Button';
+import { FormValues } from './sign-up';
+import { CONSTANTS, SIGN_UP, TITLE } from '../../Shared/Constants';
+import FormError from '../../Components/Field/FormError';
 
 export default function Signup() {
   const { signUpCall } = useAuthentication();
@@ -28,10 +29,10 @@ export default function Signup() {
         </div>
       </div>
       <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-2">
-        Sign up
+        {SIGN_UP.SUBMIT}
       </h2>
       <p className="text-center text-gray-600 dark:text-white mb-2">
-        Welcome! Please enter your details.
+        {SIGN_UP.ENTER_DETAILS}
       </p>
       <Formik
         initialValues={{
@@ -49,50 +50,39 @@ export default function Signup() {
             <FormField
               label={SIGN_UP.FIRSTNAME}
               name={CONSTANTS.FIRST_NAME}
-              placeholder="Enter you first name"
+              placeholder={SIGN_UP.ENTER_FIRST}
               inputType={CONSTANTS.TEXT}
             />
-            {errors.firstName && touched.firstName ? (
+            {/* {errors.firstName && touched.firstName ? (
               <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
                 {errors.firstName}
               </p>
-            ) : null}
+            ) : null} */}
+            <FormError error={errors.firstName} touched={touched.firstName} />
 
             <FormField
               label={SIGN_UP.LASTNAME}
               name={CONSTANTS.LAST_NAME}
-              placeholder="Enter your last name"
+              placeholder={SIGN_UP.ENTER_LAST}
               inputType={CONSTANTS.TEXT}
             />
-            {errors.lastName && touched.lastName ? (
-              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
-                {errors.lastName}
-              </p>
-            ) : null}
+            <FormError error={errors.lastName} touched={touched.lastName} />
 
             <FormField
-              label="Email"
+              label={SIGN_UP.EMAIL}
               name={CONSTANTS.EMAIL}
-              placeholder="Enter your email"
+              placeholder={SIGN_UP.ENTER_EMAIL_ID}
               inputType={CONSTANTS.EMAIL}
             />
-            {errors.email && touched.email ? (
-              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
-                {errors.email}
-              </p>
-            ) : null}
+            <FormError error={errors.email} touched={touched.email} />
 
             <FormField
               label={SIGN_UP.SETPASSWORD}
               name={CONSTANTS.PASSWORD}
-              placeholder="Enter a password"
+              placeholder={SIGN_UP.ENTER_PWD}
               inputType={CONSTANTS.PASSWORD}
             />
-            {errors.password && touched.password ? (
-              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
-                {errors.password}
-              </p>
-            ) : null}
+            <FormError error={errors.password} touched={touched.password} />
 
             <FormField
               label={SIGN_UP.CONFIRMPASSWORD}
@@ -100,11 +90,7 @@ export default function Signup() {
               placeholder={SIGN_UP.CONFIRMPASSWORD}
               inputType={CONSTANTS.PASSWORD}
             />
-            {errors.confirmPassword && touched.confirmPassword ? (
-              <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
-                {errors.confirmPassword}
-              </p>
-            ) : null}
+            <FormError error={errors.confirmPassword} touched={touched.confirmPassword} />
 
             <div className="mb-4 mt-8">
               <CustomButton text={TITLE.SIGNUP} disabled={!isValid} />

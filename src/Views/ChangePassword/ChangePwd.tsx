@@ -19,6 +19,7 @@ import FormField from '../../Components/Field/FormField';
 import CustomButton from '../../Components/Button';
 import { auth } from '../../utils';
 import { ICONS } from '../../Shared/icons';
+import FormError from '../../Components/Field/FormError';
 
 interface FormValues {
   password: string;
@@ -83,7 +84,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
   };
 
   const handleToggle = () => {
-    if (type === 'password') {
+    if (type === CONSTANTS.PASSWORD) {
       setIcon(ICONS.EyeOn);
       setType(CONSTANTS.TEXT);
     } else {
@@ -110,10 +111,10 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                   className="block text-gray-700 dark:text-my-icon-dark text-sm font-bold mt-4 mb-2 text-left"
                   htmlFor="currentPassword"
                 >
-                  Current Password
+                  {CHANGE_PASSWORD.CURRENT}
                 </label>
                 <input
-                  name="password"
+                  name={CONSTANTS.PASSWORD}
                   className="bg-my-background dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
                   type={type}
                   placeholder={CHANGE_PASSWORD.CURRENT}
@@ -124,21 +125,17 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                   className="absolute inset-y-0 right-0 flex items-end mb-2 pr-3"
                   onClick={handleToggle}
                 >
-                  <img src={icon} alt="password" className="w-5" />
+                  <img src={icon} alt={CONSTANTS.PASSWORD} className="w-5" />
                 </div>
               </div>
 
               <FormField
-                label="Password"
+                label={SIGN_UP.SETPASSWORD}
                 name={CONSTANTS.PASSWORD}
                 placeholder={SIGN_UP.SETPASSWORD}
                 inputType={CONSTANTS.PASSWORD}
               />
-              {errors.password && touched.password ? (
-                <p className="text-red-500 font-medium text-xs mb-4 text-left">
-                  {errors.password}
-                </p>
-              ) : null}
+              <FormError error={errors.password} touched={touched.password} />
 
               <FormField
                 label={SIGN_UP.CONFIRMPASSWORD}
@@ -146,11 +143,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                 placeholder={SIGN_UP.CONFIRMPASSWORD}
                 inputType={CONSTANTS.PASSWORD}
               />
-              {errors.confirmPassword && touched.confirmPassword ? (
-                <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
-                  {errors.confirmPassword}
-                </p>
-              ) : null}
+              <FormError error={errors.confirmPassword} touched={touched.confirmPassword} />
 
               <div className="flex justify-between mt-8">
                 <button
@@ -160,7 +153,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                   {CHANGE_PASSWORD.CANCEL}
                 </button>
                 <div className="mb-4">
-                  <CustomButton text="Change Password" disabled={!isValid} />
+                  <CustomButton text={CHANGE_PASSWORD.CHANGE} disabled={!isValid} />
                 </div>
               </div>
             </div>

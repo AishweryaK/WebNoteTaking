@@ -4,6 +4,7 @@ import useAuthentication from '../../../../Hooks/userHook';
 import ChangePasswordModal from '../../../../Views/ChangePassword/ChangePwd';
 import { useReduxDispatch, useReduxSelector } from '../../../../Store';
 import { toggleMode } from '../../../../Store/Theme';
+import { CONSTANTS, DROPDOWN } from '../../../../Shared/Constants';
 
 type DropdownMenuProps = {
   closeMenu: () => void;
@@ -53,28 +54,28 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           to="/account"
           className="block px-4 py-2 text-sm hover:dark:bg-my-bg-dark text-gray-700 dark:text-white hover:bg-gray-100"
         >
-          Account
+          {DROPDOWN.ACCOUNT}
         </Link>
         <button
           type="button"
           onClick={changePassword}
           className="block px-4 py-2 text-sm w-full text-left hover:dark:bg-my-bg-dark text-gray-700 dark:text-white hover:bg-gray-100"
         >
-          Change Password
+          {DROPDOWN.PASSWORD}
         </button>
         <button
           type="button"
           onClick={toggleModeHandler}
           className="block px-4 py-2 text-sm w-full text-left hover:dark:bg-my-bg-dark text-gray-700 dark:text-white hover:bg-gray-100"
         >
-          {isDarkMode ? 'Disable Dark Theme' : 'Enable Dark Theme'}
+          {isDarkMode ? DROPDOWN.DISABLE_THEME : DROPDOWN.ENABLE_THEME}
         </button>
         <button
           type="button"
           className="block px-4 py-2 text-sm text-gray-700 hover:dark:bg-my-bg-dark dark:text-white hover:bg-gray-100 w-full text-left border-t border-t-gray-100 dark:border-t-my-hover-dark"
           onClick={handleLogoutModal}
         >
-          Logout
+          {DROPDOWN.LOGOUT}
         </button>
 
         {modalVisible && (
@@ -85,23 +86,23 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
             <div className="bg-white dark:bg-my-bg-dark rounded-lg shadow-lg max-w-md w-full p-6">
               <h2 className="text-lg font-semibold mb-4 text-gray-700 dark:text-white">
-                Confirm Logout
+                {DROPDOWN.CONFIRM}
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Are you sure you want to log out?
+                {DROPDOWN.ARE_YOU_SURE}
               </p>
               <div className="flex justify-end space-x-4">
                 <button
                   className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500"
                   onClick={closeModal}
                 >
-                  Cancel
+                  {CONSTANTS.CANCEL}
                 </button>
                 <button
                   className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
                   onClick={confirmLogout}
                 >
-                  Logout
+                  {DROPDOWN.LOGOUT}
                 </button>
               </div>
             </div>

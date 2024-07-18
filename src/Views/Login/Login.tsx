@@ -1,17 +1,19 @@
 import { Form, Formik, FormikProps } from 'formik';
 import { Link } from 'react-router-dom';
-import { FormValues } from './log-in';
+import FormField from '../../Components/Field/FormField';
+import FormError from '../../Components/Field/FormError';
+import CustomButton from '../../Components/Button';
+import useAuthentication from '../../Hooks/userHook';
+import { LoginSchema } from '../../Shared/validationSchema';
+import { ICONS } from '../../Shared/icons';
 import {
   CONSTANTS,
+  LOGIN,
   ROUTES_CONFIG,
   SIGN_UP,
   TITLE,
 } from '../../Shared/Constants';
-import useAuthentication from '../../Hooks/userHook';
-import FormField from '../../Components/Field/FormField';
-import CustomButton from '../../Components/Button';
-import { ICONS } from '../../Shared/icons';
-import { LoginSchema } from '../../Shared/validationSchema';
+import { FormValues } from './log-in';
 
 export default function Login() {
   const { googleSignInCall, signInCall } = useAuthentication();
@@ -28,14 +30,14 @@ export default function Login() {
     <div className="flex flex-col justify-center">
       <div className="mb-6 flex justify-center">
         <div className="h-16 w-16 rounded-full shadow-sm bg-gradient-to-b from-my-background to-my-background-200 flex items-center justify-center">
-          <img src={ICONS.Logo} alt="Logo" className="h-12 w-12" />
+          <img src={ICONS.Logo} alt={CONSTANTS.LOGO} className="h-12 w-12" />
         </div>
       </div>
       <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-my-background mb-2">
-        NoteTaking App
+        {LOGIN.NOTE_APP}
       </h2>
       <p className="text-center text-gray-600 dark:text-my-background mb-2">
-        Welcome back! Please enter your details.
+        {LOGIN.WELCOME}
       </p>
       <Formik
         initialValues={{
@@ -48,28 +50,20 @@ export default function Login() {
         {({ errors, touched, isValid }: FormikProps<FormValues>) => (
           <Form>
             <FormField
-              label="Email"
+              label={SIGN_UP.EMAIL}
               name={CONSTANTS.EMAIL}
               placeholder={SIGN_UP.EMAIL}
               inputType={CONSTANTS.EMAIL}
             />
-            {errors.email && touched.email ? (
-              <p className="text-red-500 font-medium text-xs mb-4 text-left">
-                {errors.email}
-              </p>
-            ) : null}
+            <FormError error={errors.email} touched={touched.email} />
 
             <FormField
-              label="Password"
+              label={SIGN_UP.SETPASSWORD}
               name={CONSTANTS.PASSWORD}
               placeholder={SIGN_UP.SETPASSWORD}
               inputType={CONSTANTS.PASSWORD}
             />
-            {errors.password && touched.password ? (
-              <p className="text-red-500 font-medium text-xs mb-4 text-left">
-                {errors.password}
-              </p>
-            ) : null}
+            <FormError error={errors.password} touched={touched.password} />
 
             <div className="mb-6 flex items-center justify-between">
               <div />
@@ -77,7 +71,7 @@ export default function Login() {
                 to={ROUTES_CONFIG.FORGOT_PASSWORD.path}
                 className="mt-4 text-sm text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline cursor-pointer"
               >
-                Forgot password?
+                {LOGIN.FORGOT_PWD}
               </Link>
             </div>
 
@@ -92,10 +86,10 @@ export default function Login() {
               >
                 <img
                   src={ICONS.Google}
-                  alt="Google"
+                  alt={LOGIN.GOOGLE}
                   className="inline-block mr-2 w-6"
                 />
-                Sign in with Google
+                {LOGIN.GOOGLE_SIGNIN}
               </button>
             </div>
           </Form>
@@ -103,12 +97,12 @@ export default function Login() {
       </Formik>
 
       <p className="text-center text-gray-600 dark:text-my-background">
-        Don't have an account?{' '}
+        {LOGIN.NO_ACCOUNT}
         <Link
           to={ROUTES_CONFIG.SIGNUP.path}
           className="text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline"
         >
-          Sign up
+          {LOGIN.SIGN_UP}
         </Link>
       </p>
     </div>

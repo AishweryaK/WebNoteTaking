@@ -26,7 +26,6 @@ export default function Home() {
   // })
 
   return (
-    // <div className="flex flex-col min-h-screen">
     <>
       <Navbar
         toggleSidebar={toggleSidebar}
@@ -34,17 +33,12 @@ export default function Home() {
         searchData={searchText}
       />
 
-      {/* <div className="flex flex-row flex-grow bg-red-950 pt-2"> */}
       <div className="flex flex-row">
-        <LabelsList
-          openSidebar={openSidebar}
-          isSidebarOpen={isSidebarOpen}
-          // labelData={handleDataFromChild}
-        />
+        <LabelsList openSidebar={openSidebar} isSidebarOpen={isSidebarOpen} />
 
         <Outlet context={{ searchText } satisfies ContextType} />
       </div>
-      </>
-    // </div>
+    </>
   );
 }
+

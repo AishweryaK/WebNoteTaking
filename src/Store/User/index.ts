@@ -6,7 +6,6 @@ const initialState: UserInfoState = {
   uid: '',
   email: '',
   photoURL: '',
-  //   theme: THEME.LIGHT as Theme,
   provider: '',
 };
 
@@ -31,12 +30,8 @@ export const user = createSlice({
       state.uid = '';
       state.email = '';
       state.photoURL = '';
-      // state.theme = THEME.LIGHT as Theme;
       state.provider = '';
     },
-    // toggleTheme: state => {
-    //   state.theme = state.theme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT;
-    // },
   },
 });
 

@@ -1,5 +1,8 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { onSnapshot, setDoc } from 'firebase/firestore';
+import { ToastContainer } from 'react-toastify';
+import { NavLink, useParams } from 'react-router-dom';
+import Modal from 'react-modal';
 import {
   handleDeleteCollection,
   handleEdit,
@@ -7,10 +10,8 @@ import {
 } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
-import { ToastContainer } from 'react-toastify';
-import { NavLink, useParams } from 'react-router-dom';
-import Modal from 'react-modal';
 import { customStyles } from './customStyle';
+import { COLLECTION, LABEL_LAYOUT } from '../../../Shared/Constants';
 
 interface CollectionItem {
   text: string;
@@ -20,15 +21,10 @@ interface CollectionItem {
 interface LabelsListProps {
   openSidebar: (value: boolean) => void;
   isSidebarOpen: boolean;
-  // labelData: (data: string) => void;
 }
 
 const LabelsList: React.FC<LabelsListProps> = React.memo(
-  ({
-    openSidebar,
-    isSidebarOpen,
-    // labelData,
-  }) => {
+  ({ openSidebar, isSidebarOpen }) => {
     const { uid } = useReduxSelector((state) => state.user);
     const [labels, setLabels] = useState<CollectionItem[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -76,7 +72,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
       if (label) {
         setOthers(null);
       } else {
-        setOthers('Others');
+        setOthers(COLLECTION.OTHERS);
       }
     }, [label]);
 
@@ -162,18 +158,18 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
       setShowModal(false);
     };
 
-    
     return (
       <div>
         <div
           className={`${
             isSidebarOpen ? 'min-w-72' : 'min-w-20'
-          } h-full overflow-hidden ease-in-out duration-200 mt-2`}
+          } h-full overflow-hidden ease-in-out duration-200 pt-2`}
         >
           <div className="flex flex-col">
             {labels.map((label, index) => (
               <NavLink
                 key={index}
+                title={label.text}
                 to={`/home/${label.text}`}
                 className={({ isActive }) =>
                   `space-x-4 pl-4 min-w-full h-14 flex flex-row rounded-e-full items-center text-gray-900 dark:text-white ${
@@ -198,7 +194,9 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
           >
             <img className="w-10 p-2" src={ICONS.Edit} alt="" />
             {isSidebarOpen && (
-              <div className="text-gray-900 dark:text-white">Edit</div>
+              <div className="text-gray-900 dark:text-white">
+                {LABEL_LAYOUT.EDIT}
+              </div>
             )}
           </button>
         </div>
@@ -207,12 +205,12 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
           isOpen={showModal}
           onRequestClose={closeModal}
           style={customStyles}
-          contentLabel="Edit Labels"
+          contentLabel={LABEL_LAYOUT.EDIT_LABELS}
         >
           <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow">
             <div className="flex items-center justify-between p-4 md:p-5 border-b dark:border-my-icon-dark rounded-t">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit Labels
+                {LABEL_LAYOUT.EDIT_LABELS}
               </h3>
               <button
                 type="button"
@@ -239,14 +237,14 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
 
                         <input
                           ref={(el) => (inputRef.current[index] = el)}
-                          disabled={label.text === 'Others'}
+                          disabled={label.text === COLLECTION.OTHERS}
                           maxLength={20}
                           defaultValue={label.text}
                           onChange={(e) => editedWrapper(e, label.text, index)}
                           className="text-ellipsis flex-1 bg-white dark:bg-my-bg-dark dark:text-white mr-5 focus-visible:outline-none focus:border-b dark:border-b-my-hover-dark border-b-my-hover no-underline"
                         />
 
-                        {label.text !== 'Others' && (
+                        {label.text !== COLLECTION.OTHERS && (
                           <button
                             className="mr-4 p-1 rounded-full hover:bg-my-hover hover:dark:bg-my-hover-dark"
                             type="button"
@@ -257,7 +255,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                             <img className="w-5 h-5" src={ICONS.Trash} alt="" />
                           </button>
                         )}
-                        {label.text !== 'Others' &&
+                        {label.text !== COLLECTION.OTHERS &&
                           (editedLabelIndex === index &&
                           beforeEdit !== editedLabel ? (
                             <button
@@ -288,7 +286,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                   </ul>
                   {existingErr && (
                     <span className="text-red-500 font-medium text-xs">
-                      Label already Exists
+                      {LABEL_LAYOUT.EXISTS}
                     </span>
                   )}
                 </div>
@@ -297,7 +295,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                     htmlFor="new-label"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-my-icon-dark"
                   >
-                    New Label
+                    {LABEL_LAYOUT.NEW}
                   </label>
                   <input
                     type="text"
@@ -306,14 +304,14 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                     id="new-label"
                     maxLength={20}
                     className="bg-my-background dark:bg-my-hover-dark border border-gray-300 dark:border-my-icon-dark text-gray-900 dark:text-white text-sm rounded-lg focus:ring-my-blue-500D focus:border-my-blue-500D block w-full p-2.5 focus-visible:outline-none"
-                    placeholder="Enter new label"
+                    placeholder={LABEL_LAYOUT.ENTER_NEW}
                     value={newLabel}
                     onChange={(e) => setNewLabel(e.target.value)}
                     required
                   />
                   {emptyLabel && newLabel === '' && (
                     <span className="text-red-500 font-medium text-xs">
-                      * Please enter a label
+                      {LABEL_LAYOUT.EMPTY_ERROR}
                     </span>
                   )}
                 </div>
@@ -322,7 +320,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                   className="w-full text-white bg-my-blue-500D hover:bg-my-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   onClick={addLabel}
                 >
-                  Add Label
+                  {LABEL_LAYOUT.ADD_LABEL}
                 </button>
               </div>
             </div>

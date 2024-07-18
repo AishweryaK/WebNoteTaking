@@ -1,10 +1,8 @@
-import './navbar.scss';
 import { useEffect, useRef, useState } from 'react';
-import { ICONS } from '../../../../Shared/icons';
-import DropdownMenu from './Dropdown';
-// import filter from 'lodash.filter';
-// import { Note } from '../../../../Views/Notes/Notes';
 import { useParams } from 'react-router-dom';
+import DropdownMenu from './Dropdown';
+import { ICONS } from '../../../../Shared/icons';
+import { COLLECTION, CONSTANTS, NAVBAR } from '../../../../Shared/Constants';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -21,13 +19,7 @@ export function Navbar({
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { label } = useParams();
-  const finalLabel = label || 'Others';
-
-  // const handleSearchText = (e: ChangeEvent<HTMLInputElement>): void => {
-  //   const query = e.target.value;
-  //   const formattedQuery = query.toLowerCase();
-  //   setSearchData(formattedQuery);
-  // };
+  const finalLabel = label || COLLECTION.OTHERS;
 
   useEffect(() => {
     const getSearch = setTimeout(() => {
@@ -77,11 +69,15 @@ export function Navbar({
           <img
             className="cursor-pointer w-10 hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full"
             src={ICONS.Menu}
-            alt="Menu"
+            alt={NAVBAR.MENU}
             onClick={toggleSidebar}
           />
           <div className="flex items-center space-x-1">
-            <img src={ICONS.Logo} alt="Logo" className="h-14 w-14 min-w-10" />
+            <img
+              src={ICONS.Logo}
+              alt={CONSTANTS.LOGO}
+              className="h-14 w-14 min-w-10"
+            />
             <span className="hidden md:block font-semibold text-gray-700 dark:text-white">
               {finalLabel}
             </span>
@@ -100,26 +96,24 @@ export function Navbar({
           value={searchText}
           type="text"
           autoComplete="off"
-          placeholder={`Search within "${finalLabel}"`}
+          placeholder={`${NAVBAR.SEARCH} "${finalLabel}"`}
           onChange={(e) => setSearchText(e.target.value)}
           className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />
-        {searchData && (
-          <button
-            className="hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full"
-            type="button"
-            onClick={handleClear}
-          >
-            <img src={ICONS.Close} alt="Close" />
-          </button>
-        )}
+        <button
+          className={`hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full ${!searchData && 'hidden'}`}
+          type="button"
+          onClick={handleClear}
+        >
+          <img src={ICONS.Close} alt="Close" />
+        </button>
       </form>
 
       <div className="flex items-center space-x-8 relative">
         <img
           className="w-8 h-8 rounded-full shadow-md ml-4 mr-2 cursor-pointer animate-spin-180"
           src={ICONS.Books}
-          alt="Account"
+          alt={NAVBAR.ACCOUNT}
           onClick={() => setDropdownOpen((dropdownOpen) => !dropdownOpen)}
         />
         {dropdownOpen && (

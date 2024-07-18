@@ -14,7 +14,6 @@ export const PRIVATE_ROUTES: CustomRouter[] = [
     children: [
       {
         index: true,
-        // path: 'Others',
         element: <Notes />,
         title: ROUTES_CONFIG.NOTES.title,
       },
@@ -25,11 +24,6 @@ export const PRIVATE_ROUTES: CustomRouter[] = [
       },
     ],
   },
-  // {
-  //   path: ROUTES_CONFIG.NOTES.path,
-  //   element: <Notes label/>,
-  //   title: ROUTES_CONFIG.NOTES.title,
-  // },
   {
     path: ROUTES_CONFIG.ACCOUNT.path,
     element: <Account />,

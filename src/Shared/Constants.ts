@@ -35,10 +35,6 @@ const ROUTES_CONFIG = {
     path: ROUTES.NOTES,
     title: 'Note Taking App',
   },
-  // LABEL: {
-  //   path: ROUTES.LABEL,
-  //   title: 'Note Taking App',
-  // },
   ACCOUNT: {
     path: ROUTES.ACCOUNT,
     title: 'User Account',
@@ -74,6 +70,7 @@ const CONSTANTS = {
   INCREMENT: 'increment',
   DECREMENT: 'decrement',
   CANCEL: 'Cancel',
+  LOGO:'Logo',
   VERIFY: 'Verify',
 };
 
@@ -112,14 +109,19 @@ const SIGN_UP = {
   ENTER_PASSWORD: '* Please enter a Password',
   PWD_TEXT:
     'Password should consist of one or more uppercase, numbers and special characters, but no spaces',
-  PWD_DONT_MATCH: 'Your passwords do not match',
+  PWD_DONT_MATCH: 'Password and Confirm Password do not match',
   PWD_REQUIRED: '* Password Confirmation required',
   FIRSTNAME: 'First Name',
   LASTNAME: 'Last Name',
   EMAIL: 'Email',
   SETPASSWORD: 'Password',
   CONFIRMPASSWORD: 'Confirm Password',
-  SUMBIT: 'Sign up',
+  SUBMIT: 'Sign up',
+  ENTER_DETAILS:'Welcome! Please enter your details.',
+  ENTER_FIRST:'Enter you first name',
+  ENTER_LAST:'Enter you first name',
+  ENTER_EMAIL_ID:'Enter you first name',
+  ENTER_PWD:'Enter you first name',
 };
 
 const TITLE = {
@@ -193,6 +195,81 @@ const CHANGE_PASSWORD = {
   CANCEL: 'Cancel',
 };
 
+const LABEL_LAYOUT = {
+  EDIT: 'Edit',
+  EDIT_LABELS: 'Edit Labels',
+  EXISTS:'Label already Exists',
+  NEW:'New Label',
+  ENTER_NEW:'Enter new label',
+  EMPTY_ERROR:'* Please enter a label',
+  ADD_LABEL:'Add Label',
+}
+
+const DROPDOWN = {
+  ACCOUNT:'Account',
+  PASSWORD:'Change Password',
+  ENABLE_THEME: 'Enable Dark Theme',
+  DISABLE_THEME:'Disable Dark Theme',
+  LOGOUT: 'Logout',
+  CONFIRM:'Confirm',
+  ARE_YOU_SURE:'Are you sure you want to log out?',
+}
+
+const NAVBAR = {
+  MENU:'Menu',
+  SEARCH:'Search within',
+  ACCOUNT:'Account',
+}
+
+const ROOT_ROUTER = {
+  HTML:'html',
+  DARK:'dark',
+  LIGHT:'light',
+}
+
+const ACCOUNT = {
+  WELCOME:'Welcome to your Profile!',
+  USER_NAME:'User Name',
+  EMAIL:'Email',
+  EDIT_USERNAME:'Edit Username',
+  ENTER_FIRST:'Enter your first name',
+  ENTER_LAST:'Enter your last name',
+  CHANGE_NAME:'Change Name',
+}
+
+const ADD_NOTE={
+  START_TYPING:'Start typing here...',
+  TITLE:'Title',
+  CANCEL:'Cancel',
+  SAVE:'Save',
+}
+
+const FORGOT_PWD = {
+  FORGOT:'Forgot your Password?',
+  ENTER_EMAIL:'Enter the email address associated with your account',
+}
+
+const LOGIN = {
+  NOTE_APP:'Notes App',
+  WELCOME:'Welcome back! Please enter your details.',
+  FORGOT_PWD:'Forgot password?',
+  GOOGLE_SIGNIN:'Sign in with Google',
+  GOOGLE:'Google',
+  NO_ACCOUNT:"Don't have an account? ",
+  SIGN_UP:'Sign Up'
+}
+
+const NOTES = {
+  ERROR:'Error fetching notes:',
+  ADD_NOTE:'Add Note...',
+  START_COLLECTION:'Add a note to start your collection!',
+  NO_MATCHING:'No matching notes',
+  MENU:'Menu',
+  CLOSE:'Close',
+  EDIT:'Edit Note',
+  DELETE:'Delete Note',
+}
+
 export {
   ROUTES,
   WILDCARD_ROUTES,
@@ -207,4 +284,13 @@ export {
   ERR_TITLE,
   ERR_MSG,
   CHANGE_PASSWORD,
+  LABEL_LAYOUT,
+  DROPDOWN,
+  NAVBAR,
+  ROOT_ROUTER,
+  ACCOUNT,
+  ADD_NOTE,
+  FORGOT_PWD,
+  LOGIN,
+  NOTES,
 };

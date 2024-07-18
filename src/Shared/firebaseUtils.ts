@@ -12,16 +12,9 @@ import {
   updateDoc,
   writeBatch,
 } from 'firebase/firestore';
-import {
-  COLLECTION,
-  CONSTANTS,
-  DEFAULT_NOTE,
-  ERR_MSG,
-  ERR_TITLE,
-} from './Constants';
-import { CollectionItem } from './shared';
 import { db } from '../utils';
-import { showAlert } from './alert';
+import { COLLECTION, CONSTANTS, DEFAULT_NOTE } from './Constants';
+import { CollectionItem } from './shared';
 
 export const userDocRef = (uid: string) => {
   return doc(db, COLLECTION.USERS, uid);
@@ -291,10 +284,11 @@ export const handleDeleteCollection = async (
     await Promise.all(deletePromises);
     removeCollectionFromFirestore(uid, collections, collName);
 
-    setCollections((prevCollections) =>{
-      return prevCollections.filter((collection) => collection.text !== collName)
-    }
-    );
+    setCollections((prevCollections) => {
+      return prevCollections.filter(
+        (collection) => collection.text !== collName
+      );
+    });
   } catch (error) {
     console.error('error', error);
   }
