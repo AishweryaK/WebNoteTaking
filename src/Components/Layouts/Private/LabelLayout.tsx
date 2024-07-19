@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { onSnapshot, setDoc } from 'firebase/firestore';
-import { ToastContainer } from 'react-toastify';
+// import { ToastContainer } from 'react-toastify';
 import { NavLink, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import {
@@ -189,6 +189,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
             ))}
           </div>
           <button
+            type="button"
             onClick={() => setShowModal(true)}
             className="space-x-4 pl-4 w-full h-14 flex flex-row hover:bg-my-hover hover:dark:bg-my-hover-dark rounded-e-full items-center hover:text-white"
           >
@@ -206,6 +207,8 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel={LABEL_LAYOUT.EDIT_LABELS}
+          // className=''
+          // overlayClassName=''
         >
           <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow">
             <div className="flex items-center justify-between p-4 md:p-5 border-b dark:border-my-icon-dark rounded-t">
@@ -259,6 +262,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                           (editedLabelIndex === index &&
                           beforeEdit !== editedLabel ? (
                             <button
+                            type='button'
                               className="mr-2 text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark justify-center items-center h-6 w-6 rounded-full"
                               onClick={editLabel}
                             >
@@ -270,6 +274,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                             </button>
                           ) : (
                             <button
+                            type='button'
                               className="text-gray-500 items-center justify-center hover:bg-my-hover hover:dark:bg-my-hover-dark h-6 w-6 rounded-full mr-2"
                               title="Rename Label"
                               onClick={() => handleFocus(index)}
@@ -326,7 +331,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
             </div>
           </div>
         </Modal>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </div>
     );
   }

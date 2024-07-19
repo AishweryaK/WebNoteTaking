@@ -41,6 +41,7 @@ function NameChange({ onClose }: PasswordProps) {
                 name={CONSTANTS.FIRST_NAME}
                 placeholder={ACCOUNT.ENTER_FIRST}
                 inputType={CONSTANTS.TEXT}
+                autoComplete='username'
               />
               <FormError error={errors.firstName} touched={touched.firstName} />
 
@@ -49,11 +50,13 @@ function NameChange({ onClose }: PasswordProps) {
                 name={CONSTANTS.LAST_NAME}
                 placeholder={ACCOUNT.ENTER_LAST}
                 inputType={CONSTANTS.TEXT}
+                autoComplete='username'
               />
               <FormError error={errors.lastName} touched={touched.lastName} />
 
               <div className="flex justify-between mt-8">
                 <button
+                type='button'
                   className="bg-red-500 text-white px-4 mb-4 rounded-md font-semibold"
                   onClick={() => handleCancel()}
                 >

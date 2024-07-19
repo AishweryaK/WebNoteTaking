@@ -3,6 +3,7 @@ export interface FormFieldProps {
   name: string;
   placeholder: string;
   inputType: string;
+  autoComplete: string;
 }
 
 export interface FormErrorProps {

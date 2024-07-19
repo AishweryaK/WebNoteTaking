@@ -120,6 +120,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                   placeholder={CHANGE_PASSWORD.CURRENT}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
+                  autoComplete="current-password"
                 />
                 <div
                   className="absolute inset-y-0 right-0 flex items-end mb-2 pr-3"
@@ -134,6 +135,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                 name={CONSTANTS.PASSWORD}
                 placeholder={SIGN_UP.SETPASSWORD}
                 inputType={CONSTANTS.PASSWORD}
+                autoComplete="new-password"
               />
               <FormError error={errors.password} touched={touched.password} />
 
@@ -142,18 +144,26 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                 name={CONSTANTS.CONFIRM_PASSWORD}
                 placeholder={SIGN_UP.CONFIRMPASSWORD}
                 inputType={CONSTANTS.PASSWORD}
+                autoComplete="new-password"
               />
-              <FormError error={errors.confirmPassword} touched={touched.confirmPassword} />
+              <FormError
+                error={errors.confirmPassword}
+                touched={touched.confirmPassword}
+              />
 
               <div className="flex justify-between mt-8">
                 <button
+                  type="button"
                   className="bg-red-500 text-white px-4 mb-4 rounded-md font-semibold"
                   onClick={() => handleCancel()}
                 >
                   {CHANGE_PASSWORD.CANCEL}
                 </button>
                 <div className="mb-4">
-                  <CustomButton text={CHANGE_PASSWORD.CHANGE} disabled={!isValid} />
+                  <CustomButton
+                    text={CHANGE_PASSWORD.CHANGE}
+                    disabled={!isValid}
+                  />
                 </div>
               </div>
             </div>

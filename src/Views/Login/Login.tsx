@@ -14,9 +14,12 @@ import {
   TITLE,
 } from '../../Shared/Constants';
 import { FormValues } from './log-in';
+import ScreenLoader from '../../Components/Loader/ScreenLoader';
+import { useReduxSelector } from '../../Store';
 
 export default function Login() {
   const { googleSignInCall, signInCall } = useAuthentication();
+  const {isLoading} = useReduxSelector((state)=>state.loader)
 
   const handleLogin = async (values: FormValues) => {
     await signInCall({ email: values.email, password: values.password });
@@ -54,6 +57,7 @@ export default function Login() {
               name={CONSTANTS.EMAIL}
               placeholder={SIGN_UP.EMAIL}
               inputType={CONSTANTS.EMAIL}
+              autoComplete='email'
             />
             <FormError error={errors.email} touched={touched.email} />
 
@@ -62,6 +66,7 @@ export default function Login() {
               name={CONSTANTS.PASSWORD}
               placeholder={SIGN_UP.SETPASSWORD}
               inputType={CONSTANTS.PASSWORD}
+              autoComplete='current-password'
             />
             <FormError error={errors.password} touched={touched.password} />
 
@@ -105,6 +110,8 @@ export default function Login() {
           {LOGIN.SIGN_UP}
         </Link>
       </p>
+      {/* {isLoading && <ScreenLoader/>} */}
+      
     </div>
   );
 }

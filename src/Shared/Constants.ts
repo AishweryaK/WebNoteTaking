@@ -118,10 +118,10 @@ const SIGN_UP = {
   CONFIRMPASSWORD: 'Confirm Password',
   SUBMIT: 'Sign up',
   ENTER_DETAILS:'Welcome! Please enter your details.',
-  ENTER_FIRST:'Enter you first name',
-  ENTER_LAST:'Enter you first name',
-  ENTER_EMAIL_ID:'Enter you first name',
-  ENTER_PWD:'Enter you first name',
+  ENTER_FIRST:'Enter your first name',
+  ENTER_LAST:'Enter your last name',
+  ENTER_EMAIL_ID:'Enter your email',
+  ENTER_PWD:'Enter your password',
 };
 
 const TITLE = {

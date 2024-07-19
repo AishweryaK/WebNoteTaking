@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DropdownMenu from './Dropdown';
 import { ICONS } from '../../../../Shared/icons';
 import { COLLECTION, CONSTANTS, NAVBAR } from '../../../../Shared/Constants';
+import { useReduxSelector } from '../../../../Store';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -15,10 +16,12 @@ export function Navbar({
   setSearchData,
   searchData,
 }: NavbarProps) {
+  const { photoURL } = useReduxSelector((state) => state.user);
   const [searchText, setSearchText] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { label } = useParams();
+  const navigate = useNavigate();
   const finalLabel = label || COLLECTION.OTHERS;
 
   useEffect(() => {
@@ -33,6 +36,8 @@ export function Navbar({
     // setSearchText("");
     setSearchData('');
   }, [finalLabel]);
+
+  // console.log(photoURL,"photo")
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -76,7 +81,8 @@ export function Navbar({
             <img
               src={ICONS.Logo}
               alt={CONSTANTS.LOGO}
-              className="h-14 w-14 min-w-10"
+              className="h-14 w-14 min-w-10 cursor-pointer"
+              onClick={() => navigate(0)}
             />
             <span className="hidden md:block font-semibold text-gray-700 dark:text-white">
               {finalLabel}
@@ -112,7 +118,7 @@ export function Navbar({
       <div className="flex items-center space-x-8 relative">
         <img
           className="w-8 h-8 rounded-full shadow-md ml-4 mr-2 cursor-pointer animate-spin-180"
-          src={ICONS.Books}
+          src={photoURL ? photoURL : ICONS.UserImage}
           alt={NAVBAR.ACCOUNT}
           onClick={() => setDropdownOpen((dropdownOpen) => !dropdownOpen)}
         />

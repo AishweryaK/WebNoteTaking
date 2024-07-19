@@ -7,9 +7,11 @@ import { ICONS } from '../../Shared/icons';
 import { FormValues } from './sign-up';
 import { CONSTANTS, SIGN_UP, TITLE } from '../../Shared/Constants';
 import FormError from '../../Components/Field/FormError';
+import { useReduxSelector } from '../../Store';
 
 export default function Signup() {
   const { signUpCall } = useAuthentication();
+  const {isLoading } = useReduxSelector((state)=>state.loader)
 
   const handleSignUp = async (values: FormValues) => {
     await signUpCall({
@@ -52,6 +54,7 @@ export default function Signup() {
               name={CONSTANTS.FIRST_NAME}
               placeholder={SIGN_UP.ENTER_FIRST}
               inputType={CONSTANTS.TEXT}
+              autoComplete='username'
             />
             {/* {errors.firstName && touched.firstName ? (
               <p className="text-red-500 font-medium text-xs mb-4 mt-1 text-left">
@@ -65,6 +68,7 @@ export default function Signup() {
               name={CONSTANTS.LAST_NAME}
               placeholder={SIGN_UP.ENTER_LAST}
               inputType={CONSTANTS.TEXT}
+              autoComplete='username'
             />
             <FormError error={errors.lastName} touched={touched.lastName} />
 
@@ -73,6 +77,7 @@ export default function Signup() {
               name={CONSTANTS.EMAIL}
               placeholder={SIGN_UP.ENTER_EMAIL_ID}
               inputType={CONSTANTS.EMAIL}
+              autoComplete='email'
             />
             <FormError error={errors.email} touched={touched.email} />
 
@@ -81,6 +86,7 @@ export default function Signup() {
               name={CONSTANTS.PASSWORD}
               placeholder={SIGN_UP.ENTER_PWD}
               inputType={CONSTANTS.PASSWORD}
+              autoComplete='new-password'
             />
             <FormError error={errors.password} touched={touched.password} />
 
@@ -89,6 +95,7 @@ export default function Signup() {
               name={CONSTANTS.CONFIRM_PASSWORD}
               placeholder={SIGN_UP.CONFIRMPASSWORD}
               inputType={CONSTANTS.PASSWORD}
+              autoComplete='new-password'
             />
             <FormError error={errors.confirmPassword} touched={touched.confirmPassword} />
 

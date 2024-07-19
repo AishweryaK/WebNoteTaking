@@ -4,7 +4,7 @@ import { FormFieldProps } from '.';
 import { CONSTANTS } from '../../Shared/Constants';
 import { ICONS } from '../../Shared/icons';
 
-function FormField({ label, name, placeholder, inputType }: FormFieldProps) {
+function FormField({ label, name, placeholder, inputType, autoComplete }: FormFieldProps) {
   const [icon, setIcon] = useState(ICONS.EyeOff);
   const [type, setType] = useState(CONSTANTS.PASSWORD);
 
@@ -35,6 +35,7 @@ function FormField({ label, name, placeholder, inputType }: FormFieldProps) {
         id={name} // link the input with a <label>
         className="dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 mb-1 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline bg-my-background"
         placeholder={placeholder}
+        autoComplete={autoComplete}
       />
       {(name === CONSTANTS.PASSWORD || name === CONSTANTS.CONFIRM_PASSWORD) && (
         <div

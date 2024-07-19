@@ -27,7 +27,8 @@ export const handleAuthError = (err: any, context: string) => {
       showAlert(title, ERR_MSG.INVALID_EMAIL);
       break;
     default:
-      showAlert(title, `${err.message}`);
+      console.log('error', err)
+      // showAlert(title, `${err.message}`);
       break;
   }
 };

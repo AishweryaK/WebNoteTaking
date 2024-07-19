@@ -6,6 +6,7 @@ import AppLayout from '../Components/Layouts/AppLayout';
 import { useReduxSelector } from '../Store';
 import { ToastContainer } from 'react-toastify';
 import { ROOT_ROUTER } from '../Shared/Constants';
+import ScreenLoader from '../Components/Loader/ScreenLoader';
 
 function RootRouter() {
   const guest = useRoutes(guestRoutes);
@@ -13,6 +14,7 @@ function RootRouter() {
   const { uid } = useReduxSelector((state) => state?.user);
   const isAuthenticated = !!uid; // to convert value to boolean
   const isDarkMode = useReduxSelector((state) => state.ui.isDarkMode);
+  const {isLoading} = useReduxSelector((state) => state.loader);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -27,6 +29,7 @@ function RootRouter() {
       <DocumentTitle isAuthenticated={isAuthenticated} />
       <AppLayout isAuthenticated={isAuthenticated}>
         {uid ? authenticated : guest}
+        {isLoading && <ScreenLoader/>}
       </AppLayout>
       <ToastContainer />
     </>

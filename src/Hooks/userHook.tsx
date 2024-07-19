@@ -18,15 +18,16 @@ import { addDocumentsForUser } from '../Shared/firebaseUtils';
 import { auth, provider } from '../utils';
 import { showAlert } from '../Shared/alert';
 import { FormValues } from '../Views/Account/NameChange';
+import { setLoading } from '../Store/Loader';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
   const myProvider = useReduxSelector((state) => state.user.provider);
   const { displayName } = useReduxSelector((state) => state.user);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const signInCall = async ({ email, password }: SignInProps) => {
-    setIsLoading(true);
+    dispatch(setLoading(true));
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
       if (user) {
@@ -42,9 +43,10 @@ export default function useAuthentication() {
       }
     } catch (e) {
       const context = TITLE.LOGIN;
+      console.log(e,"ERROROROR");
       handleAuthError(e, context);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -54,7 +56,7 @@ export default function useAuthentication() {
     firstName,
     lastName, //   imageUri,
   }: SignUpProps) => {
-    setIsLoading(true);
+    dispatch(setLoading(true));
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
@@ -85,7 +87,7 @@ export default function useAuthentication() {
     } catch (err) {
       handleSignUpError(err);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -124,7 +126,7 @@ export default function useAuthentication() {
   // };
 
   const signOutCall = async () => {
-    setIsLoading(true);
+    dispatch(setLoading(true));
     try {
       if (myProvider === PROVIDER.GOOGLE) {
         //   await GoogleSignin.signOut();
@@ -135,7 +137,7 @@ export default function useAuthentication() {
     } catch (err) {
       // console.log(err);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -150,7 +152,7 @@ export default function useAuthentication() {
       showAlert(ERR_TITLE.ERROR, ERR_MSG.SAME_USERNAME);
       return;
     }
-    setIsLoading(true);
+    dispatch(setLoading(true));
     try {
       const user = auth.currentUser;
       await updateProfile(user as User, {
@@ -168,7 +170,7 @@ export default function useAuthentication() {
       console.error('Error', error);
       showAlert(ERR_TITLE.ERROR, error.message);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -195,7 +197,6 @@ export default function useAuthentication() {
   };
 
   return {
-    isLoading,
     signInCall,
     signUpCall,
     signOutCall,

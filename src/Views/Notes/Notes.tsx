@@ -2,7 +2,6 @@ import React, {
   MouseEvent as MouseE,
   useEffect,
   useState,
-  useRef,
 } from 'react';
 import {
   collection,
@@ -15,9 +14,7 @@ import parse from 'html-react-parser';
 import { useReduxSelector } from '../../Store';
 import {
   deleteNote,
-  saveNoteLabel,
   updateCollectionCount,
-  updateNote,
   userDocRef,
 } from '../../Shared/firebaseUtils';
 import AddNote from '../AddNote/AddNote';
@@ -46,7 +43,7 @@ const Notes: React.FC = () => {
   const [itemTitle, setItemTitle] = useState('');
   const [itemDesc, setItemDesc] = useState<string | null>('');
   const [addNote, setAddNote] = useState<boolean>(false);
-  const addNoteRef = useRef<HTMLDivElement>(null);
+  // const addNoteRef = useRef<HTMLDivElement>(null);
   const { label } = useParams();
   const finalLabel = label || COLLECTION.OTHERS;
   const { searchText } = useOutletContext<ContextType>();
@@ -196,6 +193,7 @@ const Notes: React.FC = () => {
             onClick={() => handleNote(note)}
           >
             <button
+            type={'button'}
               className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200 hover:dark:bg-my-bg-dark"
               onClick={(e) => handleMenu(e, note.id)}
             >
@@ -237,7 +235,7 @@ const Notes: React.FC = () => {
                   <img alt={NOTES.CLOSE} src={ICONS.Close} />
                 </button>
               </div>
-              <div className="p-4 md:p-5">
+              <div className="p-4 md:p-5 box-border">
                 <AddNote
                   label={finalLabel}
                   itemID={itemID}

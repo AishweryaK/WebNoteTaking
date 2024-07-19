@@ -61,6 +61,7 @@ function ForgotPwd() {
               name={CONSTANTS.EMAIL}
               placeholder={SIGN_UP.EMAIL}
               inputType={CONSTANTS.EMAIL}
+              autoComplete='email'
             />
             <FormError error={errors.email} touched={touched.email} />
 

@@ -1,4 +1,5 @@
 import Google from '../assets/Svgs/google-icon.svg';
+import UserImage from '../assets/Images/userImg.jpeg';
 import Books from '../assets/Images/books.png';
 import Logo from '../assets/Images/Diary.png';
 import CoverPhoto from '../assets/Images/coverPhoto.jpg';
@@ -20,6 +21,7 @@ import Back from '../assets/Svgs/go-back.svg';
 
 export const ICONS = {
   Google,
+  UserImage,
   Books,
   Logo,
   CoverPhoto,

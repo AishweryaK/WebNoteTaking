@@ -43,7 +43,41 @@
   td {
     border: solid 1px;
   }
+
 }
+
+.custom-link-form input {
+  color: #000;
+  background-color: #fff;
+}
+
+.custom-link-form input::placeholder {
+  color: #999;
+}
+
+.custom-link-form button {
+  color: #fff;
+  background-color: #6B4EFF;
+}
+
+.custom-link-form-dark input {
+  color: #fff;
+  background-color: #575757;
+}
+
+.custom-link-form-dark input::placeholder {
+  color: #999;
+}
+
+.custom-link-form-dark button {
+  color: #fff;
+  background-color: #6B4EFF;
+}
+
+/* .custom-link-form {
+  background-color: #fff;
+} */
+
 
 /*.logo {
   height: 6em;
