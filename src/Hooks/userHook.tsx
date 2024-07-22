@@ -43,7 +43,6 @@ export default function useAuthentication() {
       }
     } catch (e) {
       const context = TITLE.LOGIN;
-      console.log(e,"ERROROROR");
       handleAuthError(e, context);
     } finally {
       dispatch(setLoading(false));

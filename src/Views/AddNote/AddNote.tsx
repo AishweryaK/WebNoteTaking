@@ -294,6 +294,12 @@ function AddNote({
     return ADD_NOTE.START_TYPING;
   };
 
+  const handleCancel = () => {
+      setAddNote(false);
+      setItemDesc('');
+      setItemTitle('');
+  }
+
   const config = useMemo(
     () => ({
       zIndex: 0,
@@ -316,6 +322,7 @@ function AddNote({
       sizeSM: 400,
       toolbarAdaptive: false,
       editorClassName: 'initial-text-color',
+      // defaultActionOnPaste:'insert_only_text',
       disablePlugins: ['paste'],
       link: {
         noFollowCheckbox: false,
@@ -326,11 +333,14 @@ function AddNote({
     [theme, maxHeight]
   );
 
-  const handleEditorBlur = () => {};
+  // const handleEditorBlur = () => {};
+
+  console.log(itemDesc,"FFF")
 
   const saveNote = () => {
-    if (itemTitle === '' && itemDesc === '') {
+    if (itemTitle?.trim() === '' && itemDesc?.trim() === '') {
       showAlert(ERR_TITLE.EMPTY_NOTE, ERR_MSG.NOTE_DISCARDED);
+      handleCancel();
       return;
     }
     try {
@@ -345,6 +355,7 @@ function AddNote({
 
       setItemTitle('');
       setItemDesc('');
+      setAddNote(false);
       closeModal('');
     } catch (error) {
       console.error('Error', error);
@@ -370,15 +381,13 @@ function AddNote({
           value={itemDesc || ''}
           config={config}
           onChange={(newContent) => setItemDesc(newContent)}
-          onBlur={handleEditorBlur}
+          // onBlur={handleEditorBlur}
         />
       </div>
       <button
         className={`bg-red-600 p-2 rounded-lg mt-2 font-semibold mr-4 ${itemID && 'hidden'}`}
         type="button"
-        onClick={() => {
-          setAddNote(false);
-        }}
+        onClick={handleCancel}
       >
         {ADD_NOTE.CANCEL}
       </button>

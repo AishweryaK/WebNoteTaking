@@ -293,3 +293,18 @@ export const handleDeleteCollection = async (
     console.error('error', error);
   }
 };
+
+//Label Layout - addLabel
+
+export const addNewLabel = async (
+  uid: string,
+  updatedLabels: CollectionItem[],
+) => {
+  await setDoc(
+    userDocRef(uid),
+    {
+      collections: updatedLabels,
+    },
+    { merge: true }
+  );
+};

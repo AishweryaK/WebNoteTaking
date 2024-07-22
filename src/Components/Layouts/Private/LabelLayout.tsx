@@ -1,17 +1,17 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { onSnapshot, setDoc } from 'firebase/firestore';
-// import { ToastContainer } from 'react-toastify';
+import { onSnapshot } from 'firebase/firestore';
 import { NavLink, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import {
+  addNewLabel,
   handleDeleteCollection,
   handleEdit,
   userDocRef,
 } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
-import { customStyles } from './customStyle';
 import { COLLECTION, LABEL_LAYOUT } from '../../../Shared/Constants';
+import CustomModal from '../../Modal/CustomModal';
 
 interface CollectionItem {
   text: string;
@@ -27,7 +27,9 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
   ({ openSidebar, isSidebarOpen }) => {
     const { uid } = useReduxSelector((state) => state.user);
     const [labels, setLabels] = useState<CollectionItem[]>([]);
+    const [deleteLabel, setDeleteLabel] = useState<CollectionItem>();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [deleteModal, setDeleteModal] = useState<boolean>(false);
     const [newLabel, setNewLabel] = useState<string>('');
     const [emptyLabel, setEmptyLabel] = useState<boolean>(false);
     const [editedLabel, setEditedLabel] = useState<string>('');
@@ -111,6 +113,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
       setLabels: React.Dispatch<React.SetStateAction<CollectionItem[]>>
     ) => {
       handleDeleteCollection(uid, labels, label.text, setLabels);
+      setDeleteModal(false);
     };
 
     const closeModal = () => {
@@ -145,17 +148,9 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
         return;
       }
       const updatedLabels = [...labels, { text: trimmedNewLabel, number: 0 }];
-      await setDoc(
-        userDocRef(uid),
-        {
-          collections: updatedLabels,
-        },
-        { merge: true }
-      );
+      addNewLabel(uid, updatedLabels);
       setLabels(updatedLabels);
-
       setNewLabel('');
-      setShowModal(false);
     };
 
     return (
@@ -205,10 +200,10 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
         <Modal
           isOpen={showModal}
           onRequestClose={closeModal}
-          style={customStyles}
+          // style={customStyles}
           contentLabel={LABEL_LAYOUT.EDIT_LABELS}
-          // className=''
-          // overlayClassName=''
+          className="fixed top-1/2 left-1/2 right-auto bottom-auto mr-[-50%] transform translate-x-[-50%] translate-y-[-50%] bg-gray-900 border-none p-0"
+          overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-20"
         >
           <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow">
             <div className="flex items-center justify-between p-4 md:p-5 border-b dark:border-my-icon-dark rounded-t">
@@ -252,7 +247,9 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                             className="mr-4 p-1 rounded-full hover:bg-my-hover hover:dark:bg-my-hover-dark"
                             type="button"
                             onClick={() => {
-                              deleteWrapper(uid, labels, label, setLabels);
+                              // deleteWrapper(uid, labels, label, setLabels);
+                              setDeleteLabel(label);
+                              setDeleteModal(true);
                             }}
                           >
                             <img className="w-5 h-5" src={ICONS.Trash} alt="" />
@@ -262,7 +259,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                           (editedLabelIndex === index &&
                           beforeEdit !== editedLabel ? (
                             <button
-                            type='button'
+                              type="button"
                               className="mr-2 text-gray-500 hover:bg-my-hover hover:dark:bg-my-hover-dark justify-center items-center h-6 w-6 rounded-full"
                               onClick={editLabel}
                             >
@@ -274,7 +271,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
                             </button>
                           ) : (
                             <button
-                            type='button'
+                              type="button"
                               className="text-gray-500 items-center justify-center hover:bg-my-hover hover:dark:bg-my-hover-dark h-6 w-6 rounded-full mr-2"
                               title="Rename Label"
                               onClick={() => handleFocus(index)}
@@ -331,7 +328,17 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
             </div>
           </div>
         </Modal>
-        {/* <ToastContainer /> */}
+
+        {deleteLabel &&
+          <CustomModal
+            showModal={deleteModal}
+            closeModal={() => setDeleteModal(false)}
+            title='Delete Label'
+            text="Are you sure you want to delete this label?"
+            button="Delete"
+            handleModal={() => deleteWrapper(uid, labels, deleteLabel, setLabels)}
+          />
+        }
       </div>
     );
   }

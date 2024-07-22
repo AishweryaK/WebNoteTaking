@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DropdownMenu from './Dropdown';
 import { ICONS } from '../../../../Shared/icons';
-import { COLLECTION, CONSTANTS, NAVBAR } from '../../../../Shared/Constants';
+import { COLLECTION, CONSTANTS, DROPDOWN, NAVBAR } from '../../../../Shared/Constants';
 import { useReduxSelector } from '../../../../Store';
+import useAuthentication from '../../../../Hooks/userHook';
+import CustomModal from '../../../Modal/CustomModal';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -17,9 +19,12 @@ export function Navbar({
   searchData,
 }: NavbarProps) {
   const { photoURL } = useReduxSelector((state) => state.user);
+  const { signOutCall } = useAuthentication();
   const [searchText, setSearchText] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { label } = useParams();
   const navigate = useNavigate();
   const finalLabel = label || COLLECTION.OTHERS;
@@ -53,6 +58,12 @@ export function Navbar({
     setSearchText('');
   };
 
+  const handleLogout = async () => {
+    await signOutCall();
+    setDropdownOpen(false);
+    setLogoutModal(false);
+  };
+
   useEffect(() => {
     if (dropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside, {
@@ -68,7 +79,7 @@ export function Navbar({
   }, [dropdownOpen]);
 
   return (
-    <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 flex justify-between items-center z-50">
+    <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 flex justify-between items-center z-10">
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-4">
           <img
@@ -81,7 +92,7 @@ export function Navbar({
             <img
               src={ICONS.Logo}
               alt={CONSTANTS.LOGO}
-              className="h-14 w-14 min-w-10 cursor-pointer"
+              className="h-14 w-14 min-w-10 min-h-10 cursor-pointer"
               onClick={() => navigate(0)}
             />
             <span className="hidden md:block font-semibold text-gray-700 dark:text-white">
@@ -95,10 +106,12 @@ export function Navbar({
         <button
           className="hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 mr-2 rounded-full"
           type="button"
+          onClick={() => inputRef.current?.focus()}
         >
           <img src={ICONS.Search} alt="Search" />
         </button>
         <input
+          ref={inputRef}
           value={searchText}
           type="text"
           autoComplete="off"
@@ -117,18 +130,30 @@ export function Navbar({
 
       <div className="flex items-center space-x-8 relative">
         <img
-          className="w-8 h-8 rounded-full shadow-md ml-4 mr-2 cursor-pointer animate-spin-180"
+          className="w-8 h-8 min-w-8 rounded-full shadow-md ml-4 mr-2 cursor-pointer animate-spin-180 object-cover"
           src={photoURL ? photoURL : ICONS.UserImage}
           alt={NAVBAR.ACCOUNT}
           onClick={() => setDropdownOpen((dropdownOpen) => !dropdownOpen)}
         />
-        {dropdownOpen && (
-          <DropdownMenu
-            ref={dropdownRef}
-            closeMenu={() => setDropdownOpen(false)}
-          />
-        )}
       </div>
+      {dropdownOpen && (
+        <DropdownMenu
+          ref={dropdownRef}
+          closeMenu={() => setDropdownOpen(false)}
+          setLogoutModal={setLogoutModal}
+        />
+      )}
+
+      {logoutModal && (
+        <CustomModal
+          showModal={logoutModal}
+          closeModal={() => setLogoutModal(false)}
+          title={DROPDOWN.LOGOUT}
+          text={DROPDOWN.ARE_YOU_SURE}
+          button={DROPDOWN.LOGOUT}
+          handleModal={handleLogout}
+        />
+      )}
     </nav>
   );
 }

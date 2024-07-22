@@ -182,7 +182,7 @@ const Notes: React.FC = () => {
         </p>
       )}
       {notes.length === 0 && searchText !== '' && (
-        <p className="text-gray-500 p-8">{NOTES.NO_MATCHING}</p>
+        <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
       )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
@@ -202,7 +202,7 @@ const Notes: React.FC = () => {
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2 break-words mr-5">
               {note.title}
             </h2>
-            <p className="text-gray-700 dark:text-white line-clamp-5 break-words">
+            <p className={`${!note.title && 'pt-2.5'} text-gray-700 dark:text-white line-clamp-5 break-words`}>
               {htmlFrom(note.desc)}
             </p>
             {menuModal && note.id === menuModalID && (
