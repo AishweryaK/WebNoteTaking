@@ -27,6 +27,10 @@ export default {
       },
       height: {
         98: '40rem',
+        '10vh': '10vh',
+        '90vh': '90vh',
+        '12vh': '12vh',
+        '88vh': '88vh',
       },
     },
   },
