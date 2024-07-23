@@ -1,8 +1,4 @@
-import React, {
-  MouseEvent as MouseE,
-  useEffect,
-  useState,
-} from 'react';
+import React, { MouseEvent as MouseE, useEffect, useState } from 'react';
 import {
   collection,
   query,
@@ -24,6 +20,7 @@ import NotesDropdown from './NotesDropdown';
 import { useOutletContext, useParams } from 'react-router-dom';
 import filter from 'lodash.filter';
 import { ContextType } from '../Home/Home';
+import CustomModal from '../../Components/Modal/CustomModal';
 
 export interface Note {
   id: string;
@@ -38,7 +35,8 @@ const Notes: React.FC = () => {
   const [fullNotes, setFullNotes] = useState<Note[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [menuModal, setMenuModal] = useState<boolean>(false);
-  const [menuModalID, setMenuModalID] = useState<string | null>(null);
+  const [menuModalID, setMenuModalID] = useState<string>('');
+  const [deleteNoteModal, setDeleteNoteModal] = useState<boolean>(false);
   const [itemID, setItemID] = useState('');
   const [itemTitle, setItemTitle] = useState('');
   const [itemDesc, setItemDesc] = useState<string | null>('');
@@ -72,6 +70,11 @@ const Notes: React.FC = () => {
 
     return () => unsubscribe();
   }, [finalLabel, uid]);
+
+  useEffect(() => {
+    setItemDesc('');
+    setItemTitle('')
+  }, [finalLabel]);
 
   // useEffect(() => {
   //   const handleClickOutside = (event: MouseEvent) => {
@@ -134,7 +137,7 @@ const Notes: React.FC = () => {
     } catch (error) {
       console.error('error', error);
     }
-    setMenuModal(false);
+    setDeleteNoteModal(false);
   };
 
   const htmlFrom = (htmlString: string) => {
@@ -149,37 +152,34 @@ const Notes: React.FC = () => {
 
   const closeMenu = () => {
     setMenuModal(false);
-    setMenuModalID(null);
   };
 
   return (
     <div className="p-4 w-full max-h-full overflow-auto">
       <div className="flex justify-center w-full mb-4">
         {!showModal && addNote ? (
-        <div className="w-full max-w-3xl mx-auto my-4">
-          <AddNote
-            label={finalLabel}
-            itemTitle={itemTitle}
-            itemDesc={itemDesc}
-            setItemTitle={setItemTitle}
-            setItemDesc={setItemDesc}
-            setAddNote={setAddNote}
-            // show={true}
-          />
-        </div>
-         ) : (
+          <div className="w-full max-w-3xl mx-auto my-4">
+            <AddNote
+              label={finalLabel}
+              itemTitle={itemTitle}
+              itemDesc={itemDesc}
+              setItemTitle={setItemTitle}
+              setItemDesc={setItemDesc}
+              setAddNote={setAddNote}
+              // show={true}
+            />
+          </div>
+        ) : (
           <div
             onClick={() => setAddNote(true)}
             className="w-full max-w-3xl mx-auto my-4 cursor-text bg-white dark:bg-jodit-dark text-gray-500 dark:text-[#AAA7A7] placeholder:font-medium border border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
           >
             {NOTES.ADD_NOTE}
           </div>
-        )} 
+        )}
       </div>
       {notes.length === 0 && searchText === '' && (
-        <p className="text-gray-500 p-8">
-          {NOTES.START_COLLECTION}
-        </p>
+        <p className="text-gray-500 p-8">{NOTES.START_COLLECTION}</p>
       )}
       {notes.length === 0 && searchText !== '' && (
         <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
@@ -193,7 +193,7 @@ const Notes: React.FC = () => {
             onClick={() => handleNote(note)}
           >
             <button
-            type={'button'}
+              type={'button'}
               className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200 hover:dark:bg-my-bg-dark"
               onClick={(e) => handleMenu(e, note.id)}
             >
@@ -202,19 +202,31 @@ const Notes: React.FC = () => {
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2 break-words mr-5">
               {note.title}
             </h2>
-            <p className={`${!note.title && 'pt-2.5'} text-gray-700 dark:text-white line-clamp-5 break-words`}>
+            <p
+              className={`${!note.title && 'pt-2.5'} text-gray-700 dark:text-white line-clamp-5 break-words`}
+            >
               {htmlFrom(note.desc)}
             </p>
             {menuModal && note.id === menuModalID && (
               <NotesDropdown
                 onEdit={() => handleNote(note)}
-                onDelete={() => handleDelete(note.id)}
+                // onDelete={() => handleDelete(note.id)}
+                onDelete={() => setDeleteNoteModal(true)}
                 closeMenu={closeMenu}
               />
             )}
           </div>
         ))}
       </div>
+
+      <CustomModal
+        showModal={deleteNoteModal}
+        closeModal={() => setDeleteNoteModal(false)}
+        title={NOTES.DELETE}
+        text={NOTES.ARE_YOU_SURE}
+        button={NOTES.DEL}
+        handleModal={() => handleDelete(menuModalID)}
+      />
 
       {showModal && (
         <div

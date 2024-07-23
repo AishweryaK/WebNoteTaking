@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { Formik, FormikProps, Form } from 'formik';
+import { Formik, FormikProps, Form, Field, ErrorMessage } from 'formik';
 import {
   EmailAuthProvider,
   User,
   reauthenticateWithCredential,
   updatePassword,
 } from 'firebase/auth';
+import FormError from '../../Components/Field/FormError';
+import FormField from '../../Components/Field/FormField';
+import CustomButton from '../../Components/Button';
+import { useReduxDispatch } from '../../Store';
+import { setLoading } from '../../Store/Loader';
+import { auth } from '../../utils';
 import { showAlert } from '../../Shared/alert';
 import {
   CHANGE_PASSWORD,
@@ -15,13 +21,10 @@ import {
   SIGN_UP,
 } from '../../Shared/Constants';
 import { ChangePSchema } from '../../Shared/validationSchema';
-import FormField from '../../Components/Field/FormField';
-import CustomButton from '../../Components/Button';
-import { auth } from '../../utils';
 import { ICONS } from '../../Shared/icons';
-import FormError from '../../Components/Field/FormError';
 
 interface FormValues {
+  currentPassword: string;
   password: string;
   confirmPassword: string;
 }
@@ -31,12 +34,9 @@ export interface PasswordProps {
 }
 
 function ChangePasswordModal({ onClose }: PasswordProps) {
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [icon, setIcon] = useState(ICONS.EyeOff);
-  const [type, setType] = useState(CONSTANTS.PASSWORD);
-  //   const theme = useSelector(state => state.user.theme);
-  //   const colors = getThemeColors(theme as Theme);
+  const dispatch = useReduxDispatch();
+  const [icon, setIcon] = useState<string>(ICONS.EyeOff);
+  const [type, setType] = useState<string>(CONSTANTS.PASSWORD);
 
   const reauthenticate = async (currentPassword: string) => {
     const user = auth.currentUser;
@@ -52,35 +52,27 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
   };
 
   const handleChangePassword = async (values: FormValues) => {
-    if (currentPassword === values.password) {
+    if (values.currentPassword === values.password) {
       showAlert(ERR_TITLE.ERROR, ERR_MSG.PASSWORD_SAME);
-      //   resetForm();
-      return;
-    }
-    if (!currentPassword || !values.password || !values.confirmPassword) {
-      showAlert(ERR_TITLE.ERROR, ERR_MSG.FILL_ALL_FIELDS);
       return;
     }
 
-    setIsLoading(true);
+    dispatch(setLoading(true));
     try {
-      await reauthenticate(currentPassword);
+      await reauthenticate(values.currentPassword);
       const user = auth.currentUser;
       await updatePassword(user as User, values.password);
       showAlert(ERR_TITLE.SUCCESS, ERR_MSG.CHANGED_PASSWORD);
-      //   resetForm();
       onClose();
     } catch (e: any) {
       showAlert(ERR_TITLE.ERROR, e.message);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
   const handleCancel = () => {
     onClose();
-    setCurrentPassword('');
-    // resetForm();
   };
 
   const handleToggle = () => {
@@ -95,7 +87,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
 
   return (
     <Formik
-      initialValues={{ password: '', confirmPassword: '' }}
+      initialValues={{ currentPassword: '', password: '', confirmPassword: '' }}
       validationSchema={ChangePSchema}
       onSubmit={handleChangePassword}
     >
@@ -109,18 +101,16 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
               <div className="relative">
                 <label
                   className="block text-gray-700 dark:text-my-icon-dark text-sm font-bold mt-4 mb-2 text-left"
-                  htmlFor="currentPassword"
+                  htmlFor={CONSTANTS.CURRENT_PASSWORD}
                 >
                   {CHANGE_PASSWORD.CURRENT}
                 </label>
-                <input
-                  name={CONSTANTS.PASSWORD}
-                  className="bg-my-background dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
+                <Field
+                  name={CONSTANTS.CURRENT_PASSWORD}
                   type={type}
                   placeholder={CHANGE_PASSWORD.CURRENT}
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  autoComplete="current-password"
+                  autoComplete='current-password'
+                  className="bg-my-background dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
                 />
                 <div
                   className="absolute inset-y-0 right-0 flex items-end mb-2 pr-3"
@@ -129,6 +119,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                   <img src={icon} alt={CONSTANTS.PASSWORD} className="w-5" />
                 </div>
               </div>
+              <ErrorMessage name={CONSTANTS.CURRENT_PASSWORD} component="p" className="text-red-500 font-semibold text-xs mb-4 mt-2 text-left" />
 
               <FormField
                 label={SIGN_UP.SETPASSWORD}
@@ -155,7 +146,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                 <button
                   type="button"
                   className="bg-red-500 text-white px-4 mb-4 rounded-md font-semibold"
-                  onClick={() => handleCancel()}
+                  onClick={handleCancel}
                 >
                   {CHANGE_PASSWORD.CANCEL}
                 </button>

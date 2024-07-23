@@ -63,6 +63,7 @@ const CONSTANTS = {
   LAST_NAME: 'lastName',
   PASSWORD: 'password',
   CONFIRM_PASSWORD: 'confirmPassword',
+  CURRENT_PASSWORD: 'currentPassword',
   EMAIL: 'email',
   TEXT: 'text',
   YES: 'Yes',
@@ -70,7 +71,7 @@ const CONSTANTS = {
   INCREMENT: 'increment',
   DECREMENT: 'decrement',
   CANCEL: 'Cancel',
-  LOGO:'Logo',
+  LOGO: 'Logo',
   VERIFY: 'Verify',
 };
 
@@ -111,17 +112,19 @@ const SIGN_UP = {
     'Password should consist of one or more uppercase, numbers and special characters, but no spaces',
   PWD_DONT_MATCH: 'Password and Confirm Password do not match',
   PWD_REQUIRED: '* Password Confirmation required',
+  ENTER_CURR_PWD: '* Please enter your Current Password',
   FIRSTNAME: 'First Name',
   LASTNAME: 'Last Name',
   EMAIL: 'Email',
   SETPASSWORD: 'Password',
   CONFIRMPASSWORD: 'Confirm Password',
+  CURRENTPASSWORD: 'Current Password',
   SUBMIT: 'Sign up',
-  ENTER_DETAILS:'Welcome! Please enter your details.',
-  ENTER_FIRST:'Enter your first name',
-  ENTER_LAST:'Enter your last name',
-  ENTER_EMAIL_ID:'Enter your email',
-  ENTER_PWD:'Enter your password',
+  ENTER_DETAILS: 'Welcome! Please enter your details.',
+  ENTER_FIRST: 'Enter your first name',
+  ENTER_LAST: 'Enter your last name',
+  ENTER_EMAIL_ID: 'Enter your email',
+  ENTER_PWD: 'Enter your password',
 };
 
 const TITLE = {
@@ -193,82 +196,88 @@ const CHANGE_PASSWORD = {
   NEW: 'New Password',
   CONFIRM_NEW: 'Confirm New Password',
   CANCEL: 'Cancel',
+  DELETE_MODAL:'Delete Label',
+  ARE_YOU_SURE:'Are you sure you want to delete this label?',
+  DELETE:'Delete',
 };
 
 const LABEL_LAYOUT = {
   EDIT: 'Edit',
   EDIT_LABELS: 'Edit Labels',
-  EXISTS:'Label already Exists',
-  NEW:'New Label',
-  ENTER_NEW:'Enter new label',
-  EMPTY_ERROR:'* Please enter a label',
-  ADD_LABEL:'Add Label',
-}
+  EXISTS: 'Label already Exists',
+  NEW: 'New Label',
+  ENTER_NEW: 'Enter new label',
+  EMPTY_ERROR: '* Please enter a label',
+  ADD_LABEL: 'Add Label',
+};
 
 const DROPDOWN = {
-  ACCOUNT:'Account',
-  PASSWORD:'Change Password',
+  ACCOUNT: 'Account',
+  PASSWORD: 'Change Password',
   ENABLE_THEME: 'Enable Dark Theme',
-  DISABLE_THEME:'Disable Dark Theme',
+  DISABLE_THEME: 'Disable Dark Theme',
   LOGOUT: 'Logout',
-  CONFIRM:'Confirm',
-  ARE_YOU_SURE:'Are you sure you want to log out?',
-}
+  CONFIRM: 'Confirm',
+  ARE_YOU_SURE: 'Are you sure you want to log out?',
+};
 
 const NAVBAR = {
-  MENU:'Menu',
-  SEARCH:'Search within',
-  ACCOUNT:'Account',
-}
+  MENU: 'Menu',
+  SEARCH: 'Search within',
+  ACCOUNT: 'Account',
+};
 
 const ROOT_ROUTER = {
-  HTML:'html',
-  DARK:'dark',
-  LIGHT:'light',
-}
+  HTML: 'html',
+  DARK: 'dark',
+  LIGHT: 'light',
+};
 
 const ACCOUNT = {
-  WELCOME:'Welcome to your Profile!',
-  USER_NAME:'User Name',
-  EMAIL:'Email',
-  EDIT_USERNAME:'Edit Username',
-  ENTER_FIRST:'Enter your first name',
-  ENTER_LAST:'Enter your last name',
-  CHANGE_NAME:'Change Name',
-}
+  WELCOME: 'Welcome to your Profile!',
+  USER_NAME: 'User Name',
+  EMAIL: 'Email',
+  EDIT_USERNAME: 'Edit Username',
+  ENTER_FIRST: 'Enter your first name',
+  ENTER_LAST: 'Enter your last name',
+  CHANGE_NAME: 'Change Name',
+};
 
-const ADD_NOTE={
-  START_TYPING:'Start typing here...',
-  TITLE:'Title',
-  CANCEL:'Cancel',
-  SAVE:'Save',
-}
+const ADD_NOTE = {
+  START_TYPING: 'Start typing here...',
+  TITLE: 'Title',
+  CANCEL: 'Cancel',
+  SAVE: 'Save',
+};
 
 const FORGOT_PWD = {
-  FORGOT:'Forgot your Password?',
-  ENTER_EMAIL:'Enter the email address associated with your account',
-}
+  FORGOT: 'Forgot your Password?',
+  ENTER_EMAIL: 'Enter the email address associated with your account',
+};
 
 const LOGIN = {
-  NOTE_APP:'Notes App',
-  WELCOME:'Welcome back! Please enter your details.',
-  FORGOT_PWD:'Forgot password?',
-  GOOGLE_SIGNIN:'Sign in with Google',
-  GOOGLE:'Google',
-  NO_ACCOUNT:"Don't have an account? ",
-  SIGN_UP:'Sign Up'
-}
+  NOTE_APP: 'Notes App',
+  WELCOME: 'Welcome back! Please enter your details.',
+  FORGOT_PWD: 'Forgot password?',
+  GOOGLE_SIGNIN: 'Sign in with Google',
+  GOOGLE: 'Google',
+  NO_ACCOUNT: "Don't have an account? ",
+  SIGN_UP: 'Sign Up',
+};
 
 const NOTES = {
-  ERROR:'Error fetching notes:',
-  ADD_NOTE:'Add Note...',
-  START_COLLECTION:'Add a note to start your collection!',
-  NO_MATCHING:'No matching notes',
-  MENU:'Menu',
-  CLOSE:'Close',
-  EDIT:'Edit Note',
-  DELETE:'Delete Note',
-}
+  ERROR: 'Error fetching notes:',
+  ADD_NOTE: 'Add Note...',
+  START_COLLECTION: 'Add a note to start your collection!',
+  NO_MATCHING: 'No matching notes',
+  MENU: 'Menu',
+  CLOSE: 'Close',
+  EDIT: 'Edit Note',
+  DELETE: 'Delete Note',
+  ARE_YOU_SURE:'Are you sure you want to delete this Note?',
+  DEL:'Delete',
+
+};
 
 export {
   ROUTES,

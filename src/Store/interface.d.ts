@@ -1,9 +1,9 @@
 export interface UserInfoState {
-    displayName: string | null;
+    displayName?: string | null;
     uid: string;
-    email: string | null;
-    photoURL: string | null;
-    provider: string;
+    email?: string | null;
+    photoURL?: string | null;
+    provider?: string;
   }
 
   export interface NetInfoState {

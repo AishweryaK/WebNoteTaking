@@ -16,7 +16,7 @@ function CustomModal({ showModal, closeModal, title, text, button, handleModal }
     <Modal
       isOpen={showModal}
       onRequestClose={closeModal}
-      className="bg-white dark:bg-my-bg-dark rounded-lg shadow-lg max-w-md w-full p-6"
+      className="bg-white dark:bg-my-bg-dark rounded-lg shadow-lg max-w-md w-full p-6 mx-6"
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50"
       ariaHideApp={false}
     >

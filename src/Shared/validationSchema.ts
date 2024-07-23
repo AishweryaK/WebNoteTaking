@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { SIGN_UP } from './Constants';
+import { current } from '@reduxjs/toolkit';
 
 export const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -65,6 +66,14 @@ export const ForgotPSchema = Yup.object().shape({
 });
 
 export const ChangePSchema = Yup.object().shape({
+  currentPassword:Yup.string()
+  .transform((value: string) => value.trim())
+  .test(
+    SIGN_UP.TRIM_TWO,
+    SIGN_UP.BLANK_SPACE,
+    (value) => (value || '').length > 0
+  )
+  .required(SIGN_UP.ENTER_CURR_PWD),
   password: SignupSchema.fields.password,
   confirmPassword: SignupSchema.fields.confirmPassword,
 });

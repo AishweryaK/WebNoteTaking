@@ -38,7 +38,7 @@ export function Navbar({
   }, [searchText]);
 
   useEffect(() => {
-    // setSearchText("");
+    setSearchText("");
     setSearchData('');
   }, [finalLabel]);
 

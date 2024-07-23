@@ -33,10 +33,14 @@ export default function Home() {
         searchData={searchText}
       />
 
-      <div className="flex flex-row">
+      <div className="flex flex-row relative">
+        {/* <div className='absolute z-50'>  */}
         <LabelsList openSidebar={openSidebar} isSidebarOpen={isSidebarOpen} />
-
+        {/* </div>
+        <div className='absolute p-4 left-[100px]'> */}
         <Outlet context={{ searchText } satisfies ContextType} />
+        {/* </div> */}
+
       </div>
     </>
   );

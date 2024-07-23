@@ -10,7 +10,7 @@ import {
 } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
 import { ICONS } from '../../../Shared/icons';
-import { COLLECTION, LABEL_LAYOUT } from '../../../Shared/Constants';
+import { CHANGE_PASSWORD, COLLECTION, LABEL_LAYOUT } from '../../../Shared/Constants';
 import CustomModal from '../../Modal/CustomModal';
 
 interface CollectionItem {
@@ -329,16 +329,17 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
           </div>
         </Modal>
 
-        {deleteLabel &&
           <CustomModal
             showModal={deleteModal}
             closeModal={() => setDeleteModal(false)}
-            title='Delete Label'
-            text="Are you sure you want to delete this label?"
-            button="Delete"
-            handleModal={() => deleteWrapper(uid, labels, deleteLabel, setLabels)}
+            title={CHANGE_PASSWORD.DELETE_MODAL}
+            text={CHANGE_PASSWORD.ARE_YOU_SURE}
+            button={CHANGE_PASSWORD.DELETE}
+            handleModal={() =>
+              deleteWrapper(uid, labels, deleteLabel as CollectionItem, setLabels)
+            }
           />
-        }
+
       </div>
     );
   }
