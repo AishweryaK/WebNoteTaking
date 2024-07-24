@@ -119,10 +119,18 @@ function AddNote({
       editorClassName: 'initial-text-color',
       // defaultActionOnPaste:'insert_only_text',
       disablePlugins: ['paste'],
+      createAttributes: {
+        a: {
+          style: 'color: #0096FF; text-decoration: underline;'
+        }
+      },
       link: {
         noFollowCheckbox: false,
         openInNewTabCheckbox: false,
         formClassName: `${theme ? 'custom-link-form-dark' : 'custom-link-form'}`,
+        // defaultAttributes: {
+        //   style: 'color: blue; text-decoration: underline;'
+        // },
       },
     }),
     [theme, maxHeight]
@@ -133,7 +141,7 @@ function AddNote({
     div.innerHTML = str;
     return div.textContent || div.innerText || '';
   };
-
+  
   const saveNote = () => {
     const strippedDesc = stripHtmlTags(itemDesc || '').trim();
     const trimmedTitle = itemTitle?.trim();

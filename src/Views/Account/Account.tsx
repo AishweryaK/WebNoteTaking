@@ -105,11 +105,6 @@
 
 // export default Account;
 
-
-
-
-
-
 import { useEffect, useState } from 'react';
 import { useReduxDispatch, useReduxSelector } from '../../Store';
 import { useNavigate } from 'react-router-dom';
@@ -125,6 +120,7 @@ function Account() {
   );
   const dispatch = useReduxDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+  // const [name, setName] = useState<string|null|undefined>();
   const navigate = useNavigate();
 
   const changeName = () => {
@@ -132,21 +128,24 @@ function Account() {
   };
 
   useEffect(() => {
-    const user = auth.currentUser;
-    user?.reload();
-    // console.log(user,"USER")
-    if (user) {
-      dispatch(
-        saveUser({
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          uid,
-          provider,
-          email
-        })
-      );
-    }
-    navigate(ROUTES_CONFIG.ACCOUNT.path,{replace:true})
+    const updateUser = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        await user.reload();
+        dispatch(
+          saveUser({
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            uid: user.uid,
+            provider,
+            email: user.email,
+          })
+        );
+      }
+    };
+
+    updateUser();
+    navigate(ROUTES_CONFIG.ACCOUNT.path, { replace: true });
   }, [dispatch, uid, provider]);
 
   return (
@@ -170,7 +169,7 @@ function Account() {
           <div className="flex flex-col justify-center">
             <div className="mb-6 flex justify-center">
               <img
-                className="h-36 w-36 min-w-36 rounded-full shadow-sm flex items-center justify-center"
+                className="h-36 w-36 min-w-36 min-h-36 rounded-full shadow-sm flex items-center justify-center object-cover"
                 alt={CONSTANTS.LOGO}
                 src={photoURL ? photoURL : ICONS.UserImage}
               />

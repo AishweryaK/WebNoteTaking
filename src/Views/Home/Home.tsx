@@ -79,11 +79,12 @@ export default function Home() {
         setSearchData={handleDataFromChild}
         searchData={searchText}
       />
-      <div className="flex flex-row min-h-88vh relative md:static">
-      <div className="overflow-y-auto absolute md:static z-20 bg-red-500">
+      {/* min-h-88vh */}
+      <div className="flex flex-row min-h-[calc(100vh-4rem)] relative md:static">
+      <div className="overflow-y-auto fixed h-[calc(100vh-4rem)] md:static z-20 bg-my-background dark:bg-my-bg-dark">
         <LabelsList openSidebar={openSidebar} isSidebarOpen={isSidebarOpen} />
         </div>
-        <div className="flex-1 overflow-y-auto absolute md:static left-20">
+        <div className="flex-1 overflow-y-auto h-[calc(100vh-4rem)] w-full top-0 absolute md:static pl-20">
           <Outlet context={{ searchText } satisfies ContextType} />
         </div>
       </div>

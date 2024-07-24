@@ -5,8 +5,9 @@ import useAuthentication from '../../Hooks/userHook';
 import { SignupSchema } from '../../Shared/validationSchema';
 import { ICONS } from '../../Shared/icons';
 import { FormValues } from './sign-up';
-import { CONSTANTS, SIGN_UP, TITLE } from '../../Shared/Constants';
+import { CONSTANTS, LOGIN, ROUTES_CONFIG, SIGN_UP, TITLE } from '../../Shared/Constants';
 import FormError from '../../Components/Field/FormError';
+import { Link } from 'react-router-dom';
 
 export default function Signup() {
   const { signUpCall } = useAuthentication();
@@ -100,12 +101,21 @@ export default function Signup() {
               touched={touched.confirmPassword}
             />
 
-            <div className="mb-4 mt-8">
+            <div className="mb-2 mt-8">
               <CustomButton text={TITLE.SIGNUP} disabled={!isValid} />
             </div>
           </Form>
         )}
       </Formik>
+      <p className="text-center text-gray-600 dark:text-my-background">
+        {SIGN_UP.ACCOUNT}
+        <Link
+          to={ROUTES_CONFIG.LOGIN.path}
+          className="text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline"
+        >
+          {SIGN_UP.LOGIN}
+        </Link>
+      </p>
     </div>
   );
 }

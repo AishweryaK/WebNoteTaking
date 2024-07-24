@@ -172,7 +172,7 @@ const Notes: React.FC = () => {
         ) : (
           <div
             onClick={() => setAddNote(true)}
-            className="w-full max-w-3xl mx-auto my-4 cursor-text bg-white dark:bg-jodit-dark text-gray-500 dark:text-[#AAA7A7] placeholder:font-medium border border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
+            className="w-full max-w-3xl mx-auto my-4 cursor-text bg-white dark:bg-jodit-dark text-gray-500 dark:text-white font-bold placeholder:font-medium border border-solid border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
           >
             {NOTES.ADD_NOTE}
           </div>
@@ -185,7 +185,7 @@ const Notes: React.FC = () => {
         <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
       )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
+      <div className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
         {notes?.map((note) => (
           <div
             key={note.id}

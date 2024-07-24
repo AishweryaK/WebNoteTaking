@@ -79,7 +79,8 @@ export function Navbar({
   }, [dropdownOpen]);
 
   return (
-    <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 h-12vh flex justify-between items-center z-30">
+    // fixed md:sticky
+    <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 h-16 flex justify-between items-center z-30">
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-4">
           <img

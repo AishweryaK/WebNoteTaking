@@ -31,6 +31,7 @@ export default {
         '90vh': '90vh',
         '12vh': '12vh',
         '88vh': '88vh',
+        '60vh': '60vh',
       },
     },
   },
