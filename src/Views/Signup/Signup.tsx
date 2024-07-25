@@ -5,12 +5,13 @@ import useAuthentication from '../../Hooks/userHook';
 import { SignupSchema } from '../../Shared/validationSchema';
 import { ICONS } from '../../Shared/icons';
 import { FormValues } from './sign-up';
-import { CONSTANTS, LOGIN, ROUTES_CONFIG, SIGN_UP, TITLE } from '../../Shared/Constants';
+import { CONSTANTS, SIGN_UP, TITLE } from '../../Shared/Constants';
 import FormError from '../../Components/Field/FormError';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const { signUpCall } = useAuthentication();
+  const navigate = useNavigate();
 
   const handleSignUp = async (values: FormValues) => {
     await signUpCall({
@@ -109,12 +110,13 @@ export default function Signup() {
       </Formik>
       <p className="text-center text-gray-600 dark:text-my-background">
         {SIGN_UP.ACCOUNT}
-        <Link
-          to={ROUTES_CONFIG.LOGIN.path}
+        <button
+        onClick={()=>navigate(-1)}
+        type='button'
           className="text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline"
         >
           {SIGN_UP.LOGIN}
-        </Link>
+        </button>
       </p>
     </div>
   );

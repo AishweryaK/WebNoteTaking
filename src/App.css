@@ -32,12 +32,28 @@
   }
 
   ul {
-    list-style: inside;
+    list-style: inside !important;
   }
 
   ol {
-    list-style: inside;
-    list-style-type: number;
+    list-style: inside !important;
+    list-style-type: number !important;
+  }
+
+  td {
+    border: solid 1px;
+  }
+
+}
+
+#myEditor {
+  ul {
+    list-style: inside !important;
+  }
+
+  ol {
+    list-style: inside !important;
+    list-style-type: number !important;
   }
 
   td {

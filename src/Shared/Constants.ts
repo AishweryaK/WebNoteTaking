@@ -126,7 +126,7 @@ const SIGN_UP = {
   ENTER_LAST: 'Enter your last name',
   ENTER_EMAIL_ID: 'Enter your email',
   ENTER_PWD: 'Enter your password',
-  ACCOUNT: "Have an account? ",
+  ACCOUNT: "Already have an account? ",
   LOGIN:'Log in',
 };
 

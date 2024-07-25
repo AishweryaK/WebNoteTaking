@@ -71,6 +71,13 @@ function ForgotPwd() {
           </Form>
         )}
       </Formik>
+      <button
+          onClick={()=>navigate(-1)}
+          type='button'
+          className="text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline text-right pr-4"
+        >
+          {'Go Back'}
+        </button>
     </div>
   );
 }

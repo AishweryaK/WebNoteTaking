@@ -185,7 +185,7 @@ const Notes: React.FC = () => {
         <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
       )}
 
-      <div className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
+      <div id='myEditor' className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
         {notes?.map((note) => (
           <div
             key={note.id}

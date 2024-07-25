@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DropdownMenu from './Dropdown';
 import { ICONS } from '../../../../Shared/icons';
@@ -21,6 +21,7 @@ export function Navbar({
   const { photoURL } = useReduxSelector((state) => state.user);
   const { signOutCall } = useAuthentication();
   const [searchText, setSearchText] = useState<string>('');
+  const [placeHolder, setPlaceHolder] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -53,6 +54,13 @@ export function Navbar({
     }
   };
 
+  // const handleKeyUp = (event : KeyboardEvent<HTMLInputElement>) =>{
+  //   if (event.key === 'Enter') {
+  //     event.preventDefault();
+  //     console.log('do validate')
+  //   }
+  // }
+
   const handleClear = () => {
     setSearchData('');
     setSearchText('');
@@ -77,6 +85,22 @@ export function Navbar({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [dropdownOpen]);
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 640) {
+        setPlaceHolder(true);
+      } else setPlaceHolder(false);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     // fixed md:sticky
@@ -114,9 +138,11 @@ export function Navbar({
         <input
           ref={inputRef}
           value={searchText}
+          // onKeyUp={handleKeyUp}
           type="text"
+          title={finalLabel}
           autoComplete="off"
-          placeholder={`${NAVBAR.SEARCH} "${finalLabel}"`}
+          placeholder={placeHolder ? `${finalLabel}` : `${NAVBAR.SEARCH} "${finalLabel}"` }
           onChange={(e) => setSearchText(e.target.value)}
           className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />
