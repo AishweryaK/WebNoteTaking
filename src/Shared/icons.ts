@@ -9,6 +9,7 @@ import Menu from '../assets/Svgs/menu.svg';
 import Settings from '../assets/Svgs/setting.svg';
 import Edit from '../assets/Svgs/edit.svg';
 import Label from '../assets/Svgs/label.svg';
+import LabelLight from '../assets/Svgs/label-light.svg';
 import Lightbulb from '../assets/Svgs/lightbulb.svg';
 import Reminder from '../assets/Svgs/reminder.svg';
 import Trash from '../assets/Svgs/trash.svg';
@@ -31,6 +32,7 @@ export const ICONS = {
   Settings,
   Edit,
   Label,
+  LabelLight,
   Lightbulb,
   Reminder,
   Trash,

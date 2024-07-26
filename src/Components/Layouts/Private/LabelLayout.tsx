@@ -170,23 +170,23 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
           } h-full overflow-hidden ease-in-out duration-200 pt-2`}
         >
           <div className="flex flex-col">
-            {labels.map((label, index) => (
+            {labels.map((labelL, index) => (
               <NavLink
                 key={index}
-                title={label.text}
-                to={`/home/${label.text}`}
+                title={labelL.text}
+                to={`/home/${labelL.text}`}
                 className={({ isActive }) =>
                   `space-x-4 pl-4 min-w-full h-14 flex flex-row rounded-e-full items-center text-gray-900 dark:text-white ${
-                    isActive || label.text === others
+                    isActive || labelL.text === others
                       ? 'bg-my-blue-500D text-white font-semibold'
                       : 'hover:bg-my-hover hover:dark:bg-my-hover-dark'
                   }`
                 }
               >
-                <img className="w-10 p-2" src={ICONS.Label} alt="" />
+                <img className="w-10 p-2" src={(labelL.text === label || labelL.text === others) ? ICONS.LabelLight : ICONS.Label} alt="" />
                 {isSidebarOpen && (
                   <div className="overflow-hidden text-ellipsis pr-3">
-                    {label.text}
+                    {labelL.text}
                   </div>
                 )}
               </NavLink>

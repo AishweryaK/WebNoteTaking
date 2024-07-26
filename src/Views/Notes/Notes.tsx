@@ -17,10 +17,11 @@ import AddNote from '../AddNote/AddNote';
 import { ICONS } from '../../Shared/icons';
 import { COLLECTION, CONSTANTS, NOTES } from '../../Shared/Constants';
 import NotesDropdown from './NotesDropdown';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useLocation, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
 import filter from 'lodash.filter';
 import { ContextType } from '../Home/Home';
 import CustomModal from '../../Components/Modal/CustomModal';
+import { GoogleLogin } from '@react-oauth/google';
 
 export interface Note {
   id: string;
@@ -44,7 +45,10 @@ const Notes: React.FC = () => {
   // const addNoteRef = useRef<HTMLDivElement>(null);
   const { label } = useParams();
   const finalLabel = label || COLLECTION.OTHERS;
-  const { searchText } = useOutletContext<ContextType>();
+  // const { searchText } = useOutletContext<ContextType>();
+  const [searchParams] = useSearchParams();
+  const searchText = searchParams.get("searchText");
+  // const a = useLocation()
 
   useEffect(() => {
     const notesRef = collection(userDocRef(uid), finalLabel);
@@ -75,6 +79,8 @@ const Notes: React.FC = () => {
     setItemDesc('');
     setItemTitle('')
   }, [finalLabel]);
+
+  // console.log(a.search,"EGETGT");
 
   // useEffect(() => {
   //   const handleClickOutside = (event: MouseEvent) => {

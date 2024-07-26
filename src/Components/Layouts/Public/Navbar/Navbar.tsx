@@ -1,49 +1,52 @@
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import DropdownMenu from './Dropdown';
-import { ICONS } from '../../../../Shared/icons';
-import { COLLECTION, CONSTANTS, DROPDOWN, NAVBAR } from '../../../../Shared/Constants';
+import CustomModal from '../../../Modal/CustomModal';
 import { useReduxSelector } from '../../../../Store';
 import useAuthentication from '../../../../Hooks/userHook';
-import CustomModal from '../../../Modal/CustomModal';
+import { ICONS } from '../../../../Shared/icons';
+import { COLLECTION, CONSTANTS, DROPDOWN, NAVBAR } from '../../../../Shared/Constants';
+import useDebounce from '../../../../Hooks/debounceHook';
 
 interface NavbarProps {
   toggleSidebar: () => void;
-  setSearchData: (data: string) => void;
-  searchData: string;
 }
 
 export function Navbar({
   toggleSidebar,
-  setSearchData,
-  searchData,
 }: NavbarProps) {
   const { photoURL } = useReduxSelector((state) => state.user);
   const { signOutCall } = useAuthentication();
-  const [searchText, setSearchText] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const [searchData, setSearchData] = useState<string>('');
   const [placeHolder, setPlaceHolder] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { label } = useParams();
+  const debouncedData = useDebounce(searchData,500);
   const navigate = useNavigate();
   const finalLabel = label || COLLECTION.OTHERS;
 
   useEffect(() => {
-    const getSearch = setTimeout(() => {
-      setSearchData(searchText);
-    }, 500);
-
-    return () => clearTimeout(getSearch);
-  }, [searchText]);
-
-  useEffect(() => {
-    setSearchText("");
+    setSearchParams({});
     setSearchData('');
   }, [finalLabel]);
 
-  // console.log(photoURL,"photo")
+  useEffect(() => {
+    if(searchData){
+      setSearchParams({searchText: debouncedData})
+    }
+    else{
+      setSearchParams({})
+    }
+  }, [debouncedData])
+  
+
+  const handleSearchParams = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value);
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -54,16 +57,9 @@ export function Navbar({
     }
   };
 
-  // const handleKeyUp = (event : KeyboardEvent<HTMLInputElement>) =>{
-  //   if (event.key === 'Enter') {
-  //     event.preventDefault();
-  //     console.log('do validate')
-  //   }
-  // }
-
   const handleClear = () => {
     setSearchData('');
-    setSearchText('');
+    setSearchParams({});
   };
 
   const handleLogout = async () => {
@@ -86,7 +82,6 @@ export function Navbar({
     };
   }, [dropdownOpen]);
 
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 640) {
@@ -102,8 +97,9 @@ export function Navbar({
     };
   }, []);
 
+  // const searchText = searchParams.get('searchText') || '';
+  
   return (
-    // fixed md:sticky
     <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 h-16 flex justify-between items-center z-30">
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-4">
@@ -127,7 +123,7 @@ export function Navbar({
         </div>
       </div>
 
-      <form className="flex items-center bg-my-background dark:bg-my-bg-dark dark:border-my-icon-dark dark:border px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96 ml-4">
+      <div className="flex items-center bg-my-background dark:bg-my-bg-dark dark:border-my-icon-dark dark:border px-2 py-1 rounded-lg shadow-inner min-w-32 md:min-w-96 ml-4">
         <button
           className="hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 mr-2 rounded-full"
           type="button"
@@ -137,23 +133,24 @@ export function Navbar({
         </button>
         <input
           ref={inputRef}
-          value={searchText}
-          // onKeyUp={handleKeyUp}
+          value={searchData}
           type="text"
           title={finalLabel}
           autoComplete="off"
           placeholder={placeHolder ? `${finalLabel}` : `${NAVBAR.SEARCH} "${finalLabel}"` }
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={handleSearchParams}
           className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />
-        <button
-          className={`hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full ${!searchData && 'hidden'}`}
-          type="button"
-          onClick={handleClear}
-        >
-          <img src={ICONS.Close} alt="Close" />
-        </button>
-      </form>
+        {/* {searchText && ( */}
+          <button
+            className={`hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full ${!searchData && 'hidden'}`}
+            type="button"
+            onClick={handleClear}
+          >
+            <img src={ICONS.Close} alt="Close" />
+          </button>
+        {/* )} */}
+      </div>
 
       <div className="flex items-center space-x-8 relative">
         <img

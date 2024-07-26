@@ -183,7 +183,7 @@ function AddNote({
         placeholder={ADD_NOTE.TITLE}
         maxLength={40}
         onChange={(e) => setItemTitle(e.target.value)}
-        className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
+        className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
       />
       <div id="myjoditEditor" className="text-left">
         <JoditEditor

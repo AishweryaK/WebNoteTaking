@@ -4,6 +4,9 @@ import {
   User,
   UserCredential,
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  getAdditionalUserInfo,
+  signInWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -13,12 +16,13 @@ import { useReduxDispatch, useReduxSelector } from '../Store';
 import { clearUserData, saveName, saveUser } from '../Store/User';
 import { ERR_MSG, ERR_TITLE, PROVIDER, TITLE } from '../Shared/Constants';
 import { handleAuthError, handleSignUpError } from '../Shared/authError';
-import { SignInProps, SignUpProps } from './user-hook';
+import { SignInProps, SignUpProps } from './hook';
 import { addDocumentsForUser } from '../Shared/firebaseUtils';
 import { auth, provider } from '../utils';
 import { showAlert } from '../Shared/alert';
 import { FormValues } from '../Views/Account/NameChange';
 import { setLoading } from '../Store/Loader';
+import { googleLogout } from '@react-oauth/google';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
@@ -129,6 +133,7 @@ export default function useAuthentication() {
     try {
       if (myProvider === PROVIDER.GOOGLE) {
         //   await GoogleSignin.signOut();
+        googleLogout();
       } else {
         await signOut(auth);
       }
@@ -173,26 +178,53 @@ export default function useAuthentication() {
     }
   };
 
-  const googleSignInCall = async () => {
-    signInWithPopup(auth, provider)
-      .then((result: UserCredential) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        const { user } = result;
-      })
-      .catch((error) => {
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        // const { email } = error.customData;
-        // const credential = GoogleAuthProvider.credentialFromError(error);
-        console.error(errorMessage);
-      });
-    // try {
-    //   await signInWithPopup(auth, provider);
-    //   console.log('google');
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  // const googleSignInCall = async () => {
+  //   // signInWithPopup(auth, provider)
+  //   //   .then((result: UserCredential) => {
+  //   //     const credential = GoogleAuthProvider.credentialFromResult(result);
+  //   //     const token = credential?.accessToken;
+  //   //     const { user } = result;
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     // const errorCode = error.code;
+  //   //     const errorMessage = error.message;
+  //   //     // const { email } = error.customData;
+  //   //     // const credential = GoogleAuthProvider.credentialFromError(error);
+  //   //     console.error(errorMessage);
+  //   //   });
+  //   try {
+  //     await signInWithPopup(auth, provider);
+  //     console.log('google');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const googleSignInCall = async (idToken: string) => {
+    const credential = GoogleAuthProvider.credential(idToken);
+    console.log(idToken)
+    try {
+      const result = await signInWithCredential(auth, credential);
+
+      if (result.user) {
+        dispatch(
+          saveUser({
+            displayName: result.user.displayName,
+            uid: result.user.uid,
+            email: result.user.email,
+            photoURL: result.user.photoURL,
+            provider: PROVIDER.GOOGLE,
+          })
+        );
+      }
+
+      const info = getAdditionalUserInfo(result);
+      if (info && info.isNewUser) {
+        await addDocumentsForUser(result.user.uid);
+      }
+    } catch (error) {
+      console.error('Google Sign-In Error', error);
+    }
   };
 
   return {

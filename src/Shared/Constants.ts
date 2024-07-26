@@ -256,6 +256,7 @@ const ADD_NOTE = {
 const FORGOT_PWD = {
   FORGOT: 'Forgot your Password?',
   ENTER_EMAIL: 'Enter the email address associated with your account',
+  GO_BACK:'Go Back',
 };
 
 const LOGIN = {

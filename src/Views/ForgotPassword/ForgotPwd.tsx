@@ -74,9 +74,9 @@ function ForgotPwd() {
       <button
           onClick={()=>navigate(-1)}
           type='button'
-          className="text-my-blue-500D hover:text-my-blue-800 hover:dark:text-my-blue-200 font-medium hover:underline text-right pr-4"
+          className="text-my-blue-500D dark:text-my-blue-100 hover:text-my-blue-800 hover:dark:text-my-blue-0 font-medium hover:underline text-right pr-4"
         >
-          {'Go Back'}
+          {FORGOT_PWD.GO_BACK}
         </button>
     </div>
   );
