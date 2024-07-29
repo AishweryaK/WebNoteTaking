@@ -123,6 +123,8 @@ const Notes: React.FC = () => {
     );
   };
 
+  console.log(notes, fullNotes,"NOTES")
+
   const handleNote = (note: Note) => {
     setShowModal(true);
     setItemID(note.id);

@@ -16,13 +16,14 @@ import { useReduxDispatch, useReduxSelector } from '../Store';
 import { clearUserData, saveName, saveUser } from '../Store/User';
 import { ERR_MSG, ERR_TITLE, PROVIDER, TITLE } from '../Shared/Constants';
 import { handleAuthError, handleSignUpError } from '../Shared/authError';
-import { SignInProps, SignUpProps } from './hook';
+import { SignInProps, SignUpProps, UploadImageProps } from './hook';
 import { addDocumentsForUser } from '../Shared/firebaseUtils';
-import { auth, provider } from '../utils';
+import { auth, storage } from '../utils';
 import { showAlert } from '../Shared/alert';
 import { FormValues } from '../Views/Account/NameChange';
 import { setLoading } from '../Store/Loader';
 import { googleLogout } from '@react-oauth/google';
+import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
@@ -98,13 +99,49 @@ export default function useAuthentication() {
   //   imageUri,
   //   userId,
   // }: UploadImageProps) => {
-  //   const storageRef = storage().ref(`profile_images/${userId}.jpg`);
+  //   const storageRef = storageRef(`profile_images/${userId}.jpg`);
   //   const response = await fetch(imageUri);
   //   const blob = await response.blob();
   //   await storageRef.put(blob);
   //   const downloadURL = await storageRef.getDownloadURL();
   //   return downloadURL;
   // };
+
+  const uploadImageToFirebase = async ({ imageUri, userId }: UploadImageProps) => {
+    try {
+      const dateID = new Date().toISOString().replace(/[-:.]/g, '');
+      let storageRef = ref(storage, `profile_images/${userId}/${dateID}.jpg`);
+        // storageRef = ref(storage, `profile_images/${userId}.jpg`);
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      await uploadBytes(storageRef, blob);
+      const downloadURL = await getDownloadURL(storageRef);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  };
+
+  // const deleteImageFromFirebase = async (imageUrl:string) => {
+  //   const storageRef = ref(storage, imageUrl);
+  //   await deleteObject(storageRef);
+  // };
+
+  const deleteImageFromFirebase = async (downloadURL:string) => {
+    try {
+      const baseURL = "https://firebasestorage.googleapis.com/v0/b/notetakingapp-2cff4.appspot.com/o/";
+      const path = decodeURIComponent(downloadURL.split(baseURL)[1].split('?')[0]);
+
+      const fileRef = ref(storage, path);
+
+      await deleteObject(fileRef);
+      console.log('File deleted successfully');
+    } catch (error) {
+      console.error('Error deleting file:', error);
+      throw error;
+    }
+  };
 
   // const deletePhoto = async () => {
   //   setIsLoading(true);
@@ -231,7 +268,8 @@ export default function useAuthentication() {
     signInCall,
     signUpCall,
     signOutCall,
-    //   uploadImageToFirebase,
+      uploadImageToFirebase,
+      deleteImageFromFirebase,
     //   deletePhoto,
     googleSignInCall,
     handleNameChange,

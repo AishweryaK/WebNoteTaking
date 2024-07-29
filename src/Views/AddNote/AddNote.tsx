@@ -15,6 +15,7 @@ import {
   ROOT_ROUTER,
 } from '../../Shared/Constants';
 import { showAlert } from '../../Shared/alert';
+import useAuthentication from '../../Hooks/userHook';
 
 interface AddNoteProps {
   label: string | undefined;
@@ -39,9 +40,11 @@ function AddNote({
 }: AddNoteProps) {
   const { uid } = useReduxSelector((state) => state.user);
   const theme = useReduxSelector((state) => state.ui.isDarkMode);
+  const {uploadImageToFirebase, deleteImageFromFirebase} = useAuthentication();
   const editorRef = useRef(null);
   const titleRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(600);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -76,10 +79,7 @@ function AddNote({
     'brush',
     '|',
     'image',
-    'link',
-    '|',
-    'undo',
-    'redo',
+    'link'
   ];
 
   const text = (): string | null => {
@@ -132,9 +132,28 @@ function AddNote({
         //   style: 'color: blue; text-decoration: underline;'
         // },
       },
+      events: {
+        afterInsertImage: async (imageElement:any) => {
+          const base64Data = imageElement.src;
+          // const index = imageUrls.length;
+          // const blob = await (await fetch(base64Data)).blob();
+          const downloadURL = await uploadImageToFirebase({ imageUri: base64Data, userId: uid });
+          imageElement.src = downloadURL;
+          console.log(imageElement,"IMAGEELEMENT")
+          console.log(imageElement.src,"IMAGEELEMENTSRCCC")
+          setImageUrls((prevUrls) => [...prevUrls, downloadURL]);
+        },
+        removeImage: async (imageElement:any) => {
+          const imageUrl = imageElement.src;
+          await deleteImageFromFirebase(imageUrl);
+          setImageUrls((prevUrls) => prevUrls.filter((url) => url !== imageUrl));
+        },
+      },
     }),
-    [theme, maxHeight]
+    [theme, maxHeight, imageUrls]
   );
+
+  console.log(imageUrls,"FEFVBGBG");
 
   const stripHtmlTags = (str: string) => {
     const div = document.createElement('div');
@@ -157,9 +176,9 @@ function AddNote({
       const effectiveLabel = label || defaultLabel;
 
       if (itemID && label) {
-        updateNote(uid, label, itemID, itemTitle, itemDesc);
+        updateNote(uid, label, itemID, itemTitle, itemDesc, imageUrls);
       } else if (effectiveLabel) {
-        saveNoteLabel(uid, effectiveLabel, itemTitle, itemDesc);
+        saveNoteLabel(uid, effectiveLabel, itemTitle, itemDesc, imageUrls);
         updateCollectionCount(uid, effectiveLabel, CONSTANTS.INCREMENT);
       }
 

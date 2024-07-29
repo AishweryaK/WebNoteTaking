@@ -84,7 +84,8 @@ export const updateNote = async (
   label: string,
   itemID: string,
   title: string | undefined,
-  desc: string | null
+  desc: string | null,
+  imageUrls?:string[],
 ) => {
   try {
     const noteRef = collection(userDocRef(uid), label);
@@ -93,6 +94,7 @@ export const updateNote = async (
       title,
       desc,
       createdAt: serverTimestamp(),
+      imageUrls,
     });
   } catch (error) {
     console.error('error', error);
@@ -102,8 +104,9 @@ export const updateNote = async (
 export const saveNoteLabel = async (
   uid: string,
   label: string,
-  title: string | undefined,
-  desc: string | null
+  title: string| undefined ,
+  desc: string | null,
+  imageUrls?:string[],
 ) => {
   try {
     const noteRef = collection(userDocRef(uid), label);
@@ -111,6 +114,7 @@ export const saveNoteLabel = async (
       title,
       desc,
       createdAt: serverTimestamp(),
+      imageUrls,
     });
   } catch (error) {
     console.error('error', error);
