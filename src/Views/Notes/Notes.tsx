@@ -20,6 +20,7 @@ import NotesDropdown from './NotesDropdown';
 import CustomModal from '../../Components/Modal/CustomModal';
 import { ICONS } from '../../Shared/icons';
 import { COLLECTION, CONSTANTS, NOTES } from '../../Shared/Constants';
+import Masonry from 'react-masonry-css';
 
 export interface Note {
   id: string;
@@ -163,6 +164,13 @@ const Notes: React.FC = () => {
     setMenuModal(false);
   };
 
+  const breakpointColumnsObj = {
+    default: 4,
+    // 1100: 4,
+    1023: 2,
+    459: 1,
+  };
+
   return (
     <div className="p-4 w-full max-h-full overflow-auto">
       <div className="flex justify-center w-full mb-4">
@@ -196,14 +204,23 @@ const Notes: React.FC = () => {
         <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
       )}
 
-      <div
+      {/* <div
         id="myEditor"
         className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36"
+      > */}
+         <div
+        id="myEditor"
+        className="mt-12 xl:mx-16 2xl:mx-36"
+      >
+        <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
       >
         {notes?.map((note) => (
           <div
             key={note.id}
-            className="p-4 shadow-md rounded-lg relative cursor-pointer 2xl:min-w-56 dark:bg-my-hover-dark"
+            className="p-4 shadow-md rounded-lg relative cursor-pointer max-w-72 md:max-w-none 2xl:min-w-56 dark:bg-my-hover-dark"
             onClick={() => handleNote(note)}
           >
             <button
@@ -231,6 +248,8 @@ const Notes: React.FC = () => {
             )}
           </div>
         ))}
+      
+      </Masonry>
       </div>
 
       <CustomModal

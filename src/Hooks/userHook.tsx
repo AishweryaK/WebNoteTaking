@@ -14,7 +14,7 @@ import { clearUserData, saveName, saveUser } from '../Store/User';
 import { ERR_MSG, ERR_TITLE, PROVIDER, TITLE } from '../Shared/Constants';
 import { handleAuthError, handleSignUpError } from '../Shared/authError';
 import { SignInProps, SignUpProps, UploadImageProps } from './hook';
-import { addDocumentsForUser } from '../Shared/firebaseUtils';
+import { addDocumentsForUser, userDocRef } from '../Shared/firebaseUtils';
 import { auth, storage } from '../utils';
 import { showAlert } from '../Shared/alert';
 import { FormValues } from '../Views/Account/NameChange';
@@ -26,6 +26,7 @@ import {
   ref,
   uploadBytes,
 } from 'firebase/storage';
+import { arrayRemove, collection, doc, updateDoc } from 'firebase/firestore';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
@@ -151,22 +152,34 @@ export default function useAuthentication() {
   //   await deleteObject(storageRef);
   // };
 
-  const deleteImageFromFirebase = async (downloadURL: string) => {
-    try {
-      const baseURL =
-        'https://firebasestorage.googleapis.com/v0/b/notetakingapp-2cff4.appspot.com/o/';
-      const path = decodeURIComponent(
-        downloadURL.split(baseURL)[1].split('?')[0]
-      );
+  // const deleteImageFromFirebase = async (downloadURL: string) => {
+  //   try {
+  //     const baseURL =
+  //       'https://firebasestorage.googleapis.com/v0/b/notetakingapp-2cff4.appspot.com/o/';
+  //     const path = decodeURIComponent(
+  //       downloadURL.split(baseURL)[1].split('?')[0]
+  //     );
 
-      const fileRef = ref(storage, path);
+  //     const fileRef = ref(storage, path);
 
-      await deleteObject(fileRef);
-      console.log('File deleted successfully');
-    } catch (error) {
-      console.error('Error deleting file:', error);
-      throw error;
-    }
+  //     await deleteObject(fileRef);
+  //     console.log('File deleted successfully');
+  //   } catch (error) {
+  //     console.error('Error deleting file:', error);
+  //     throw error;
+  //   }
+  // };
+
+//  const deleteImageFromFirestore = async (userId: string, label: string | undefined,  url: string, itemID?: string) => {
+//     const noteRef = doc(userDocRef(userId), 'notes', itemID || label || 'default');
+//     await updateDoc(noteRef, {
+//       imageArray: arrayRemove(url)
+//     });
+//   };
+  
+ const deleteImageFromFirebase = async (url: string) => {
+    const imageRef = ref(storage, url);
+    await deleteObject(imageRef);
   };
 
   // const deletePhoto = async () => {
@@ -295,6 +308,7 @@ export default function useAuthentication() {
     signOutCall,
     uploadImageToFirebase,
     deleteImageFromFirebase,
+    // deleteImageFromFirestore,
     //   deletePhoto,
     googleSignInCall,
     handleNameChange,

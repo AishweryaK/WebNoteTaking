@@ -18,6 +18,7 @@ import { showAlert } from '../../Shared/alert';
 import useAuthentication from '../../Hooks/userHook';
 import { ICONS } from '../../Shared/icons';
 import { Jodit } from 'jodit';
+import Masonry from 'react-masonry-css';
 
 interface AddNoteProps {
   label: string | undefined;
@@ -122,6 +123,13 @@ function AddNote({
     setItemTitle('');
   };
 
+  const breakpointColumnsObj = {
+    default: 5,
+    1100: 4,
+    700: 2,
+    500: 1,
+  };
+
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -136,6 +144,21 @@ function AddNote({
       } catch (error) {
         console.error('Error uploading image:', error);
       }
+    }
+  };
+
+  const deleteImage = async (index: number, url: string) => {
+    try {
+      
+      await deleteImageFromFirebase(url);
+
+     
+      // await deleteImageFromFirestore(uid, label, itemID, url);
+
+      
+      setImageArray((prevUrls) => prevUrls.filter((_, i) => i !== index));
+    } catch (error) {
+      console.error('Error deleting image:', error);
     }
   };
 
@@ -234,22 +257,25 @@ function AddNote({
         onChange={(e) => setItemTitle(e.target.value)}
         className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
       />
-      <div
-        ref={imageRef}
-        className="bg-white dark:bg-jodit-dark w-full max-h-52 overflow-auto border border-my-hover dark:border-my-icon-dark grid min-[460px]:grid-cols-2 lg:grid-cols-5"
-      >
-        {imageArray?.map((url, index) => (
-          <div key={index} className="relative h-auto max-w-40 p-2">
-            <img src={url} alt="image" className="mb-2" />
-            <button
-              className="absolute top-3 right-3 rounded-full bg-gray-300 p-1 h-6 w-6"
-              type="button"
-              onClick={() => console.log(index, url, 'HELLO')}
-            >
-              <img src={ICONS.Menu} alt="Menu" />
-            </button>
-          </div>
-        ))}
+        <div className="bg-white dark:bg-jodit-dark w-full max-h-52 overflow-auto border border-my-hover dark:border-my-icon-dark">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {imageArray?.map((url, index) => (
+            <div key={index} className="relative h-auto p-2">
+              <img src={url} alt="image" className="mb-2" />
+              <button
+                className="absolute top-3 right-3 rounded-full bg-gray-300 p-1 h-6 w-6"
+                type="button"
+                onClick={() =>deleteImage(index, url)}
+              >
+                <img src={ICONS.Menu} alt="Menu" />
+              </button>
+            </div>
+          ))}
+        </Masonry>
       </div>
       <div id="myjoditEditor" className="text-left">
         <JoditEditor
