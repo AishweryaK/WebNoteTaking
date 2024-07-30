@@ -37,14 +37,14 @@ function ForgotPwd() {
   return (
     <div className="flex flex-col justify-center">
       <div className="mb-6 flex justify-center">
-        <div className="h-16 w-16 rounded-full shadow-sm bg-gradient-to-b from-my-background to-my-background-200 flex items-center justify-center">
+        <button type='button' className="h-16 w-16 rounded-full shadow-sm bg-gradient-to-b from-my-background to-my-background-200 flex items-center justify-center" onClick={()=>navigate(-1)}>
           <img src={ICONS.Logo} alt={CONSTANTS.LOGO} className="h-12 w-12" />
-        </div>
+        </button>
       </div>
       <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-my-background mb-2">
         {FORGOT_PWD.FORGOT}
       </h2>
-      <p className="text-center text-gray-600 mb-2">
+      <p className="text-center text-gray-600 dark:text-my-background mb-2">
         {FORGOT_PWD.ENTER_EMAIL}
       </p>
       <Formik

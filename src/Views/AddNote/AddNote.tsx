@@ -16,14 +16,18 @@ import {
 } from '../../Shared/Constants';
 import { showAlert } from '../../Shared/alert';
 import useAuthentication from '../../Hooks/userHook';
+import { ICONS } from '../../Shared/icons';
+import { Jodit } from 'jodit';
 
 interface AddNoteProps {
   label: string | undefined;
   itemID?: string;
   itemTitle?: string;
   itemDesc?: string | null;
+  imageArray?: string[];
   setItemTitle?: React.Dispatch<React.SetStateAction<string>>;
   setItemDesc?: React.Dispatch<React.SetStateAction<string | null>>;
+  setImageArray?: React.Dispatch<React.SetStateAction<string[]>>;
   setAddNote?: React.Dispatch<React.SetStateAction<boolean>>;
   closeModal?: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -33,18 +37,23 @@ function AddNote({
   itemID,
   itemTitle,
   itemDesc = '',
+  imageArray = [],
   setItemTitle = () => {},
   setItemDesc = () => {},
+  setImageArray = () => {},
   setAddNote = () => {},
   closeModal = () => {},
 }: AddNoteProps) {
   const { uid } = useReduxSelector((state) => state.user);
   const theme = useReduxSelector((state) => state.ui.isDarkMode);
-  const {uploadImageToFirebase, deleteImageFromFirebase} = useAuthentication();
+  const { uploadImageToFirebase, deleteImageFromFirebase } =
+    useAuthentication();
   const editorRef = useRef(null);
   const titleRef = useRef(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [maxHeight, setMaxHeight] = useState(600);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  // const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -58,6 +67,12 @@ function AddNote({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+  }, []);
+
+  // Jodit.modules.Icon.set('someIcon', `${ICONS.Image}`);
+  useEffect(() => {
+    // Set the custom icon
+    Jodit.modules.Icon.set('someIcon', `${ICONS.Image}`);
   }, []);
 
   const options = [
@@ -78,8 +93,20 @@ function AddNote({
     '|',
     'brush',
     '|',
-    'image',
-    'link'
+    {
+      // name: 'insertImage',
+      // icon:Jodit.modules.Icon.get('cancel'),
+      // icon:`${ICONS.Image}`,
+      // iconURL: 'https://t4.ftcdn.net/jpg/00/53/45/31/360_F_53453175_hVgYVz0WmvOXPd9CNzaUcwcibiGao3CL.jpg',
+      icon:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" class="jodit-icon_image jodit-icon"> <path d="M576 576q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm1024 384v448h-1408v-192l320-320 160 160 512-512zm96-704h-1600q-13 0-22.5 9.5t-9.5 22.5v1216q0 13 9.5 22.5t22.5 9.5h1600q13 0 22.5-9.5t9.5-22.5v-1216q0-13-9.5-22.5t-22.5-9.5zm160 32v1216q0 66-47 113t-113 47h-1600q-66 0-113-47t-47-113v-1216q0-66 47-113t113-47h1600q66 0 113 47t47 113z"></path> </svg>',
+      tooltip: 'Insert Image',
+      exec: () => {
+        if (fileInputRef.current) {
+          fileInputRef.current.click();
+        }
+      },
+    },
+    'link',
   ];
 
   const text = (): string | null => {
@@ -95,6 +122,23 @@ function AddNote({
     setItemTitle('');
   };
 
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const downloadURL = await uploadImageToFirebase({
+          imageUri: file,
+          userId: uid,
+        });
+        setImageArray((prevUrls) => [...prevUrls, downloadURL]);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  };
+
   const config = useMemo(
     () => ({
       zIndex: 0,
@@ -105,6 +149,7 @@ function AddNote({
       theme: theme ? ROOT_ROUTER.DARK : ROOT_ROUTER.LIGHT,
       maxHeight,
       buttons: options,
+      // toolbarButtons:options,
       buttonsMD: options,
       buttonsSM: options,
       buttonsXS: options,
@@ -117,50 +162,35 @@ function AddNote({
       sizeSM: 400,
       toolbarAdaptive: false,
       editorClassName: 'initial-text-color',
-      // defaultActionOnPaste:'insert_only_text',
       disablePlugins: ['paste'],
       createAttributes: {
         a: {
-          style: 'color: #0096FF; text-decoration: underline;'
-        }
+          style: 'color: #0096FF; text-decoration: underline;',
+        },
       },
       link: {
         noFollowCheckbox: false,
         openInNewTabCheckbox: false,
         formClassName: `${theme ? 'custom-link-form-dark' : 'custom-link-form'}`,
-        // defaultAttributes: {
-        //   style: 'color: blue; text-decoration: underline;'
-        // },
       },
-      events: {
-        afterInsertImage: async (imageElement:any) => {
-          const base64Data = imageElement.src;
-          // const index = imageUrls.length;
-          // const blob = await (await fetch(base64Data)).blob();
-          const downloadURL = await uploadImageToFirebase({ imageUri: base64Data, userId: uid });
-          imageElement.src = downloadURL;
-          console.log(imageElement,"IMAGEELEMENT")
-          console.log(imageElement.src,"IMAGEELEMENTSRCCC")
-          setImageUrls((prevUrls) => [...prevUrls, downloadURL]);
+      controls: {
+        ul: {
+          list: undefined,
         },
-        removeImage: async (imageElement:any) => {
-          const imageUrl = imageElement.src;
-          await deleteImageFromFirebase(imageUrl);
-          setImageUrls((prevUrls) => prevUrls.filter((url) => url !== imageUrl));
+        ol: {
+          list: undefined,
         },
       },
     }),
-    [theme, maxHeight, imageUrls]
+    [theme, maxHeight, imageArray]
   );
-
-  console.log(imageUrls,"FEFVBGBG");
 
   const stripHtmlTags = (str: string) => {
     const div = document.createElement('div');
     div.innerHTML = str;
     return div.textContent || div.innerText || '';
   };
-  
+
   const saveNote = () => {
     const strippedDesc = stripHtmlTags(itemDesc || '').trim();
     const trimmedTitle = itemTitle?.trim();
@@ -176,9 +206,9 @@ function AddNote({
       const effectiveLabel = label || defaultLabel;
 
       if (itemID && label) {
-        updateNote(uid, label, itemID, itemTitle, itemDesc, imageUrls);
+        updateNote(uid, label, itemID, itemTitle, itemDesc, imageArray);
       } else if (effectiveLabel) {
-        saveNoteLabel(uid, effectiveLabel, itemTitle, itemDesc, imageUrls);
+        saveNoteLabel(uid, effectiveLabel, itemTitle, itemDesc, imageArray);
         updateCollectionCount(uid, effectiveLabel, CONSTANTS.INCREMENT);
       }
 
@@ -204,15 +234,37 @@ function AddNote({
         onChange={(e) => setItemTitle(e.target.value)}
         className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
       />
+      <div
+        ref={imageRef}
+        className="bg-white dark:bg-jodit-dark w-full max-h-52 overflow-auto border border-my-hover dark:border-my-icon-dark grid min-[460px]:grid-cols-2 lg:grid-cols-5"
+      >
+        {imageArray?.map((url, index) => (
+          <div key={index} className="relative h-auto max-w-40 p-2">
+            <img src={url} alt="image" className="mb-2" />
+            <button
+              className="absolute top-3 right-3 rounded-full bg-gray-300 p-1 h-6 w-6"
+              type="button"
+              onClick={() => console.log(index, url, 'HELLO')}
+            >
+              <img src={ICONS.Menu} alt="Menu" />
+            </button>
+          </div>
+        ))}
+      </div>
       <div id="myjoditEditor" className="text-left">
         <JoditEditor
           ref={editorRef}
           value={itemDesc || ''}
           config={config}
           onChange={(newContent) => setItemDesc(newContent)}
-          // onBlur={handleEditorBlur}
         />
       </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        onChange={handleImageUpload}
+      />
       <button
         className={`bg-red-600 p-2 rounded-lg mt-2 font-semibold mr-4 ${itemID && 'hidden'}`}
         type="button"

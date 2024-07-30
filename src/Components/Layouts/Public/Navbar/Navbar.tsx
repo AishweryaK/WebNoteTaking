@@ -102,7 +102,7 @@ export function Navbar({
   return (
     <nav className="sticky top-0 bg-white dark:bg-my-bg-dark shadow-lg px-4 py-1 h-16 flex justify-between items-center z-30">
       <div className="flex items-center space-x-6">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-0 md:space-x-4">
           <img
             className="cursor-pointer w-10 hover:bg-my-hover hover:dark:bg-my-hover-dark p-2 rounded-full"
             src={ICONS.Menu}
@@ -113,7 +113,7 @@ export function Navbar({
             <img
               src={ICONS.Logo}
               alt={CONSTANTS.LOGO}
-              className="h-14 w-14 min-w-10 min-h-10 cursor-pointer"
+              className="h-14 w-14 min-w-12 object-contain cursor-pointer"
               onClick={() => navigate(0)}
             />
             <span className="hidden md:block font-semibold text-gray-700 dark:text-white">
@@ -137,7 +137,7 @@ export function Navbar({
           type="text"
           title={finalLabel}
           autoComplete="off"
-          placeholder={placeHolder ? `${finalLabel}` : `${NAVBAR.SEARCH} "${finalLabel}"` }
+          placeholder={placeHolder ? `"${finalLabel}"` : `${NAVBAR.SEARCH} "${finalLabel}"` }
           onChange={handleSearchParams}
           className="bg-transparent border-none outline-none w-full text-gray-700 dark:text-white placeholder-gray-500"
         />

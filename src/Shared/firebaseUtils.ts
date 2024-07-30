@@ -120,6 +120,7 @@ export const saveNoteLabel = async (
     console.error('error', error);
   }
 };
+
 export const updateCollectionCount = async (
   uid: string,
   itemText: string,

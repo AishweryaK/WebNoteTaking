@@ -2,13 +2,10 @@ import { useState } from 'react';
 import {
   GoogleAuthProvider,
   User,
-  UserCredential,
   createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
   getAdditionalUserInfo,
   signInWithCredential,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   updateProfile,
 } from 'firebase/auth';
@@ -23,7 +20,12 @@ import { showAlert } from '../Shared/alert';
 import { FormValues } from '../Views/Account/NameChange';
 import { setLoading } from '../Store/Loader';
 import { googleLogout } from '@react-oauth/google';
-import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from 'firebase/storage';
 
 export default function useAuthentication() {
   const dispatch = useReduxDispatch();
@@ -107,19 +109,40 @@ export default function useAuthentication() {
   //   return downloadURL;
   // };
 
-  const uploadImageToFirebase = async ({ imageUri, userId }: UploadImageProps) => {
+  // const uploadImageToFirebase = async ({ imageUri, userId }: UploadImageProps) => {
+  //   try {
+  //     const dateID = new Date().toISOString().replace(/[-:.]/g, '');
+  //     let storageRef = ref(storage, `profile_images/${userId}/${dateID}.jpg`);
+  //       // storageRef = ref(storage, `profile_images/${userId}.jpg`);
+  //     const response = await fetch(imageUri);
+  //     const blob = await response.blob();
+  //     await uploadBytes(storageRef, blob);
+  //     const downloadURL = await getDownloadURL(storageRef);
+  //     return downloadURL;
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+  //     throw error;
+  //   }
+  // };
+
+  const uploadImageToFirebase = async ({
+    imageUri,
+    userId,
+  }: UploadImageProps) => {
+    dispatch(setLoading(true));
     try {
       const dateID = new Date().toISOString().replace(/[-:.]/g, '');
-      let storageRef = ref(storage, `profile_images/${userId}/${dateID}.jpg`);
-        // storageRef = ref(storage, `profile_images/${userId}.jpg`);
-      const response = await fetch(imageUri);
-      const blob = await response.blob();
-      await uploadBytes(storageRef, blob);
+      const storageRef = ref(storage, `profile_images/${userId}/${dateID}.jpg`);
+
+      await uploadBytes(storageRef, imageUri);
       const downloadURL = await getDownloadURL(storageRef);
       return downloadURL;
     } catch (error) {
+      dispatch(setLoading(false));
       console.error('Error uploading image:', error);
       throw error;
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -128,10 +151,13 @@ export default function useAuthentication() {
   //   await deleteObject(storageRef);
   // };
 
-  const deleteImageFromFirebase = async (downloadURL:string) => {
+  const deleteImageFromFirebase = async (downloadURL: string) => {
     try {
-      const baseURL = "https://firebasestorage.googleapis.com/v0/b/notetakingapp-2cff4.appspot.com/o/";
-      const path = decodeURIComponent(downloadURL.split(baseURL)[1].split('?')[0]);
+      const baseURL =
+        'https://firebasestorage.googleapis.com/v0/b/notetakingapp-2cff4.appspot.com/o/';
+      const path = decodeURIComponent(
+        downloadURL.split(baseURL)[1].split('?')[0]
+      );
 
       const fileRef = ref(storage, path);
 
@@ -237,9 +263,8 @@ export default function useAuthentication() {
   //   }
   // };
 
-  const googleSignInCall = async (idToken: string) => {
+  const googleSignInCall = async (idToken: string | undefined) => {
     const credential = GoogleAuthProvider.credential(idToken);
-    console.log(idToken)
     try {
       const result = await signInWithCredential(auth, credential);
 
@@ -268,8 +293,8 @@ export default function useAuthentication() {
     signInCall,
     signUpCall,
     signOutCall,
-      uploadImageToFirebase,
-      deleteImageFromFirebase,
+    uploadImageToFirebase,
+    deleteImageFromFirebase,
     //   deletePhoto,
     googleSignInCall,
     handleNameChange,

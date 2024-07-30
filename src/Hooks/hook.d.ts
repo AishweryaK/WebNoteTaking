@@ -20,6 +20,6 @@ export interface SignUpProps {
 }
 
 export interface UploadImageProps {
-  imageUri: string;
+  imageUri: file;
   userId: string;
 }

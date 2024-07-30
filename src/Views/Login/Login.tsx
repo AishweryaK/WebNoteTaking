@@ -142,8 +142,8 @@ export default function Login() {
             <div className="mb-4">
               <CustomButton text={TITLE.SIGNIN} disabled={!isValid} />
             </div>
-            <div className="mb-4 items-center bg-transparent">
-              <button
+            <div className="mb-4 items-center justify-center bg-transparent">
+              {/* <button
                 className="w-full bg-my-background dark:bg-my-icon-dark hover:bg-my-background-100 hover:dark:bg-my-bg-dark duration-50 text-gray-700 dark:text-white font-bold py-2 px-2 rounded-md border border-my-blue-0 dark:border-none focus:outline-none focus:shadow-outline"
                 type="button"
                 onClick={() => logGoogleUser()}
@@ -154,17 +154,17 @@ export default function Login() {
                   className="inline-block mr-2 w-6"
                 />
                 {LOGIN.GOOGLE_SIGNIN}
-              </button>
-              {/* <GoogleLogin
+              </button> */}
+              <GoogleLogin
                 onSuccess={(credentialResponse) =>
-                  {googleSignInCall(credentialResponse.credential as string)
+                  {googleSignInCall(credentialResponse.credential)
                     // console.log(credentialResponse,"CRED")
                   }
                 }
                 onError={() => {
-                  console.log('Login Failed');
+                  console.error('Login Failed');
                 }}
-              /> */}
+              />
             </div>
           </Form>
         )}

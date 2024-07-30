@@ -108,7 +108,7 @@ const SIGN_UP = {
   ONLY_LN_ALPHABET: 'Last Name should only contain alphabets',
   INVALID_EMAIL: 'Invalid email',
   ENTER_EMAIL: '* Please enter your Email',
-  ENTER_PASSWORD: '* Please enter a Password',
+  ENTER_PASSWORD: '* Please enter your Password',
   PWD_TEXT:
     'Password should consist of one or more uppercase, numbers and special characters, but no spaces',
   PWD_DONT_MATCH: 'Password and Confirm Password do not match',

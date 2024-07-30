@@ -97,6 +97,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
     const editLabel = async () => {
       if (editedLabel.trim() === '') {
         setEmptyLabel(true);
+        setExistingLabel(false);
         return;
       }
       await handleEdit(
@@ -140,6 +141,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
     const addLabel = async () => {
       if (newLabel.trim() === '') {
         setEmptyLabel(true);
+        setExistingLabel(false);
         return;
       }
       setEmptyLabel(false);

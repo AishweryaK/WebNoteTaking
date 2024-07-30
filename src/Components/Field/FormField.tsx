@@ -20,7 +20,7 @@ function FormField({ label, name, placeholder, inputType, autoComplete }: FormFi
   return (
     <div className="relative">
       <label
-        className="block text-gray-700 dark:text-my-icon-dark text-sm font-bold mt-4 mb-2 text-left"
+        className="block text-gray-700 dark:text-gray-200 text-sm font-bold mt-4 mb-2 text-left"
         htmlFor={name}
       >
         {label}
@@ -39,7 +39,7 @@ function FormField({ label, name, placeholder, inputType, autoComplete }: FormFi
       />
       {(name === CONSTANTS.PASSWORD || name === CONSTANTS.CONFIRM_PASSWORD) && (
         <div
-          className="absolute inset-y-0 right-0 flex items-end mb-3 pr-3"
+          className="absolute inset-y-0 right-0 flex items-end mb-3 pr-3 cursor-pointer"
           onClick={handleToggle}
         >
           <img src={icon} alt="password" className="w-5" />

@@ -7,6 +7,8 @@ import {
   orderBy,
 } from 'firebase/firestore';
 import parse from 'html-react-parser';
+import { useParams, useSearchParams } from 'react-router-dom';
+import filter from 'lodash.filter';
 import { useReduxSelector } from '../../Store';
 import {
   deleteNote,
@@ -14,20 +16,17 @@ import {
   userDocRef,
 } from '../../Shared/firebaseUtils';
 import AddNote from '../AddNote/AddNote';
+import NotesDropdown from './NotesDropdown';
+import CustomModal from '../../Components/Modal/CustomModal';
 import { ICONS } from '../../Shared/icons';
 import { COLLECTION, CONSTANTS, NOTES } from '../../Shared/Constants';
-import NotesDropdown from './NotesDropdown';
-import { useLocation, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
-import filter from 'lodash.filter';
-import { ContextType } from '../Home/Home';
-import CustomModal from '../../Components/Modal/CustomModal';
-import { GoogleLogin } from '@react-oauth/google';
 
 export interface Note {
   id: string;
   title: string;
   desc: string;
   createdAt: FieldValue;
+  imageUrls?: string[];
 }
 
 const Notes: React.FC = () => {
@@ -41,13 +40,14 @@ const Notes: React.FC = () => {
   const [itemID, setItemID] = useState('');
   const [itemTitle, setItemTitle] = useState('');
   const [itemDesc, setItemDesc] = useState<string | null>('');
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [addNote, setAddNote] = useState<boolean>(false);
   // const addNoteRef = useRef<HTMLDivElement>(null);
   const { label } = useParams();
   const finalLabel = label || COLLECTION.OTHERS;
   // const { searchText } = useOutletContext<ContextType>();
   const [searchParams] = useSearchParams();
-  const searchText = searchParams.get("searchText");
+  const searchText = searchParams.get('searchText');
   // const a = useLocation()
 
   useEffect(() => {
@@ -77,7 +77,8 @@ const Notes: React.FC = () => {
 
   useEffect(() => {
     setItemDesc('');
-    setItemTitle('')
+    setItemTitle('');
+    setImageUrls([]);
   }, [finalLabel]);
 
   // console.log(a.search,"EGETGT");
@@ -123,13 +124,12 @@ const Notes: React.FC = () => {
     );
   };
 
-  console.log(notes, fullNotes,"NOTES")
-
   const handleNote = (note: Note) => {
     setShowModal(true);
     setItemID(note.id);
     setItemTitle(note.title);
     setItemDesc(note.desc);
+    setImageUrls(note.imageUrls as string[]);
   };
 
   const handleMenu = (e: MouseE<HTMLButtonElement>, modalID: string) => {
@@ -156,6 +156,7 @@ const Notes: React.FC = () => {
     setShowModal(false);
     setItemTitle('');
     setItemDesc('');
+    setImageUrls([]);
   };
 
   const closeMenu = () => {
@@ -171,8 +172,10 @@ const Notes: React.FC = () => {
               label={finalLabel}
               itemTitle={itemTitle}
               itemDesc={itemDesc}
+              imageArray={imageUrls}
               setItemTitle={setItemTitle}
               setItemDesc={setItemDesc}
+              setImageArray={setImageUrls}
               setAddNote={setAddNote}
               // show={true}
             />
@@ -186,14 +189,17 @@ const Notes: React.FC = () => {
           </div>
         )}
       </div>
-      {notes.length === 0 && searchText === '' && (
+      {notes.length === 0 && searchText === null && (
         <p className="text-gray-500 p-8">{NOTES.START_COLLECTION}</p>
       )}
-      {notes.length === 0 && searchText !== '' && (
+      {notes.length === 0 && searchText !== null && (
         <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
       )}
 
-      <div id='myEditor' className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36">
+      <div
+        id="myEditor"
+        className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36"
+      >
         {notes?.map((note) => (
           <div
             key={note.id}
@@ -245,11 +251,11 @@ const Notes: React.FC = () => {
         >
           <div className="relative p-4 w-full max-w-4xl flex items-center justify-center">
             <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow w-full h-full max-h-[50%] overflow-auto">
-              <div className="flex items-center justify-between p-4 md:p-5 rounded-t">
+              <div className="flex items-center justify-between rounded-t">
                 <div></div>
                 <button
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:dark:bg-my-hover-dark rounded-full text-sm w-8 h-8 inline-flex justify-center items-center"
+                  className="text-gray-400 bg-transparent mr-4 mt-4 hover:bg-gray-200 hover:dark:bg-my-hover-dark rounded-full text-sm w-8 h-8 inline-flex justify-center items-center"
                   onClick={closeModal}
                 >
                   <img alt={NOTES.CLOSE} src={ICONS.Close} />
@@ -261,8 +267,10 @@ const Notes: React.FC = () => {
                   itemID={itemID}
                   itemTitle={itemTitle}
                   itemDesc={itemDesc}
+                  imageArray={imageUrls}
                   setItemTitle={setItemTitle}
                   setItemDesc={setItemDesc}
+                  setImageArray={setImageUrls}
                   closeModal={closeModal}
                   // show={false}
                 />
