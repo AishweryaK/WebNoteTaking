@@ -170,16 +170,24 @@ export default function useAuthentication() {
   //   }
   // };
 
-//  const deleteImageFromFirestore = async (userId: string, label: string | undefined,  url: string, itemID?: string) => {
-//     const noteRef = doc(userDocRef(userId), 'notes', itemID || label || 'default');
-//     await updateDoc(noteRef, {
-//       imageArray: arrayRemove(url)
-//     });
-//   };
+ const deleteImageFromFirestore = async (userId: string, label: string,  url: string, itemID?: string) => {
+  try{ const collRef = collection(userDocRef(userId), label);
+    const docRef = doc(collRef, itemID);
+    await updateDoc(docRef, {
+      imageUrls: arrayRemove(url)
+    });}
+    catch(error){
+      console.error('firestore', error);
+    }
+  };
   
  const deleteImageFromFirebase = async (url: string) => {
-    const imageRef = ref(storage, url);
-    await deleteObject(imageRef);
+  try{ const imageRef = ref(storage, url);
+    await deleteObject(imageRef);}
+   catch(error)
+   {
+    console.error('storage', error);
+   }
   };
 
   // const deletePhoto = async () => {
@@ -308,7 +316,7 @@ export default function useAuthentication() {
     signOutCall,
     uploadImageToFirebase,
     deleteImageFromFirebase,
-    // deleteImageFromFirestore,
+    deleteImageFromFirestore,
     //   deletePhoto,
     googleSignInCall,
     handleNameChange,

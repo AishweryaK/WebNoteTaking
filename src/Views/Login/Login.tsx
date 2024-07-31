@@ -20,6 +20,7 @@ import {
 } from '../../Shared/Constants';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 interface GoogleUser {
   access_token: string;
@@ -59,34 +60,39 @@ export default function Login() {
   //   }
   // }, [user]);
 
-    const logGoogleUser = useGoogleLogin({
-      flow:'auth-code',
-      onSuccess: async codeResponse  =>  {
-        // console.log(codeResponse,"FRFR")
-        // setUser(codeResponse);
-        // googleSignInCall(codeResponse.code)
-        const tokens = await axios.post('http://localhost:3001/auth/google', {
-          code : codeResponse.code,
-        })
-        console.log(tokens,"TOKEN")
-      },
-    }
-  );
+  //   const logGoogleUser = useGoogleLogin({
+  //     flow:'auth-code',
+  //     onSuccess: async codeResponse  =>  {
+  //       // console.log(codeResponse,"FRFR")
+  //       // setUser(codeResponse);
+  //       // googleSignInCall(codeResponse.code)
+  //       const tokens = await axios.post('http://localhost:3001/auth/google', {
+  //         code : codeResponse.code,
+  //       })
+  //       console.log(tokens,"TOKEN")
+  //     },
+  //   }
+  // );
 
   // console.log(user,"USEROBJ")
 
-  // const logGoogleUser = useGoogleLogin({
-  //   scope: 'openid profile email',
-  //   onSuccess: async (codeResponse) => {
-  //     console.log(codeResponse.credential, 'Code');
-      // fetching userinfo can be done on the client or the server
-      // const userInfo = await axios
-      //   .get('https://www.googleapis.com/oauth2/v3/userinfo', {
-      //     headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-      //   })
-      //   .then(res => res);
-  //   },
-  // });
+  const logGoogleUser = useGoogleLogin({
+    scope: 'openid profile email',
+    onSuccess: async (codeResponse) => {
+      // console.log(codeResponse.credential, 'Code');
+      console.log(codeResponse)
+      try {
+        const decodedToken = jwtDecode(codeResponse.access_token);
+
+        console.log('ID Token:', decodedToken);
+      } catch (error) {
+        console.error('Failed to decode ID token:', error);
+      }
+      // const idTokenResponse = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${codeResponse.access_token}`)
+      // console.log(idTokenResponse, "idTokenResponse");
+        // .then(res => console.log(res));
+    },
+  });
 
   return (
     <div className="flex flex-col justify-center">
@@ -143,10 +149,11 @@ export default function Login() {
               <CustomButton text={TITLE.SIGNIN} disabled={!isValid} />
             </div>
             <div className="mb-4 items-center justify-center bg-transparent">
-              {/* <button
+              <div className='relative'>
+              <button
                 className="w-full bg-my-background dark:bg-my-icon-dark hover:bg-my-background-100 hover:dark:bg-my-bg-dark duration-50 text-gray-700 dark:text-white font-bold py-2 px-2 rounded-md border border-my-blue-0 dark:border-none focus:outline-none focus:shadow-outline"
                 type="button"
-                onClick={() => logGoogleUser()}
+                // onClick={() => logGoogleUser()}
               >
                 <img
                   src={ICONS.Google}
@@ -154,8 +161,11 @@ export default function Login() {
                   className="inline-block mr-2 w-6"
                 />
                 {LOGIN.GOOGLE_SIGNIN}
-              </button> */}
+              </button>
+              <div className='absolute top-0 w-full pl-4' style={{opacity:0.000001}}>
               <GoogleLogin
+              width={'350'}
+              text="continue_with"
                 onSuccess={(credentialResponse) =>
                   {googleSignInCall(credentialResponse.credential)
                     // console.log(credentialResponse,"CRED")
@@ -165,6 +175,8 @@ export default function Login() {
                   console.error('Login Failed');
                 }}
               />
+              </div>
+              </div>
             </div>
           </Form>
         )}

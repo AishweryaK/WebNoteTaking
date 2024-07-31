@@ -19,9 +19,10 @@ import useAuthentication from '../../Hooks/userHook';
 import { ICONS } from '../../Shared/icons';
 import { Jodit } from 'jodit';
 import Masonry from 'react-masonry-css';
+import CustomModal from '../../Components/Modal/CustomModal';
 
 interface AddNoteProps {
-  label: string | undefined;
+  label: string ;
   itemID?: string;
   itemTitle?: string;
   itemDesc?: string | null;
@@ -38,7 +39,7 @@ function AddNote({
   itemID,
   itemTitle,
   itemDesc = '',
-  imageArray = [],
+  imageArray,
   setItemTitle = () => {},
   setItemDesc = () => {},
   setImageArray = () => {},
@@ -47,13 +48,14 @@ function AddNote({
 }: AddNoteProps) {
   const { uid } = useReduxSelector((state) => state.user);
   const theme = useReduxSelector((state) => state.ui.isDarkMode);
-  const { uploadImageToFirebase, deleteImageFromFirebase } =
+  const { uploadImageToFirebase, deleteImageFromFirebase, deleteImageFromFirestore } =
     useAuthentication();
   const editorRef = useRef(null);
   const titleRef = useRef(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [maxHeight, setMaxHeight] = useState(600);
+  const [deleteImageModal, setDeleteImageModal] = useState<boolean>(false);
+  const [imageContent, setImageContent] = useState<{index:number, url:string}>({index:-1,url:''});
   // const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
@@ -152,11 +154,12 @@ function AddNote({
       
       await deleteImageFromFirebase(url);
 
-     
-      // await deleteImageFromFirestore(uid, label, itemID, url);
+     if(itemID){
+      await deleteImageFromFirestore(uid, label, url, itemID);
+     }
 
-      
       setImageArray((prevUrls) => prevUrls.filter((_, i) => i !== index));
+      setDeleteImageModal(false);
     } catch (error) {
       console.error('Error deleting image:', error);
     }
@@ -269,7 +272,10 @@ function AddNote({
               <button
                 className="absolute top-3 right-3 rounded-full bg-gray-300 p-1 h-6 w-6"
                 type="button"
-                onClick={() =>deleteImage(index, url)}
+                // onClick={() =>deleteImage(index, url)}
+                onClick={() =>{
+                  setImageContent({index,url})
+                  setDeleteImageModal(true)}}
               >
                 <img src={ICONS.Menu} alt="Menu" />
               </button>
@@ -305,6 +311,16 @@ function AddNote({
       >
         {ADD_NOTE.SAVE}
       </button>
+      <CustomModal
+          showModal={deleteImageModal}
+          closeModal={() => setDeleteImageModal(false)}
+          title={ADD_NOTE.DELETE_MODAL}
+          text={ADD_NOTE.ARE_YOU_SURE}
+          button={ADD_NOTE.DELETE}
+          handleModal={() =>
+            deleteImage(imageContent?.index , imageContent?.url)
+          }
+        />
     </div>
   );
 }

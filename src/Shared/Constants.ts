@@ -247,6 +247,9 @@ const ACCOUNT = {
 };
 
 const ADD_NOTE = {
+  DELETE_MODAL:'Delete Image',
+  ARE_YOU_SURE:'Are you sure you want to delete this image?',
+  DELETE:'Delete',
   START_TYPING: 'Start typing here...',
   TITLE: 'Title',
   CANCEL: 'Cancel',

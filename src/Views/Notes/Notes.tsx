@@ -208,48 +208,57 @@ const Notes: React.FC = () => {
         id="myEditor"
         className="grid min-[460px]:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 xl:mx-36"
       > */}
-         <div
-        id="myEditor"
-        className="mt-12 xl:mx-16 2xl:mx-36"
-      >
+      <div id="myEditor" className="mt-12 xl:mx-16 2xl:mx-36">
         <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
-        {notes?.map((note) => (
-          <div
-            key={note.id}
-            className="p-4 shadow-md rounded-lg relative cursor-pointer max-w-72 md:max-w-none 2xl:min-w-56 dark:bg-my-hover-dark"
-            onClick={() => handleNote(note)}
-          >
-            <button
-              type={'button'}
-              className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200 hover:dark:bg-my-bg-dark"
-              onClick={(e) => handleMenu(e, note.id)}
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {notes?.map((note) => (
+            <div
+              key={note.id}
+              className="p-4 shadow-md rounded-lg relative cursor-pointer max-w-72 md:max-w-none 2xl:min-w-56 dark:bg-my-hover-dark mb-4"
+              onClick={() => handleNote(note)}
             >
-              <img className="w-5 h-5" src={ICONS.Dots} alt={NOTES.MENU} />
-            </button>
-            <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2 break-words mr-5">
-              {note.title}
-            </h2>
-            <p
-              className={`${!note.title && 'pt-2.5'} text-gray-700 dark:text-white line-clamp-5 break-words`}
-            >
-              {htmlFrom(note.desc)}
-            </p>
-            {menuModal && note.id === menuModalID && (
-              <NotesDropdown
-                onEdit={() => handleNote(note)}
-                // onDelete={() => handleDelete(note.id)}
-                onDelete={() => setDeleteNoteModal(true)}
-                closeMenu={closeMenu}
-              />
-            )}
-          </div>
-        ))}
-      
-      </Masonry>
+              <button
+                type={'button'}
+                className="absolute top-2 right-2 p-1 w-8 h-8 rounded-full hover:bg-gray-200 hover:dark:bg-my-bg-dark"
+                onClick={(e) => handleMenu(e, note.id)}
+              >
+                <img
+                  className="w-5 h-5 align-middle"
+                  src={ICONS.Dots}
+                  alt={NOTES.MENU}
+                />
+              </button>
+              <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2 break-words mr-5">
+                {note.title}
+              </h2>
+              {note.imageUrls && note.imageUrls?.length!=0 && (
+                <div className="max-h-40 overflow-y-auto mt-5">
+                  <img
+                    src={note.imageUrls[0]}
+                    alt="image"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              )}
+              <p
+                className={`${!note.title && 'pt-2.5'} text-gray-700 dark:text-white line-clamp-5 break-words`}
+              >
+                {htmlFrom(note.desc)}
+              </p>
+              {menuModal && note.id === menuModalID && (
+                <NotesDropdown
+                  onEdit={() => handleNote(note)}
+                  // onDelete={() => handleDelete(note.id)}
+                  onDelete={() => setDeleteNoteModal(true)}
+                  closeMenu={closeMenu}
+                />
+              )}
+            </div>
+          ))}
+        </Masonry>
       </div>
 
       <CustomModal

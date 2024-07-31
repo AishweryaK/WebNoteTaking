@@ -103,11 +103,18 @@
   background-clip: padding-box;
 }
 
-
 .my-masonry-grid_column img {
   width: 100%;
   display: block;
   margin-bottom: 1rem; 
+}
+
+.qJTHM {
+  background-color: #f00a0a !important;
+}
+
+.haAclf {
+  background-color: #f00a0a !important;
 }
 
 
