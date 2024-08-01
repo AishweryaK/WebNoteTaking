@@ -7,9 +7,10 @@ import {
   orderBy,
 } from 'firebase/firestore';
 import parse from 'html-react-parser';
+import Masonry from 'react-masonry-css';
 import { useParams, useSearchParams } from 'react-router-dom';
 import filter from 'lodash.filter';
-import { useReduxSelector } from '../../Store';
+import { useReduxDispatch, useReduxSelector } from '../../Store';
 import {
   deleteNote,
   updateCollectionCount,
@@ -20,18 +21,20 @@ import NotesDropdown from './NotesDropdown';
 import CustomModal from '../../Components/Modal/CustomModal';
 import { ICONS } from '../../Shared/icons';
 import { COLLECTION, CONSTANTS, NOTES } from '../../Shared/Constants';
-import Masonry from 'react-masonry-css';
+import { setLoading } from '../../Store/Loader';
+
 
 export interface Note {
   id: string;
   title: string;
   desc: string;
   createdAt: FieldValue;
-  imageUrls?: string[];
+  imageUrls: string[];
 }
 
 const Notes: React.FC = () => {
   const { uid } = useReduxSelector((state) => state.user);
+  const dispatch = useReduxDispatch();
   const [notes, setNotes] = useState<Note[]>([]);
   const [fullNotes, setFullNotes] = useState<Note[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -109,9 +112,9 @@ const Notes: React.FC = () => {
 
   useEffect(() => {
     const formattedQuery = searchText?.toLowerCase();
-    if (searchText) {
+    if (searchText && formattedQuery) {
       const filteredNotes = filter(fullNotes, (note) =>
-        contains(note, formattedQuery as string)
+        contains(note, formattedQuery)
       );
       setNotes(filteredNotes);
     } else {
@@ -130,7 +133,7 @@ const Notes: React.FC = () => {
     setItemID(note.id);
     setItemTitle(note.title);
     setItemDesc(note.desc);
-    setImageUrls(note.imageUrls as string[]);
+    setImageUrls(note.imageUrls);
   };
 
   const handleMenu = (e: MouseE<HTMLButtonElement>, modalID: string) => {
@@ -140,13 +143,18 @@ const Notes: React.FC = () => {
   };
 
   const handleDelete = async (noteID: string) => {
+    // dispatch(setLoading(true))
     try {
       await deleteNote(uid, finalLabel, noteID);
       updateCollectionCount(uid, finalLabel, CONSTANTS.DECREMENT);
+
+      setDeleteNoteModal(false);
     } catch (error) {
       console.error('error', error);
     }
-    setDeleteNoteModal(false);
+    finally{
+      // dispatch(setLoading(false))
+    }
   };
 
   const htmlFrom = (htmlString: string) => {

@@ -40,12 +40,15 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
 
   const reauthenticate = async (currentPassword: string) => {
     const user = auth.currentUser;
-    const credential = EmailAuthProvider.credential(
-      user?.email as string,
+    let credential;
+    if(user && user.email)
+   { credential = EmailAuthProvider.credential(
+      user?.email ,
       currentPassword
-    );
+    );}
     try {
-      await reauthenticateWithCredential(user as User, credential);
+      if(user && credential)
+      await reauthenticateWithCredential(user, credential);
     } catch (error) {
       throw new Error(ERR_MSG.PASSWORD_INCORRECT);
     }

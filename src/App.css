@@ -91,10 +91,13 @@
 }
 
 
+/* #images-grid {
+  margin: 0.5rem;
+} */
 
 .my-masonry-grid {
   display: flex;
-  margin-left: -1rem; 
+  margin-left: -1rem;
   width: auto;
 }
 
@@ -109,13 +112,6 @@
   margin-bottom: 1rem; 
 }
 
-.qJTHM {
-  background-color: #f00a0a !important;
-}
-
-.haAclf {
-  background-color: #f00a0a !important;
-}
 
 
 /* .custom-link-form {

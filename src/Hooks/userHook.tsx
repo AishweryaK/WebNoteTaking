@@ -243,9 +243,10 @@ export default function useAuthentication() {
     dispatch(setLoading(true));
     try {
       const user = auth.currentUser;
-      await updateProfile(user as User, {
+      if(user)
+      {await updateProfile(user, {
         displayName: `${values.firstName.trim()} ${values.lastName.trim()}`,
-      });
+      });}
 
       dispatch(
         saveName({

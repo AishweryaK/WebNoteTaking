@@ -20,6 +20,7 @@ import Tick from '../assets/Svgs/tick.svg';
 import Dots from '../assets/Svgs/ellipsis-vertical.svg';
 import Back from '../assets/Svgs/go-back.svg';
 import Image from '../assets/Svgs/image.svg';
+import CloseWhite from '../assets/Svgs/close-white.svg';
 
 export const ICONS = {
   Google,
@@ -44,4 +45,5 @@ export const ICONS = {
   Dots,
   Back,
   Image,
+  CloseWhite,
 };

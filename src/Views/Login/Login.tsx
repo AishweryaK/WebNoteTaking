@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Link } from 'react-router-dom';
 import {
@@ -18,7 +19,6 @@ import {
   SIGN_UP,
   TITLE,
 } from '../../Shared/Constants';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -28,7 +28,6 @@ interface GoogleUser {
 
 export default function Login() {
   const { googleSignInCall, signInCall } = useAuthentication();
-  // const [ user, setUser ] = useState();
   const [user, setUser] = useState();
 
   const handleLogin = async (values: FormValues) => {
@@ -76,23 +75,24 @@ export default function Login() {
 
   // console.log(user,"USEROBJ")
 
-  const logGoogleUser = useGoogleLogin({
-    scope: 'openid profile email',
-    onSuccess: async (codeResponse) => {
-      // console.log(codeResponse.credential, 'Code');
-      console.log(codeResponse)
-      try {
-        const decodedToken = jwtDecode(codeResponse.access_token);
+  // const logGoogleUser = useGoogleLogin({
+  //   scope: 'openid profile email',
+  //   onSuccess: async (codeResponse) => {
+  //     // console.log(codeResponse.credential, 'Code');
+  //     console.log(codeResponse)
+  //     try {
+  //       const decodedToken = jwtDecode(codeResponse.access_token);
 
-        console.log('ID Token:', decodedToken);
-      } catch (error) {
-        console.error('Failed to decode ID token:', error);
-      }
-      // const idTokenResponse = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${codeResponse.access_token}`)
-      // console.log(idTokenResponse, "idTokenResponse");
-        // .then(res => console.log(res));
-    },
-  });
+  //       console.log('ID Token:', decodedToken);
+  //     } catch (error) {
+  //       console.error('Failed to decode ID token:', error);
+  //     }
+  //     // const idTokenResponse = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${codeResponse.access_token}`)
+  //     // console.log(idTokenResponse, "idTokenResponse");
+  //       // .then(res => console.log(res));
+  //   },
+  // });
+
 
   return (
     <div className="flex flex-col justify-center">

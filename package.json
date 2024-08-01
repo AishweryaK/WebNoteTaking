@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
+    "browser-image-compression": "^2.0.2",
     "firebase": "^10.12.3",
     "formik": "^2.4.6",
     "html-react-parser": "^5.1.10",

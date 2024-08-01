@@ -1,11 +1,17 @@
 import { useMemo, useRef, useEffect, useState } from 'react';
 import JoditEditor from 'jodit-react';
+import imageCompression from 'browser-image-compression';
+import { Jodit } from 'jodit';
+import Masonry from 'react-masonry-css';
+import CustomModal from '../../Components/Modal/CustomModal';
 import {
   saveNoteLabel,
   updateCollectionCount,
   updateNote,
 } from '../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../Store';
+import useAuthentication from '../../Hooks/userHook';
+import { showAlert } from '../../Shared/alert';
 import {
   ADD_NOTE,
   COLLECTION,
@@ -14,15 +20,11 @@ import {
   ERR_TITLE,
   ROOT_ROUTER,
 } from '../../Shared/Constants';
-import { showAlert } from '../../Shared/alert';
-import useAuthentication from '../../Hooks/userHook';
 import { ICONS } from '../../Shared/icons';
-import { Jodit } from 'jodit';
-import Masonry from 'react-masonry-css';
-import CustomModal from '../../Components/Modal/CustomModal';
+
 
 interface AddNoteProps {
-  label: string ;
+  label: string;
   itemID?: string;
   itemTitle?: string;
   itemDesc?: string | null;
@@ -48,19 +50,25 @@ function AddNote({
 }: AddNoteProps) {
   const { uid } = useReduxSelector((state) => state.user);
   const theme = useReduxSelector((state) => state.ui.isDarkMode);
-  const { uploadImageToFirebase, deleteImageFromFirebase, deleteImageFromFirestore } =
-    useAuthentication();
+  const {
+    uploadImageToFirebase,
+    deleteImageFromFirebase,
+    deleteImageFromFirestore,
+  } = useAuthentication();
   const editorRef = useRef(null);
   const titleRef = useRef(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [maxHeight, setMaxHeight] = useState(600);
   const [deleteImageModal, setDeleteImageModal] = useState<boolean>(false);
-  const [imageContent, setImageContent] = useState<{index:number, url:string}>({index:-1,url:''});
+  const [imageContent, setImageContent] = useState<{
+    index: number;
+    url: string;
+  }>({ index: -1, url: '' });
   // const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
-      const newMaxHeight = window.innerHeight * 0.6;
+      const newMaxHeight = window.innerHeight * 0.45;
       setMaxHeight(newMaxHeight);
     };
 
@@ -73,10 +81,9 @@ function AddNote({
   }, []);
 
   // Jodit.modules.Icon.set('someIcon', `${ICONS.Image}`);
-  useEffect(() => {
-    // Set the custom icon
-    Jodit.modules.Icon.set('someIcon', `${ICONS.Image}`);
-  }, []);
+  // useEffect(() => {
+  //   Jodit.modules.Icon.set('someIcon', `${ICONS.Image}`);
+  // }, []);
 
   const options = [
     'bold',
@@ -101,7 +108,7 @@ function AddNote({
       // icon:Jodit.modules.Icon.get('cancel'),
       // icon:`${ICONS.Image}`,
       // iconURL: 'https://t4.ftcdn.net/jpg/00/53/45/31/360_F_53453175_hVgYVz0WmvOXPd9CNzaUcwcibiGao3CL.jpg',
-      icon:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" class="jodit-icon_image jodit-icon"> <path d="M576 576q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm1024 384v448h-1408v-192l320-320 160 160 512-512zm96-704h-1600q-13 0-22.5 9.5t-9.5 22.5v1216q0 13 9.5 22.5t22.5 9.5h1600q13 0 22.5-9.5t9.5-22.5v-1216q0-13-9.5-22.5t-22.5-9.5zm160 32v1216q0 66-47 113t-113 47h-1600q-66 0-113-47t-47-113v-1216q0-66 47-113t113-47h1600q66 0 113 47t47 113z"></path> </svg>',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" class="jodit-icon_image jodit-icon"> <path d="M576 576q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm1024 384v448h-1408v-192l320-320 160 160 512-512zm96-704h-1600q-13 0-22.5 9.5t-9.5 22.5v1216q0 13 9.5 22.5t22.5 9.5h1600q13 0 22.5-9.5t9.5-22.5v-1216q0-13-9.5-22.5t-22.5-9.5zm160 32v1216q0 66-47 113t-113 47h-1600q-66 0-113-47t-47-113v-1216q0-66 47-113t113-47h1600q66 0 113 47t47 113z"></path> </svg>',
       tooltip: 'Insert Image',
       exec: () => {
         if (fileInputRef.current) {
@@ -136,8 +143,14 @@ function AddNote({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
+    // const options = {
+    //   maxSizeMB: 1,
+    //   maxWidthOrHeight: 1920,
+    //   useWebWorker: true,
+    // }
     if (file) {
       try {
+        // const compressedFile = await imageCompression(file, options);
         const downloadURL = await uploadImageToFirebase({
           imageUri: file,
           userId: uid,
@@ -151,12 +164,11 @@ function AddNote({
 
   const deleteImage = async (index: number, url: string) => {
     try {
-      
       await deleteImageFromFirebase(url);
 
-     if(itemID){
-      await deleteImageFromFirestore(uid, label, url, itemID);
-     }
+      if (itemID) {
+        await deleteImageFromFirestore(uid, label, url, itemID);
+      }
 
       setImageArray((prevUrls) => prevUrls.filter((_, i) => i !== index));
       setDeleteImageModal(false);
@@ -221,7 +233,7 @@ function AddNote({
     const strippedDesc = stripHtmlTags(itemDesc || '').trim();
     const trimmedTitle = itemTitle?.trim();
 
-    if (!trimmedTitle && !strippedDesc) {
+    if (!trimmedTitle && !strippedDesc && imageArray?.length===0) {
       showAlert(ERR_TITLE.EMPTY_NOTE, ERR_MSG.NOTE_DISCARDED);
       handleCancel();
       return;
@@ -260,24 +272,26 @@ function AddNote({
         onChange={(e) => setItemTitle(e.target.value)}
         className="bg-white dark:bg-jodit-dark w-full text-gray-700 dark:text-white placeholder-[#AAA7A7] placeholder:font-medium border border-b-0 border-my-hover dark:border-my-icon-dark p-2 focus-visible:outline-none focus:outline-none"
       />
-        <div className="bg-white dark:bg-jodit-dark w-full max-h-52 overflow-auto border border-my-hover dark:border-my-icon-dark">
+      <div className="bg-white dark:bg-jodit-dark w-full max-h-52 overflow-auto border border-my-hover dark:border-my-icon-dark">
         <Masonry
+          id='images-grid'
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
           {imageArray?.map((url, index) => (
-            <div key={index} className="relative h-auto p-2">
+            <div key={index} className="relative h-auto">
               <img src={url} alt="image" className="mb-2" />
               <button
-                className="absolute top-3 right-3 rounded-full bg-gray-300 p-1 h-6 w-6"
+                className="absolute top-1 right-1 rounded-full bg-black p-1 h-6 w-6 opacity-50"
                 type="button"
                 // onClick={() =>deleteImage(index, url)}
-                onClick={() =>{
-                  setImageContent({index,url})
-                  setDeleteImageModal(true)}}
+                onClick={() => {
+                  setImageContent({ index, url });
+                  setDeleteImageModal(true);
+                }}
               >
-                <img src={ICONS.Menu} alt="Menu" />
+                <img src={ICONS.CloseWhite} alt="Close" />
               </button>
             </div>
           ))}
@@ -294,6 +308,8 @@ function AddNote({
       <input
         ref={fileInputRef}
         type="file"
+        // accept="image/png, image/jpeg"
+        accept="image/*"
         className="hidden"
         onChange={handleImageUpload}
       />
@@ -312,15 +328,13 @@ function AddNote({
         {ADD_NOTE.SAVE}
       </button>
       <CustomModal
-          showModal={deleteImageModal}
-          closeModal={() => setDeleteImageModal(false)}
-          title={ADD_NOTE.DELETE_MODAL}
-          text={ADD_NOTE.ARE_YOU_SURE}
-          button={ADD_NOTE.DELETE}
-          handleModal={() =>
-            deleteImage(imageContent?.index , imageContent?.url)
-          }
-        />
+        showModal={deleteImageModal}
+        closeModal={() => setDeleteImageModal(false)}
+        title={ADD_NOTE.DELETE_MODAL}
+        text={ADD_NOTE.ARE_YOU_SURE}
+        button={ADD_NOTE.DELETE}
+        handleModal={() => deleteImage(imageContent?.index, imageContent?.url)}
+      />
     </div>
   );
 }
