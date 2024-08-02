@@ -116,7 +116,7 @@ function ChangePasswordModal({ onClose }: PasswordProps) {
                   className="bg-my-background dark:bg-my-icon-dark shadow appearance-none border dark:border-my-icon-dark rounded-md w-full py-2 pl-3 pr-9 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
                 />
                 <div
-                  className="absolute inset-y-0 right-0 flex items-end mb-2 pr-3"
+                  className="absolute inset-y-0 right-0 flex items-end mb-2 pr-3 cursor-pointer"
                   onClick={handleToggle}
                 >
                   <img src={icon} alt={CONSTANTS.PASSWORD} className="w-5" />

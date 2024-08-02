@@ -9,7 +9,7 @@ import { CONSTANTS, SIGN_UP, TITLE } from '../../Shared/Constants';
 import FormError from '../../Components/Field/FormError';
 import { useNavigate } from 'react-router-dom';
 
-export default function Signup() {
+function Signup() {
   const { signUpCall } = useAuthentication();
   const navigate = useNavigate();
 
@@ -121,3 +121,5 @@ export default function Signup() {
     </div>
   );
 }
+
+export default Signup;

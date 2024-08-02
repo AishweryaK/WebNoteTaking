@@ -9,13 +9,13 @@ import {
   userDocRef,
 } from '../../../Shared/firebaseUtils';
 import { useReduxSelector } from '../../../Store';
+import CustomModal from '../../Modal/CustomModal';
 import { ICONS } from '../../../Shared/icons';
 import {
   CHANGE_PASSWORD,
   COLLECTION,
   LABEL_LAYOUT,
 } from '../../../Shared/Constants';
-import CustomModal from '../../Modal/CustomModal';
 
 interface CollectionItem {
   text: string;
