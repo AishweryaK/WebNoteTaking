@@ -43,7 +43,6 @@
   td {
     border: solid 1px;
   }
-
 }
 
 #myEditor {
@@ -59,7 +58,10 @@
   td {
     border: solid 1px;
   }
+}
 
+[aria-label='Insert file'] {
+  display: none !important;
 }
 
 .custom-link-form input {
@@ -73,7 +75,7 @@
 
 .custom-link-form button {
   color: #fff;
-  background-color: #6B4EFF;
+  background-color: #6b4eff;
 }
 
 .custom-link-form-dark input {
@@ -87,9 +89,12 @@
 
 .custom-link-form-dark button {
   color: #fff;
-  background-color: #6B4EFF;
+  background-color: #6b4eff;
 }
 
+/* .jodit-ui-input__input {
+  background-color: #5fd3a2;
+} */
 
 /* #images-grid {
   margin: 0.5rem;
@@ -102,22 +107,19 @@
 }
 
 .my-masonry-grid_column {
-  padding-left: 1rem; 
+  padding-left: 1rem;
   background-clip: padding-box;
 }
 
 .my-masonry-grid_column img {
   width: 100%;
   display: block;
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
-
-
 
 /* .custom-link-form {
   background-color: #fff;
 } */
-
 
 /*.logo {
   height: 6em;

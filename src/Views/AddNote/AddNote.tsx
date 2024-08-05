@@ -1,7 +1,5 @@
 import { useMemo, useRef, useEffect, useState } from 'react';
 import JoditEditor from 'jodit-react';
-import imageCompression from 'browser-image-compression';
-import { Jodit } from 'jodit';
 import Masonry from 'react-masonry-css';
 import CustomModal from '../../Components/Modal/CustomModal';
 import {
@@ -130,6 +128,7 @@ function AddNote({
     setAddNote(false);
     setItemDesc('');
     setItemTitle('');
+    setImageArray([]);
   };
 
   const breakpointColumnsObj = {
@@ -254,6 +253,7 @@ function AddNote({
       setItemDesc('');
       setAddNote(false);
       closeModal('');
+      setImageArray([]);
     } catch (error) {
       console.error('Error', error);
     }

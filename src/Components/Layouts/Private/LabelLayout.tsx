@@ -215,7 +215,7 @@ const LabelsList: React.FC<LabelsListProps> = React.memo(
           className="fixed top-1/2 left-1/2 right-auto bottom-auto mr-[-50%] transform translate-x-[-50%] translate-y-[-50%] bg-gray-900 border-none p-0"
           overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-50"
         >
-          <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow max-h-[70vh] xl:max-h-[80vh] box-border">
+          <div className="relative bg-white dark:bg-my-bg-dark rounded-lg shadow max-h-[70vh] xl:max-h-[80vh] box-border overflow-y-scroll">
             <div className="flex items-center justify-between p-4 md:p-5 border-b dark:border-my-icon-dark rounded-t">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {LABEL_LAYOUT.EDIT_LABELS}

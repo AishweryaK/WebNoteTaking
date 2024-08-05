@@ -104,7 +104,7 @@ const SIGN_UP = {
   TOO_LONG: 'Too Long!',
   ENTER_FIRST_NAME: '* Please enter your first name',
   ENTER_LAST_NAME: '* Please enter your last name',
-  ONLY_FN_ALPHABETS: 'First name should only contain alphabets',
+  ONLY_FN_ALPHABETS: 'First name should contain only alphabetical characters and no spaces',
   ONLY_LN_ALPHABET: 'Last name should only contain alphabets',
   INVALID_EMAIL: 'Invalid email',
   ENTER_EMAIL: '* Please enter your email',

@@ -206,7 +206,7 @@ const Notes: React.FC = () => {
         )}
       </div>
       {notes.length === 0 && searchText === null && (
-        <p className="text-gray-500 p-8">{NOTES.START_COLLECTION}</p>
+        <p className="text-gray-500 p-8 text-center">{NOTES.START_COLLECTION}</p>
       )}
       {notes.length === 0 && searchText !== null && (
         <p className="text-gray-500 p-8 text-center">{NOTES.NO_MATCHING}</p>
