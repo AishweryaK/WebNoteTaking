@@ -10,7 +10,7 @@ import parse from 'html-react-parser';
 import Masonry from 'react-masonry-css';
 import { useParams, useSearchParams } from 'react-router-dom';
 import filter from 'lodash.filter';
-import { useReduxDispatch, useReduxSelector } from '../../Store';
+import { useReduxSelector } from '../../Store';
 import {
   deleteNote,
   updateCollectionCount,
@@ -21,7 +21,6 @@ import NotesDropdown from './NotesDropdown';
 import CustomModal from '../../Components/Modal/CustomModal';
 import { ICONS } from '../../Shared/icons';
 import { COLLECTION, CONSTANTS, NOTES } from '../../Shared/Constants';
-import { setLoading } from '../../Store/Loader';
 
 
 export interface Note {
@@ -34,7 +33,6 @@ export interface Note {
 
 const Notes: React.FC = () => {
   const { uid } = useReduxSelector((state) => state.user);
-  const dispatch = useReduxDispatch();
   const [notes, setNotes] = useState<Note[]>([]);
   const [fullNotes, setFullNotes] = useState<Note[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -180,7 +178,7 @@ const Notes: React.FC = () => {
   };
 
   return (
-    <div className="p-4 w-full max-h-full overflow-auto">
+    <div className="p-4 w-full max-h-full min-h-72 overflow-auto">
       <div className="flex justify-center w-full mb-4">
         {!showModal && addNote ? (
           <div className="w-full max-w-3xl mx-auto my-4">
